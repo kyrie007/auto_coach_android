@@ -2,6 +2,7 @@ package com.example.externalstorage;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -20,6 +21,12 @@ public class MainActivity extends AppCompatActivity {
 
     EditText fileName;
     EditText text;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void writeile(View v) {
-        if(isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            File textFile = new File (Environment.getDataDirectory(),fileName.getText().toString());
+        System.out.println(checkPermission());
+        if(isExternalStorageWritable() && checkPermission()) {
+            File textFile = new File (Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    ,fileName.getText().toString());
             try {
                 FileOutputStream fos = new FileOutputStream(textFile);
                 fos.write(text.getText().toString().getBytes());
@@ -57,10 +67,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public boolean checkPermission(String permission) {
-        int check = ContextCompat.checkSelfPermission(this, permission);
-        return (check == PackageManager.PERMISSION_GRANTED);
+    public boolean checkPermission() {
+        int permission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    MainActivity.this,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+        return true;
     }
+
 
 
 }

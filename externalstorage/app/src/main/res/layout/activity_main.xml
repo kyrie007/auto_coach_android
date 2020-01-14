@@ -6,28 +6,34 @@
     android:layout_height="wrap_content"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/fileName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="File Name"
-        android:inputType="textPersonName" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/text"
-        android:layout_width="250DP"
-        android:layout_height="120DP"
-        android:ems="10"
-        android:hint="text here..."
-        android:inputType="textPersonName" />
+        <EditText
+            android:id="@+id/text"
+            android:layout_width="250dp"
+            android:layout_height="120dp"
+            android:ems="10"
+            android:hint="text here..."
+            android:inputType="textPersonName" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="writeile"
-        android:text="Save file" />
+        <EditText
+            android:id="@+id/fileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="File Name"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="writeile"
+            android:text="Save file" />
+    </LinearLayout>
 
 
 </RelativeLayout>
