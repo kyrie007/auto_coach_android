@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <item name="ms_x" type="id" />
-    <item name="ms_y" type="id" />
-    <item name="ms_z" type="id" />
-    <item name="Button_Write" type="id" />
-    <item name="Button_Stop" type="id" />
-</resources>
