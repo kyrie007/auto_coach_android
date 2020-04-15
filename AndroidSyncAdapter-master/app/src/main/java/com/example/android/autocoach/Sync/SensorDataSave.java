@@ -13,10 +13,10 @@ import java.util.ArrayList;
  * Created by sandeepchawan on 2017-10-26.
  */
 
-public class SensorTask {
+public class SensorDataSave {
 
     synchronized public static void syncSensor(Context context, ArrayList<ContentValues> values) {
-        Log.d("SensorTask", "&&&&&&&&&&&& Calling syncSensor &&&&&&&&&&&&");
+        Log.d("SensorDataSave", "&&&&&&&&&&&& Calling syncSensor &&&&&&&&&&&&");
         try {
 
             if (values != null && values.size() != 0) {
@@ -37,7 +37,7 @@ public class SensorTask {
 
             }
 
-            Log.d("SensorTask", "&&&&&&&&&&&& Bulk Insert completed &&&&&&&&&&&&");
+            Log.d("SensorDataSave", "&&&&&&&&&&&& Bulk Insert completed &&&&&&&&&&&&");
             /* If the code reaches this point, we have successfully performed our insert into localDB */
 
         } catch (Exception e) {

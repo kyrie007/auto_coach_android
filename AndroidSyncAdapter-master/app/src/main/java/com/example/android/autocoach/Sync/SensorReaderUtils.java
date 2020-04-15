@@ -16,14 +16,14 @@ import com.example.android.autocoach.Database.SensorContract;
  * Created by sandeepchawan on 2017-10-26.
  */
 
-public class SensorUtils {
+public class SensorReaderUtils {
     private static boolean sInitialized;
 
     synchronized public static void initialize(@NonNull final Context context) {
         if (sInitialized) return;
         sInitialized = true;
 
-        Intent intent = new Intent(context, SensorService.class);
+        Intent intent = new Intent(context, SensorDetectService.class);
         context.startService(intent);
     }
 
@@ -32,7 +32,7 @@ public class SensorUtils {
     private static final String CONTENT_AUTHORITY = SensorContract.AUTHORITY;
 
     private static final String PREF_SETUP_COMPLETE = "setup_complete";
-    private static final String TAG = "SensorUtils";
+    private static final String TAG = "SensorReaderUtils";
 
     /**
      * Create an entry for this application in the system account list, if it isn't already there.

@@ -1,4 +1,4 @@
-package com.example.android.autocoach.Sync;
+package com.example.android.autocoach.Useless;
 
 import android.app.Service;
 import android.content.Intent;

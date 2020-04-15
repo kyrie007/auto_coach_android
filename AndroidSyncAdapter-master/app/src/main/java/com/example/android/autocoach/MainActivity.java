@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.android.autocoach.Sync.SensorUtils;
+import com.example.android.autocoach.Sync.SensorReaderUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Intent intent = new Intent(this, SensorService.class);
+        //Intent intent = new Intent(this, SensorDetectService.class);
         //startService(intent);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -103,12 +103,12 @@ public class MainActivity extends AppCompatActivity {
          * <p>This will create a new account with the system for our application, register our
          * SyncService with it, and establish a sync schedule.
          */
-        SensorUtils.CreateSyncAccount(this);
+        SensorReaderUtils.CreateSyncAccount(this);
 
         /**
          * This will start the service for collection of sensor data into the SQLite DB
          */
-        SensorUtils.initialize(this);
+        SensorReaderUtils.initialize(this);
     }
 
     protected void onDestroy() {

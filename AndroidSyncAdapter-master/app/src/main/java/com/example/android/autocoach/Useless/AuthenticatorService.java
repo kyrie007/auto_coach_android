@@ -1,4 +1,4 @@
-package com.example.android.autocoach.Sync;
+package com.example.android.autocoach.Useless;
 
 /**
  * Created by sandeepchawan on 2017-10-29.

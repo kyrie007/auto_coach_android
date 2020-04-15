@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * Created by sandeepchawan on 2017-10-26.
  */
 
-public class SensorService extends Service implements SensorEventListener {
+public class SensorDetectService extends Service implements SensorEventListener {
 
 //    private TextView ms1,ms2,ms3,ms4,ms5,ms6;
     //private TextView mTextView;
@@ -41,23 +41,12 @@ public class SensorService extends Service implements SensorEventListener {
     /**
      * a tag for logging
      */
-    private static final String TAG = SensorService.class.getSimpleName();
+    private static final String TAG = SensorDetectService.class.getSimpleName();
 
-    public SensorService() {
+    public SensorDetectService() {
 
     }
 
-//    static final float ALPHA = 0.9f;
-//    protected float lowPassFilter( float input, float output ) {
-//        //if ( output == null ) return input;
-////        for ( int i=0; i<input.length; i++ ) {
-////            output[i] = output[i] + ALPHA * (input[i] - output[i]);
-////        }
-//
-//        output = output + ALPHA * (input - output);
-//
-//        return output;
-//    }
 
     @Nullable
     @Override
@@ -88,8 +77,6 @@ public class SensorService extends Service implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         //do nothing
     }
-
-
 
 
 
@@ -203,7 +190,7 @@ public class SensorService extends Service implements SensorEventListener {
     }
 
     public void bulk_insert (Context context, ArrayList<ContentValues> values) {
-        SensorTask.syncSensor(context, values);
+        SensorDataSave.syncSensor(context, values);
     }
 
     public void onDestroy () {
