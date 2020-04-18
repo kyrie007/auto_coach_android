@@ -13,6 +13,9 @@ import android.location.LocationManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import biz.source_code.dsp.filter.*;
+import biz.source_code.dsp.filter.IirFilterCoefficients;
+import biz.source_code.dsp.filter.IirFilterDesignExstrom;
 
 import com.example.android.autocoach.MainActivity;
 import com.example.android.autocoach.Database.SensorContract;
@@ -78,43 +81,89 @@ public class SensorDetectService extends Service implements SensorEventListener 
         //do nothing
     }
 
+    public synchronized double[] IIRFilter(double[] signal, double[] a, double[] b) {
 
+        double[] in = new double[b.length];
+        double[] out = new double[a.length-1];
+
+        double[] outData = new double[signal.length];
+
+        for (int i = 0; i < signal.length; i++) {
+
+            System.arraycopy(in, 0, in, 1, in.length - 1);
+            in[0] = signal[i];
+
+            //calculate y based on a and b coefficients
+            //and in and out.
+            float y = 0;
+            for(int j = 0 ; j < b.length ; j++){
+                y += b[j] * in[j];
+
+            }
+
+            for(int j = 0;j < a.length-1;j++){
+                y -= a[j+1] * out[j];
+            }
+
+            //shift the out array
+            System.arraycopy(out, 0, out, 1, out.length - 1);
+            out[0] = y;
+
+            outData[i] = y;
+
+
+        }
+        return outData;
+    }
 
 
     public void onSensorChanged(SensorEvent event) {
 
         Sensor sensor = event.sensor;
 
-        final double alpha = 0.8;
-        double gravity[] = new double[3];
-
-        if (sensor.getType() == Sensor.TYPE_GRAVITY) {
-            gravity[0] =  event.values[0];
-            gravity[1] =  event.values[2];
-            gravity[2] =  event.values[2];
-
-        }
+//        final double alpha = 0.8;
+//        double gravity[] = new double[3];
+//
+//        if (sensor.getType() == Sensor.TYPE_GRAVITY) {
+//            gravity[0] =  event.values[0];
+//            gravity[1] =  event.values[2];
+//            gravity[2] =  event.values[2];
+//
+//        }
         if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             //Log.d(TAG, "Accelerometer changed at: " + System.currentTimeMillis() + " \n");
             //Log.d(TAG, "Count is: " + count +  "\n");
             //Log.d(TAG, "Accelerometer: " + String.valueOf(event.values[0]) + String.valueOf(event.values[1]) + String.valueOf(event.values[2]));
 
             //final float alpha = 0.8;
-            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+//            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
+//            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
+//            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
 
-            double a = event.values[0] - gravity[0];
-            double b = event.values[1] - gravity[1];
-            double c = event.values[2] - gravity[2];
+            double accx = event.values[0]; //- gravity[0];
+            double accy = event.values[1]; //- gravity[1];
+            double accz = event.values[2]; //- gravity[2];
 
-            value.put(SensorContract.SensorEntry.COLUMN_ACC_X, Math.round(a));
-            value.put(SensorContract.SensorEntry.COLUMN_ACC_Y, Math.round(b));
-            value.put(SensorContract.SensorEntry.COLUMN_ACC_Z, Math.round(c));
+            value.put(SensorContract.SensorEntry.COLUMN_ACC_X, accx);
+            value.put(SensorContract.SensorEntry.COLUMN_ACC_Y, accy);
+            value.put(SensorContract.SensorEntry.COLUMN_ACC_Z, accz);
 
-            MainActivity.getMainActivity().setText(1,(Math.round(a * 100))/100);
-            MainActivity.getMainActivity().setText(2,(Math.round(b * 100))/100);
-            MainActivity.getMainActivity().setText(3,(Math.round(c * 100))/100);
+            MainActivity.getMainActivity().setText(1,(Math.round(accx * 100))/100);
+            MainActivity.getMainActivity().setText(2,(Math.round(accy * 100))/100);
+            MainActivity.getMainActivity().setText(3,(Math.round(accz * 100))/100);
+
+
+//            //FILTER
+//            double accx2 = accx,accy2 = accy,accz2 = accz;
+//            IirFilterCoefficients iirFilterCoefficients;
+//            iirFilterCoefficients = IirFilterDesignExstrom.design(FilterPassType.lowpass, 10,
+//                    10.0 / 50, 13.0 / 50);
+//            accx2  = IIRFilter(accx2, iirFilterCoefficients.a, iirFilterCoefficients.b);
+//
+//
+//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_X, d);
+//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Y, e);
+//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Z, f);
             count++;
 
 
@@ -148,17 +197,17 @@ public class SensorDetectService extends Service implements SensorEventListener 
             MainActivity.getMainActivity().setText(6,(float) Math.toDegrees(event.values[2]));
             //Log.d(TAG, "Count is: " + count +  "\n");
             count++;
-        } else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            //Log.d(TAG, "Magnetometer changed at: " + System.currentTimeMillis() + " \n");
-            //Log.d(TAG, "Magneto: " + String.valueOf(event.values[0]) + String.valueOf(event.values[1]) + String.valueOf(event.values[2]));
-            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_X, event.values[0] + 0);
-            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Y, event.values[1] + 0);
-            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Z, event.values[2] + 0);
-            //Log.d(TAG, "Count is: " + count +  "\n");
-            count++;
-        }
+        } //else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+//            //Log.d(TAG, "Magnetometer changed at: " + System.currentTimeMillis() + " \n");
+//            //Log.d(TAG, "Magneto: " + String.valueOf(event.values[0]) + String.valueOf(event.values[1]) + String.valueOf(event.values[2]));
+//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_X, event.values[0] + 0);
+//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Y, event.values[1] + 0);
+//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Z, event.values[2] + 0);
+//            //Log.d(TAG, "Count is: " + count +  "\n");
+            //count++;
+        //}
 
-        if (count == 3) {
+        if (count == 2) {
            // Log.d(TAG, "*** Count is: " + count +  " *** Pushing it to array list\n");
             count = 0;
             value.put(SensorContract.SensorEntry.COLUMN_DATE, System.currentTimeMillis());
