@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.example.android.autocoach.Useless.SensorSyncAdapter;
-
 /**
  * Created by sandeepchawan on 2017-10-29.
  */

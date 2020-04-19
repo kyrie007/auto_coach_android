@@ -36,7 +36,8 @@ public class SensorDetectService extends Service implements SensorEventListener 
     private Sensor mAccelerometer;
     private Sensor mGyroscope;
     private Sensor mMagnetometer;
-    private int count = 0;
+    private int acc_count = 0;
+    private int gyo_count = 0;
     public ArrayList<ContentValues> values = new ArrayList<>();
     ContentValues value = new ContentValues();
 
@@ -66,13 +67,13 @@ public class SensorDetectService extends Service implements SensorEventListener 
         //SENSOR_DELAY_FASTEST (10ms), SENSOR_DELAY_GAME(20ms), SENSOR_DELAY_UI(65ms), SENSOR_DELAY_NORMAL(200ms)
         Log.d(TAG, "In OnStartCommand\n");
         if (mAccelerometer != null)
-            mSensorManager.registerListener(this, mAccelerometer, 50000);//(SensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mAccelerometer, 30000);//(SensorManager.SENSOR_DELAY_NORMAL);
         Log.d(TAG, "Registered Accelerometer!\n");
         if (mGyroscope != null)
-            mSensorManager.registerListener(this, mGyroscope, 50000);//SensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mGyroscope, 30000);//SensorManager.SENSOR_DELAY_NORMAL);
         Log.d(TAG, "Registered Gyrometer!\n");
         if (mMagnetometer != null)
-            mSensorManager.registerListener(this, mMagnetometer, 50000);//SensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mMagnetometer, 30000);//SensorManager.SENSOR_DELAY_NORMAL);
         Log.d(TAG, "Registered Magnetometer!\n");
         return START_STICKY;
     }
@@ -148,6 +149,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
             value.put(SensorContract.SensorEntry.COLUMN_ACC_Y, accy);
             value.put(SensorContract.SensorEntry.COLUMN_ACC_Z, accz);
 
+
             MainActivity.getMainActivity().setText(1,(Math.round(accx * 100))/100);
             MainActivity.getMainActivity().setText(2,(Math.round(accy * 100))/100);
             MainActivity.getMainActivity().setText(3,(Math.round(accz * 100))/100);
@@ -164,7 +166,11 @@ public class SensorDetectService extends Service implements SensorEventListener 
 //            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_X, d);
 //            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Y, e);
 //            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Z, f);
-            count++;
+            if(value.get(SensorContract.SensorEntry.COLUMN_ACC_X)==null){
+                System.out.println("acc would be null");
+            }
+            System.out.println("acc :" + acc_count);
+            acc_count = 1;
 
 
         } else if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
@@ -196,7 +202,12 @@ public class SensorDetectService extends Service implements SensorEventListener 
             MainActivity.getMainActivity().setText(5,(float) Math.toDegrees(event.values[1]));
             MainActivity.getMainActivity().setText(6,(float) Math.toDegrees(event.values[2]));
             //Log.d(TAG, "Count is: " + count +  "\n");
-            count++;
+            if(value.get(SensorContract.SensorEntry.COLUMN_GYRO_X)==null){
+                System.out.println("gyo would be null");
+            }
+            System.out.println("gyo" + gyo_count);
+            gyo_count = 1;
+
         } //else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
 //            //Log.d(TAG, "Magnetometer changed at: " + System.currentTimeMillis() + " \n");
 //            //Log.d(TAG, "Magneto: " + String.valueOf(event.values[0]) + String.valueOf(event.values[1]) + String.valueOf(event.values[2]));
@@ -207,9 +218,10 @@ public class SensorDetectService extends Service implements SensorEventListener 
             //count++;
         //}
 
-        if (count == 2) {
+        if (acc_count == 1 && gyo_count==1) {
            // Log.d(TAG, "*** Count is: " + count +  " *** Pushing it to array list\n");
-            count = 0;
+            acc_count = 0;
+            gyo_count = 0;
             value.put(SensorContract.SensorEntry.COLUMN_DATE, System.currentTimeMillis());
             value.put(SensorContract.SensorEntry.COLUMN_SPEED, MainActivity.getMainActivity().getSpeed());
             value.put(SensorContract.SensorEntry.COLUMN_GPS_LAT, 0);
@@ -228,7 +240,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
             //stopSelf();
         }
 
-        if (values.size() > 100) {
+        if (values.size() > 50) {
             Log.d(TAG, "~~~~~~ Starting Bulk Sync ~~~~ \n");
             //create a copy of arraylist and insert
             ArrayList<ContentValues> copy_list = new ArrayList<>(values);

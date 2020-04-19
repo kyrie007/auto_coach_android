@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.example.android.autocoach.Sync.Authenticator;
+
 /**
  * A bound Service that instantiates the authenticator
  * when started.
@@ -18,7 +20,7 @@ public class AuthenticatorService extends Service {
 
     // Instance field that stores the authenticator object
     private static final String TAG = AuthenticatorService.class.getSimpleName();
-    private static final String ACCOUNT_TYPE = "com.example.android.sensorsync";
+    private static final String ACCOUNT_TYPE = "com.example.android.autocoach";
     public static final String ACCOUNT_NAME = "sync";
 
     private Authenticator mAuthenticator;

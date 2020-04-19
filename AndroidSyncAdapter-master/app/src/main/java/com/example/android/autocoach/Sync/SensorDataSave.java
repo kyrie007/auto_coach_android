@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.android.autocoach.Database.SensorContract;
+import com.example.android.autocoach.Database.SensorContentProvider;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,12 @@ public class SensorDataSave {
                     sensorContentResolver.insert(
                             SensorContract.SensorEntry.CONTENT_URI,
                             values.get(i));
+                    if(values.get(i).get(SensorContract.SensorEntry.COLUMN_ACC_X)==null){
+                        System.out.println("x value become null");
+                    }
+
                 }
+//                sensorContentResolver.bulkInsert(SensorContract.SensorEntry.CONTENT_URI, cvalues);
 
 
 

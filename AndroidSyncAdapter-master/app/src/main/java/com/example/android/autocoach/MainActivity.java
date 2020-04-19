@@ -38,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
         mainActivity = this;
         //this.a = 2;
 
-        RunnableD R1SVM = new RunnableD( "Thread-1");
-        R1SVM.start();
-
-        RunnableD R2LDA = new RunnableD( "Thread-2");
-        R2LDA.start();
+//        RunnableD R1SVM = new RunnableD( "Thread-1");
+//        R1SVM.start();
+//
+//        RunnableD R2LDA = new RunnableD( "Thread-2");
+//        R2LDA.start();
 
     }
 
@@ -173,37 +173,37 @@ public class MainActivity extends AppCompatActivity {
         return mainActivity;
     }
 
-    class RunnableD implements Runnable {
-        private Thread t;
-        private String threadName;
-
-        RunnableD( String name) {
-            threadName = name;
-            System.out.println("Creating " +  threadName );
-        }
-
-        public void run() {
-            System.out.println("Running " +  threadName );
-            try {
-                for(;;) {
-                    //System.out.println("Thread: " + threadName + ", " + i);
-                    // 让线程睡眠一会
-                    Thread.sleep(500);
-                }
-            }catch (InterruptedException e) {
-                System.out.println("Thread " +  threadName + " interrupted.");
-            }
-            System.out.println("Thread " +  threadName + " exiting.");
-        }
-
-        public void start () {
-            System.out.println("Starting " +  threadName );
-            if (t == null) {
-                t = new Thread (this, threadName);
-                t.start ();
-            }
-        }
-    }
+//    class RunnableD implements Runnable {
+//        private Thread t;
+//        private String threadName;
+//
+//        RunnableD( String name) {
+//            threadName = name;
+//            System.out.println("Creating " +  threadName );
+//        }
+//
+//        public void run() {
+//            System.out.println("Running " +  threadName );
+//            try {
+//                for(;;) {
+//                    //System.out.println("Thread: " + threadName + ", " + i);
+//                    // 让线程睡眠一会
+//                    Thread.sleep(500);
+//                }
+//            }catch (InterruptedException e) {
+//                System.out.println("Thread " +  threadName + " interrupted.");
+//            }
+//            System.out.println("Thread " +  threadName + " exiting.");
+//        }
+//
+//        public void start () {
+//            System.out.println("Starting " +  threadName );
+//            if (t == null) {
+//                t = new Thread (this, threadName);
+//                t.start ();
+//            }
+//        }
+//    }
 
     @Override
     protected void onResume() {
