@@ -1,4 +1,4 @@
-package com.example.android.autocoach.Useless;
+package com.example.android.autocoach.Sync;
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;

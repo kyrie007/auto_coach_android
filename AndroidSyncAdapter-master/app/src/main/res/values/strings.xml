@@ -2,6 +2,6 @@
     <string name="app_name">AutoCoach</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
-    <string name="content_authority">com.example.android.sensorsync</string>
-    <string name="sync_account_type">com.example.android.sensorsync</string>
+    <string name="content_authority">com.example.android.autocoach</string>
+    <string name="sync_account_type">com.example.android.autocoach</string>
 </resources>

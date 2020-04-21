@@ -9,7 +9,7 @@ import android.provider.BaseColumns;
 
 public class SensorContract {
 
-    public static final String AUTHORITY = "com.example.android.sensorsync";
+    public static final String AUTHORITY = "com.example.android.autocoach";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 

@@ -49,9 +49,9 @@ public class SensorDbHelper extends SQLiteOpenHelper {
 
                         SensorContract.SensorEntry.COLUMN_SPEED       + " INTEGER DEFAULT 0, "    +
 
-                        SensorContract.SensorEntry.COLUMN_ACC_X + " FLOAT DEFAULT NULL, "                       +
-                        SensorContract.SensorEntry.COLUMN_ACC_Y   + " FLOAT DEFAULT NULL, "                    +
-                        SensorContract.SensorEntry.COLUMN_ACC_Z   + " FLOAT DEFAULT NULL, "                    +
+                        SensorContract.SensorEntry.COLUMN_ACC_X + " DOUBLE DEFAULT NULL, "                       +
+                        SensorContract.SensorEntry.COLUMN_ACC_Y   + " DOUBLE DEFAULT NULL, "                    +
+                        SensorContract.SensorEntry.COLUMN_ACC_Z   + " DOUBLE DEFAULT NULL, "                    +
 
                         SensorContract.SensorEntry.COLUMN_GYRO_X + " FLOAT DEFAULT NULL, "                       +
                         SensorContract.SensorEntry.COLUMN_GYRO_Y   + " FLOAT DEFAULT NULL, "                    +
