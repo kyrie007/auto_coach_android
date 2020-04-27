@@ -22,7 +22,7 @@ import com.example.android.autocoach.Sync.SensorReaderUtils;
 public class MainActivity extends AppCompatActivity {
 
     TextView message_x,message_y,message_z,message_gx,message_gy,message_gz;
-    //int a;
+
     public static MainActivity mainActivity;
 
     private LocationManager locationManager;
@@ -36,14 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
     public MainActivity(){
         mainActivity = this;
-        //this.a = 2;
-
-//        RunnableD R1SVM = new RunnableD( "Thread-1");
-//        R1SVM.start();
-//
-//        RunnableD R2LDA = new RunnableD( "Thread-2");
-//        R2LDA.start();
-
     }
 
     @Override
@@ -111,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         SensorReaderUtils.initialize(this);
     }
 
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (locationManager != null) {
@@ -119,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //locationListener中其他3个方法新手不太用得到，笔者在此也不多说了，有兴趣的可以自己去了解一下
+    //locationListener
     LocationListener locationListener = new LocationListener() {
 
         @Override
@@ -136,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onLocationChanged(Location location) {
-            // 更新当前设备的位置信息
+            // update speed by current location
             updateSpeedByLocation(location);
         }
 

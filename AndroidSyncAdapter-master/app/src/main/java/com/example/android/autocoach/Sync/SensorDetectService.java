@@ -169,7 +169,6 @@ public class SensorDetectService extends Service implements SensorEventListener 
             if(value.get(SensorContract.SensorEntry.COLUMN_ACC_X)==null){
                 System.out.println("acc would be null");
             }
-            System.out.println("acc :" + acc_count);
             acc_count = 1;
 
 
@@ -205,7 +204,6 @@ public class SensorDetectService extends Service implements SensorEventListener 
             if(value.get(SensorContract.SensorEntry.COLUMN_GYRO_X)==null){
                 System.out.println("gyo would be null");
             }
-            System.out.println("gyo" + gyo_count);
             gyo_count = 1;
 
         } //else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
