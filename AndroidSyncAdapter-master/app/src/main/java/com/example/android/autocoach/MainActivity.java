@@ -4,38 +4,73 @@ package com.example.android.autocoach;
 import java.util.List;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 
+import com.example.android.autocoach.Bean.Event;
+import com.example.android.autocoach.Sync.FeedbackService;
 import com.example.android.autocoach.Sync.SensorReaderUtils;
 
 public class MainActivity extends AppCompatActivity {
-
+    private String provider;
+    private int speed;
+    private boolean flag;
     TextView message_x,message_y,message_z,message_gx,message_gy,message_gz;
+    private Button start_button;
+    private TextView feedbackText;
 
     public static MainActivity mainActivity;
 
     private LocationManager locationManager;
 
-    private String provider;
+    private FeedbackService feedbackService;
+    private Messenger toFeedbackMessenger = null;
+    // service connection to bind feedback service: communicate with svm lda and feedback
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            System.out.println("service is connected");
+//            feedbackService = ((FeedbackService.MyBinder)iBinder).getService();
+            toFeedbackMessenger = new Messenger(iBinder);
+        }
 
-    private int speed;
-    private boolean flag;
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
+
+    private MyReceiver detect_recevier;
 
 
 
     public MainActivity(){
         mainActivity = this;
+    }
+
+    public static MainActivity getMainActivity(){
+        return mainActivity;
     }
 
     @Override
@@ -89,9 +124,29 @@ public class MainActivity extends AppCompatActivity {
         message_gy = findViewById(R.id.ms_gy);
         message_gz = findViewById(R.id.ms_gz);
 
+        feedbackText = findViewById(R.id.feedbackText);
+
+
+        start_button = findViewById(R.id.start_button);
+        start_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                feedbackService.startSVM();
+                feedbackService.startLDA();
+                feedbackService.startFeedback();
+            }
+        });
+        Intent feedback_intent  = new Intent(this, FeedbackService.class);
+        bindService(feedback_intent, serviceConnection, BIND_AUTO_CREATE);
+
+        // this receiver is register to receive data from event detection
+        detect_recevier = new MyReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.test.service.RECEIVER");
+        registerReceiver(detect_recevier, intentFilter);
+
         /**
          * Create SyncAccount at launch, if needed.
-         *
          * <p>This will create a new account with the system for our application, register our
          * SyncService with it, and establish a sync schedule.
          */
@@ -103,14 +158,7 @@ public class MainActivity extends AppCompatActivity {
         SensorReaderUtils.initialize(this);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (locationManager != null) {
-            // 关闭程序时将监听器移除
-            locationManager.removeUpdates(locationListener);
-        }
-    }
+
 
     //locationListener
     LocationListener locationListener = new LocationListener() {
@@ -162,41 +210,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static MainActivity getMainActivity(){
-        return mainActivity;
+    public void setFeedbackText(String text){
+        this.feedbackText.setText(text);
     }
-
-//    class RunnableD implements Runnable {
-//        private Thread t;
-//        private String threadName;
-//
-//        RunnableD( String name) {
-//            threadName = name;
-//            System.out.println("Creating " +  threadName );
-//        }
-//
-//        public void run() {
-//            System.out.println("Running " +  threadName );
-//            try {
-//                for(;;) {
-//                    //System.out.println("Thread: " + threadName + ", " + i);
-//                    // 让线程睡眠一会
-//                    Thread.sleep(500);
-//                }
-//            }catch (InterruptedException e) {
-//                System.out.println("Thread " +  threadName + " interrupted.");
-//            }
-//            System.out.println("Thread " +  threadName + " exiting.");
-//        }
-//
-//        public void start () {
-//            System.out.println("Starting " +  threadName );
-//            if (t == null) {
-//                t = new Thread (this, threadName);
-//                t.start ();
-//            }
-//        }
-//    }
 
     @Override
     protected void onResume() {
@@ -219,17 +235,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public class MyReceiver extends BroadcastReceiver{
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            assert bundle != null;
+            Event driving_event = (Event)bundle.getSerializable("event");
+            System.out.println("receive");
+            System.out.println(driving_event.getFeature());
 
-//    public class TestThread {
-//
-//        public static void main(String args[]) {
-//            RunnableDemo R1 = new RunnableDemo( "Thread-1");
-//            R1.start();
-//
-//            RunnableDemo R2 = new RunnableDemo( "Thread-2");
-//            R2.start();
-//        }
-//    }
+//            Bundle svmBundle = new Bundle();
+//            svmBundle.putInt("test", 555);
+            Message msg = Message.obtain(null,1,0);
+            msg.setData(bundle);
+            try{
+                toFeedbackMessenger.send(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(serviceConnection);
+        unregisterReceiver(detect_recevier);
+        if (locationManager != null) {
+            // 关闭程序时将监听器移除
+            locationManager.removeUpdates(locationListener);
+        }
+    }
 
 }

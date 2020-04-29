@@ -10,6 +10,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -17,10 +18,14 @@ import biz.source_code.dsp.filter.*;
 import biz.source_code.dsp.filter.IirFilterCoefficients;
 import biz.source_code.dsp.filter.IirFilterDesignExstrom;
 
+import com.example.android.autocoach.Bean.Event;
 import com.example.android.autocoach.MainActivity;
 import com.example.android.autocoach.Database.SensorContract;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by sandeepchawan on 2017-10-26.
@@ -40,7 +45,13 @@ public class SensorDetectService extends Service implements SensorEventListener 
     private int gyo_count = 0;
     public ArrayList<ContentValues> values = new ArrayList<>();
     ContentValues value = new ContentValues();
+    private Event driving_event = new Event(0,0);
+    private Intent broadcast_intent = new Intent("com.test.service.RECEIVER");
+    private Lock dataLock = new ReentrantLock(true);
 
+    // used to test
+    private long previous_time = 0;
+    private long current_time = 0;
 
     /**
      * a tag for logging
@@ -206,15 +217,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
             }
             gyo_count = 1;
 
-        } //else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-//            //Log.d(TAG, "Magnetometer changed at: " + System.currentTimeMillis() + " \n");
-//            //Log.d(TAG, "Magneto: " + String.valueOf(event.values[0]) + String.valueOf(event.values[1]) + String.valueOf(event.values[2]));
-//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_X, event.values[0] + 0);
-//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Y, event.values[1] + 0);
-//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Z, event.values[2] + 0);
-//            //Log.d(TAG, "Count is: " + count +  "\n");
-            //count++;
-        //}
+        }
 
         if (acc_count == 1 && gyo_count==1) {
            // Log.d(TAG, "*** Count is: " + count +  " *** Pushing it to array list\n");
@@ -225,6 +228,19 @@ public class SensorDetectService extends Service implements SensorEventListener 
             value.put(SensorContract.SensorEntry.COLUMN_GPS_LAT, 0);
             value.put(SensorContract.SensorEntry.COLUMN_GPS_LONG, 0);
             value.put(SensorContract.SensorEntry.COLUMN_CLASSIFICATION, 0);
+
+            current_time = (new Date().getTime()/1000);
+
+            driving_event.add_Value(1);
+
+            if(current_time-previous_time>10){
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("event", driving_event);
+                driving_event.setType((int)(Math.random()*5));
+                broadcast_intent.putExtras(bundle);
+                sendBroadcast(broadcast_intent);
+                previous_time = current_time;
+            }
 
             ContentValues copy_cv = new ContentValues(value);
             values.add(copy_cv);
@@ -238,14 +254,22 @@ public class SensorDetectService extends Service implements SensorEventListener 
             //stopSelf();
         }
 
-        if (values.size() > 50) {
+        // if collect enough data store it into database
+        if (values.size() > 100) {
             Log.d(TAG, "~~~~~~ Starting Bulk Sync ~~~~ \n");
             //create a copy of arraylist and insert
-            ArrayList<ContentValues> copy_list = new ArrayList<>(values);
-            bulk_insert(this, copy_list);
+            final ArrayList<ContentValues> copy_list = new ArrayList<>(values);
+            final Context context = this;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    dataLock.lock();
+                    bulk_insert(context, copy_list);
+                    dataLock.unlock();
+                }
+            }).start();
             values.clear();
         }
-
     }
 
     public void bulk_insert (Context context, ArrayList<ContentValues> values) {
