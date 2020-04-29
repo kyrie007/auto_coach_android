@@ -136,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
                 feedbackService.startFeedback();
             }
         });
+
+        // bind service 2 : svm lda feedback
         Intent feedback_intent  = new Intent(this, FeedbackService.class);
         bindService(feedback_intent, serviceConnection, BIND_AUTO_CREATE);
 

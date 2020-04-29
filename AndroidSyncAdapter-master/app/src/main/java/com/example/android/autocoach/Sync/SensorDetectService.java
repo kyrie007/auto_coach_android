@@ -255,7 +255,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
         }
 
         // if collect enough data store it into database
-        if (values.size() > 100) {
+        if (values.size() > 200) {
             Log.d(TAG, "~~~~~~ Starting Bulk Sync ~~~~ \n");
             //create a copy of arraylist and insert
             final ArrayList<ContentValues> copy_list = new ArrayList<>(values);

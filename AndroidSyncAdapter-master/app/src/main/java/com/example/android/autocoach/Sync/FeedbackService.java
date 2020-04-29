@@ -99,8 +99,10 @@ public class FeedbackService extends Service {
                             feedback = "slow down";
                         }else if(eventType == 1){
                             feedback = "don't brake suddenly";
-                        }else{
+                        }else if(eventType == 2){
                             feedback = "turn slowly";
+                        }else{
+                            feedback = "swerve slowly";
                         }
                         // change ui on screen
                         MainActivity.getMainActivity().setFeedbackText(feedback);
