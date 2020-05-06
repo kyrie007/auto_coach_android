@@ -13,6 +13,10 @@ import android.support.annotation.Nullable;
 import com.example.android.autocoach.Bean.Event;
 import com.example.android.autocoach.MainActivity;
 
+import java.io.IOException;
+
+import libsvm.*;
+
 public class FeedbackService extends Service {
     private int eventType = 0;
     final Messenger detectMessager = new Messenger(new MessagerHandler());
@@ -60,8 +64,13 @@ public class FeedbackService extends Service {
                 while(true){
                     System.out.println("SVM");
                     try {
+
+                        svm_model model = svm.svm_load_model("model");
+
+
+
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException | IOException e) {
                         e.printStackTrace();
                     }
                 }
