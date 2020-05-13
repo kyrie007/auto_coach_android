@@ -2,6 +2,8 @@ package com.example.android.autocoach.Bean;
 
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Event implements Serializable {
     private static final long serialVersionUID = 123456L;
@@ -9,15 +11,17 @@ public class Event implements Serializable {
     private long end;
     private int type;
     private int feature;
+    private Queue<double[]> rawData;
     public Event(long start, int type){
         this.start = start;
         this.type = type;
         this.end = 0;
         this.feature = 0;
+        this.rawData = new LinkedList<>();
     }
 
-    public void add_Value(int data){
-        this.feature +=data;
+    public void add_Value(double[] data){
+        this.rawData.offer(data);
     }
 
 
@@ -31,6 +35,10 @@ public class Event implements Serializable {
 
     public int getType(){
         return this.type;
+    }
+
+    public void setEnd(long end){
+        this.end = end;
     }
 
 }

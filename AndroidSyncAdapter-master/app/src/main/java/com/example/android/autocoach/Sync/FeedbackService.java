@@ -65,12 +65,12 @@ public class FeedbackService extends Service {
                     System.out.println("SVM");
                     try {
 
-                        svm_model model = svm.svm_load_model("model");
+//                        svm_model model = svm.svm_load_model("model");
 
 
 
                         Thread.sleep(1000);
-                    } catch (InterruptedException | IOException e) {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
