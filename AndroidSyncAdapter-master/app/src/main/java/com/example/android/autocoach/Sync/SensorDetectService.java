@@ -64,9 +64,6 @@ public class SensorDetectService extends Service implements SensorEventListener 
     private int stdWin = samplingRate;  //window size for standard deviation calculation
     private IirFilterCoefficients iirFilterCoefficients = IirFilterDesignExstrom.design(FilterPassType.lowpass, 5,
             10.0/340, 10.0 / 170);  //filter for low pass filter
-    private Queue<Double> accxQueue = new LinkedList<>();
-    private Queue<Double> accyQueue = new LinkedList<>();
-    private Queue<Double> acczQueue = new LinkedList<>();
     private Queue<double[]> dataQueue = EvictingQueue.create(120);
     private Queue<Double> stdQueue = EvictingQueue.create(40);
 
@@ -269,18 +266,9 @@ public class SensorDetectService extends Service implements SensorEventListener 
             //collect 120 data to filter
             if (dataQueue.size()==120){
 
-//                double[] accxFiltered  = IIRFilter(accxQueue.toArray(), iirFilterCoefficients.a, iirFilterCoefficients.b);
-//                double[] accyFiltered  = IIRFilter(accyQueue.toArray(), iirFilterCoefficients.a, iirFilterCoefficients.b);
-//                double[] acczFiltered  = IIRFilter(acczQueue.toArray(), iirFilterCoefficients.a, iirFilterCoefficients.b);
-//                accxQueue.poll();
-//                accyQueue.poll();
-//                acczQueue.poll();
-
                 //when the queue for standard deviation calculation is full. 40 is used to calculate, the other 14 is padding for filter
                 Event eventX = detectXEvent(dataQueue.toArray());
                 Event eventY = detectYEvent(dataQueue.toArray());
-
-
 
                 //to-do
             }
