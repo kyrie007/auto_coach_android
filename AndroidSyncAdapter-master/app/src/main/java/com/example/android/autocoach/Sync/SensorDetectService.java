@@ -11,6 +11,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -263,7 +264,6 @@ public class SensorDetectService extends Service implements SensorEventListener 
             double gyro_y = (float)value.get(SensorContract.SensorEntry.COLUMN_GYRO_Y);
             double gyro_z = (float)value.get(SensorContract.SensorEntry.COLUMN_GYRO_Z);
             double speed = (int) value.get(SensorContract.SensorEntry.COLUMN_SPEED);
-            System.out.println(acc_x);
 
             dataQueue.add(new double[]{timestamp, speed, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z});
 
@@ -275,7 +275,19 @@ public class SensorDetectService extends Service implements SensorEventListener 
                 Event eventY = detectYEvent(dataQueue.toArray());
 
                 //to-do
+                //send out the event
+                if(eventX!=null){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("event", eventX);
+                    broadcast_intent.putExtras(bundle);
+                    sendBroadcast(broadcast_intent);
+                }
+
+                if(eventY!=null){
+
+                }
             }
+
 
 
 //            if(current_time-previous_time>10){

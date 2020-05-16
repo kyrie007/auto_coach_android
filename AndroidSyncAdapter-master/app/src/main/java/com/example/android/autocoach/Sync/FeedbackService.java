@@ -14,12 +14,18 @@ import com.example.android.autocoach.Bean.Event;
 import com.example.android.autocoach.MainActivity;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import libsvm.*;
 
 public class FeedbackService extends Service {
     private int eventType = 0;
     final Messenger detectMessager = new Messenger(new MessagerHandler());
+    private Queue<Event> eventQueue = new LinkedList<>();
+    private Lock eventQueueLock =  new ReentrantLock();
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -40,9 +46,11 @@ public class FeedbackService extends Service {
             if(msg.what==1){
                 Bundle bundle = msg.getData();
                 Event driving_event = (Event)bundle.getSerializable("event");
+                eventQueueLock.lock();
+                eventQueue.offer(driving_event);
+                eventQueueLock.unlock();
                 eventType = driving_event.getType();
                 System.out.print("event="+driving_event.getType());
-                System.out.println("   feature="+driving_event.getFeature());
             }
             super.handleMessage(msg);
         }
@@ -61,10 +69,16 @@ public class FeedbackService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Event eventFromDetect = null;
                 while(true){
-                    System.out.println("SVM");
                     try {
+                        if(!eventQueue.isEmpty()){
+                            eventQueueLock.lock();
+                            eventFromDetect = eventQueue.poll();
+                            eventQueueLock.unlock();
 
+                            //to-do, process data: filter,
+                        }
 //                        svm_model model = svm.svm_load_model("model");
 
 

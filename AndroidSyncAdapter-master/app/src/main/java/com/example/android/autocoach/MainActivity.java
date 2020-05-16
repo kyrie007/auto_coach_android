@@ -245,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
             assert bundle != null;
             Event driving_event = (Event)bundle.getSerializable("event");
             System.out.println("receive");
-            System.out.println(driving_event.getFeature());
 
 //            Bundle svmBundle = new Bundle();
 //            svmBundle.putInt("test", 555);

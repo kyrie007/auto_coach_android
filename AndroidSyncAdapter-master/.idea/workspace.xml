@@ -11,6 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="76b1c3c5-84ab-40dd-adea-37dbbe75de03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/android/autocoach/Bean/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/android/autocoach/Bean/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/android/autocoach/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/android/autocoach/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/android/autocoach/Sync/FeedbackService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/android/autocoach/Sync/FeedbackService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/android/autocoach/Sync/SensorDetectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/android/autocoach/Sync/SensorDetectService.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -76,7 +79,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.ldaTrain">
+  <component name="RunManager" selected="Android App.app">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
