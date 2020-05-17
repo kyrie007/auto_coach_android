@@ -10,9 +10,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import biz.source_code.dsp.filter.*;
 import biz.source_code.dsp.filter.IirFilterCoefficients;
@@ -24,8 +26,13 @@ import com.example.android.autocoach.Database.SensorContract;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.IntStream;
+
+import com.google.common.collect.EvictingQueue;
 
 /**
  * Created by sandeepchawan on 2017-10-26.
@@ -45,22 +52,39 @@ public class SensorDetectService extends Service implements SensorEventListener 
     private int gyo_count = 0;
     public ArrayList<ContentValues> values = new ArrayList<>();
     ContentValues value = new ContentValues();
-    private Event driving_event = new Event(0,0);
+
     private Intent broadcast_intent = new Intent("com.test.service.RECEIVER");
     private Lock dataLock = new ReentrantLock(true);
 
-    // used to test
-    private long previous_time = 0;
-    private long current_time = 0;
+    //for event detection
+    private Event accEvent = new Event(0,0);
+    private Event brakeEvent = new Event(0,1);
+    private Event lturnEvent = new Event(0, 2);
+    private Event rturnEvent = new Event(0,2);
+    private int samplingRate = 33;  //this is the sampling rate of sensor--33Hz
+    private int stdWin = samplingRate;  //window size for standard deviation calculation
+    private IirFilterCoefficients iirFilterCoefficients = IirFilterDesignExstrom.design(FilterPassType.lowpass, 5,
+            10.0/340, 10.0 / 170);  //filter for low pass filter
+    private Queue<double[]> dataQueue = EvictingQueue.create(120);
+    private Queue<Double> stdXQueue = EvictingQueue.create(40);
+    private Queue<Double> stdYQueue = EvictingQueue.create(40);
+
+    private int accEventDataNum = 0;
+    private int brakeEventDataNum = 0;
+    private int lturnEventDataNum = 0;
+    private int rturnEventDataNum = 0;
+    private boolean yPositive = true;
+    private boolean yNegative = true;
+    private int accFault = 5;
+    private int brakeFault = 5;
+    private int lturnFault = 5;
+    private int rturnFault = 5;
+
 
     /**
      * a tag for logging
      */
     private static final String TAG = SensorDetectService.class.getSimpleName();
-
-    public SensorDetectService() {
-
-    }
 
 
     @Nullable
@@ -103,7 +127,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
         for (int i = 0; i < signal.length; i++) {
 
             System.arraycopy(in, 0, in, 1, in.length - 1);
-            in[0] = signal[i];
+            in[0] = (double) signal[i];
 
             //calculate y based on a and b coefficients
             //and in and out.
@@ -129,6 +153,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void onSensorChanged(SensorEvent event) {
 
         Sensor sensor = event.sensor;
@@ -220,7 +245,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
         }
 
         if (acc_count == 1 && gyo_count==1) {
-           // Log.d(TAG, "*** Count is: " + count +  " *** Pushing it to array list\n");
+            // Log.d(TAG, "*** Count is: " + count +  " *** Pushing it to array list\n");
             acc_count = 0;
             gyo_count = 0;
             value.put(SensorContract.SensorEntry.COLUMN_DATE, System.currentTimeMillis());
@@ -229,18 +254,50 @@ public class SensorDetectService extends Service implements SensorEventListener 
             value.put(SensorContract.SensorEntry.COLUMN_GPS_LONG, 0);
             value.put(SensorContract.SensorEntry.COLUMN_CLASSIFICATION, 0);
 
-            current_time = (new Date().getTime()/1000);
 
-            driving_event.add_Value(1);
+            //catch event
+            double acc_x = -(double)value.get(SensorContract.SensorEntry.COLUMN_ACC_Z);
+            double acc_y = (double)value.get(SensorContract.SensorEntry.COLUMN_ACC_Y);
+            double acc_z = (double)value.get(SensorContract.SensorEntry.COLUMN_ACC_X);
+            double timestamp = (long)value.get(SensorContract.SensorEntry.COLUMN_DATE);
+            double gyro_x = (float)value.get(SensorContract.SensorEntry.COLUMN_GYRO_X);
+            double gyro_y = (float)value.get(SensorContract.SensorEntry.COLUMN_GYRO_Y);
+            double gyro_z = (float)value.get(SensorContract.SensorEntry.COLUMN_GYRO_Z);
+            double speed = (int) value.get(SensorContract.SensorEntry.COLUMN_SPEED);
 
-            if(current_time-previous_time>10){
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("event", driving_event);
-                driving_event.setType((int)(Math.random()*5));
-                broadcast_intent.putExtras(bundle);
-                sendBroadcast(broadcast_intent);
-                previous_time = current_time;
+            dataQueue.add(new double[]{timestamp, speed, acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z});
+
+            //collect 120 data to filter
+            if (dataQueue.size()==120){
+
+                //when the queue for standard deviation calculation is full. 40 is used to calculate, the other 14 is padding for filter
+                Event eventX = detectXEvent(dataQueue.toArray());
+                Event eventY = detectYEvent(dataQueue.toArray());
+
+                //to-do
+                //send out the event
+                if(eventX!=null){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("event", eventX);
+                    broadcast_intent.putExtras(bundle);
+                    sendBroadcast(broadcast_intent);
+                }
+
+                if(eventY!=null){
+
+                }
             }
+
+
+
+//            if(current_time-previous_time>10){
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("event", driving_event);
+//                driving_event.setType((int)(Math.random()*5));
+//                broadcast_intent.putExtras(bundle);
+//                sendBroadcast(broadcast_intent);
+//                previous_time = current_time;
+//            }
 
             ContentValues copy_cv = new ContentValues(value);
             values.add(copy_cv);
@@ -271,6 +328,211 @@ public class SensorDetectService extends Service implements SensorEventListener 
             values.clear();
         }
     }
+
+    public double getStandardDiviation(double[] x) {
+        int m = x.length;
+        double sum = 0;
+        for (double v : x) {// 求和
+            sum += v;
+        }
+        double dAve = sum / m;// 求平均值
+        double dVar = 0;
+        for (double v : x) {// 求方差
+            dVar += (v - dAve) * (v - dAve);
+        }
+        return Math.sqrt(dVar / m);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private Event detectXEvent(Object[] dataQueue){
+        double[] data = new double[dataQueue.length];
+        double[] currentData = (double[]) dataQueue[105];
+
+        for(int i = 0; i<dataQueue.length;i++){
+            double[] temp = (double[]) dataQueue[i];
+            data[i] = temp[2];
+        }
+        double[] datafiltered  = IIRFilter(data, iirFilterCoefficients.a, iirFilterCoefficients.b);
+        //calculate standard deviation
+        double[] dataForStd = new double[40];
+        for(int i = 0; i<dataQueue.length; i++){
+            if(i>65 && i<106){
+                dataForStd[i-66] = datafiltered[i]; // get the acc x value from dataQueue
+            }
+
+        }
+        double currentStd = getStandardDiviation(dataForStd);
+        stdXQueue.add(currentStd);
+        double accxfiltered = datafiltered[105];
+        boolean isAccLog = false;
+        boolean isBrakeLog = false;
+
+
+
+        if (accxfiltered > 1.5 && currentStd>0.15 && accEventDataNum==0){
+            accEventDataNum++;
+            Double[] stdArr = (Double[])stdXQueue.toArray();
+            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> stdArr[i] > stdArr[j] ? j : i).getAsInt();
+            double[][] recordData = (double[][]) dataQueue;
+            accEvent = new Event((long) recordData[66+index][0],0);
+            for(int i = index+66;i<=105;i++){
+                accEvent.add_Value(recordData[i]);
+            }
+        }else if(accxfiltered>0.5 && accEventDataNum>0){
+            accEventDataNum++;
+            accFault = 5;
+            isAccLog = true;
+        }else if (accxfiltered<=0.5 && accFault>0 && accEventDataNum>0){
+            accEventDataNum++;
+            accFault--;
+            isAccLog = true;
+        }else if((accxfiltered<=0.5 || currentStd<0.1 )&& accEventDataNum>0){
+            accFault = 5;
+            if (accEventDataNum> stdWin){
+                accEvent.setEnd((long) currentData[0]);
+                accEvent.add_Value(currentData);
+                accEventDataNum = 0;
+                return accEvent;
+            }else{
+                accEventDataNum = 0;
+            }
+        }
+
+        if (accxfiltered <-1.5 && currentStd>0.15 && brakeEventDataNum==0){
+            brakeEventDataNum++;
+            Double[] stdArr = (Double[])stdXQueue.toArray();
+            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> stdArr[i] > stdArr[j] ? j : i).getAsInt();
+            double[][] recordData = (double[][]) dataQueue;
+            brakeEvent = new Event((long) recordData[66+index][0],1);
+            for(int i = index+66;i<=105;i++){
+                brakeEvent.add_Value(recordData[i]);
+            }
+        }else if(accxfiltered<-0.5 && brakeEventDataNum>0){
+            brakeEventDataNum++;
+            brakeFault = 5;
+            isBrakeLog = true;
+        }else if (accxfiltered>=-0.5 && brakeFault>0 && brakeEventDataNum>0){
+            brakeEventDataNum++;
+            brakeFault--;
+            isBrakeLog = true;
+        }else if((accxfiltered>=-0.5 || currentStd<0.1 )&& brakeEventDataNum>0){
+            brakeFault = 5;
+            if (brakeEventDataNum> stdWin){
+                brakeEvent.setEnd((long) currentData[0]);
+                brakeEvent.add_Value(currentData);
+                brakeEventDataNum = 0;
+                return brakeEvent;
+            }else{
+                brakeEventDataNum = 0;
+            }
+        }
+
+        if(isAccLog){
+            accEvent.add_Value(currentData);
+        }
+        if(isBrakeLog){
+            brakeEvent.add_Value(currentData);
+        }
+
+        return null;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private Event detectYEvent(Object[] dataQueue){
+        double[] data = new double[dataQueue.length];
+        double[] currentData = (double[]) dataQueue[105];
+
+        for(int i = 0; i<dataQueue.length;i++){
+            double[] temp = (double[]) dataQueue[i];
+            data[i] = temp[3];
+        }
+        double[] datafiltered  = IIRFilter(data, iirFilterCoefficients.a, iirFilterCoefficients.b);
+        //calculate standard deviation
+        double[] dataForStd = new double[40];
+        for(int i = 0; i<dataQueue.length; i++){
+            if(i>65 && i<106){
+                dataForStd[i-66] = datafiltered[i]; // get the acc x value from dataQueue
+            }
+
+        }
+        double currentStd = getStandardDiviation(dataForStd);
+        stdYQueue.add(currentStd);
+        double accyfiltered = datafiltered[105];
+        boolean isleftLog = false;
+        boolean isrightLog = false;
+
+
+        if (accyfiltered > 1.5 && currentStd>0.15 && lturnEventDataNum==0){
+            lturnEventDataNum++;
+            Double[] stdArr = (Double[])stdXQueue.toArray();
+            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> stdArr[i] > stdArr[j] ? j : i).getAsInt();
+            double[][] recordData = (double[][]) dataQueue;
+            lturnEvent = new Event((long) recordData[66+index][0],2);
+            for(int i = index+66;i<=105;i++){
+                lturnEvent.add_Value(recordData[i]);
+            }
+
+        }else if(accyfiltered>0.5 && lturnEventDataNum>0){
+            lturnEventDataNum++;
+            lturnFault = 5;
+            isleftLog = true;
+        }else if (accyfiltered<=0.5 && lturnFault>0 && lturnEventDataNum>0){
+            lturnEventDataNum++;
+            lturnFault--;
+            isleftLog = true;
+        }else if((accyfiltered<=0.5 || currentStd<0.1 )&& lturnEventDataNum>0){
+            lturnFault = 5;
+            if (lturnEventDataNum> stdWin){
+                lturnEvent.setEnd((long) currentData[0]);
+                lturnEvent.add_Value(currentData);
+                lturnEventDataNum = 0;
+                return lturnEvent;
+            }else{
+                lturnEventDataNum = 0;
+            }
+        }
+
+
+        if (accyfiltered < -1.5 && currentStd>0.15 && rturnEventDataNum==0){
+            rturnEventDataNum++;
+            Double[] stdArr = (Double[])stdXQueue.toArray();
+            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> stdArr[i] > stdArr[j] ? j : i).getAsInt();
+            double[][] recordData = (double[][]) dataQueue;
+            rturnEvent = new Event((long) recordData[66+index][0],2);
+            for(int i = index+66;i<=105;i++){
+                rturnEvent.add_Value(recordData[i]);
+            }
+
+        }else if(accyfiltered<-0.5 && rturnEventDataNum>0){
+            rturnEventDataNum++;
+            rturnFault = 5;
+            isrightLog = true;
+        }else if (accyfiltered>=-0.5 && rturnFault>0 && rturnEventDataNum>0){
+            rturnEventDataNum++;
+            rturnFault--;
+            isrightLog = true;
+        }else if((accyfiltered>=-0.5 || currentStd<0.1 )&& rturnEventDataNum>0){
+            rturnFault = 5;
+            if (rturnEventDataNum> stdWin){
+                rturnEvent.setEnd((long) currentData[0]);
+                rturnEvent.add_Value(currentData);
+                rturnEventDataNum = 0;
+                return rturnEvent;
+            }else{
+                rturnEventDataNum = 0;
+            }
+        }
+
+        if(isleftLog){
+            lturnEvent.add_Value(currentData);
+        }
+        if(isrightLog){
+            rturnEvent.add_Value(currentData);
+        }
+
+        return null;
+    }
+
 
     public void bulk_insert (Context context, ArrayList<ContentValues> values) {
         SensorDataSave.syncSensor(context, values);

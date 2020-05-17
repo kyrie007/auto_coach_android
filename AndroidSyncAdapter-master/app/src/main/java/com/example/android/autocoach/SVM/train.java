@@ -11,9 +11,9 @@ public class train {
         String filapath = System.getProperty("user.dir")+"/app/src/main/java/com/example/android/autocoach/SVM/";
 
         String[] arg = {"-s", "0", "-c", "5", "-g", "0.05", filapath+ "trainData4j.txt", "model"};
-//        String[] parg = {filapath+"letter.scale.t","model","out.txt"};
+        String[] parg = {filapath+"letter.scale.t","model","out.txt"};
         svm_train.main(arg);
-//        svm_predict.main(parg);
+        svm_predict.main(parg);
 
 
     }
