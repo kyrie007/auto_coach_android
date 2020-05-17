@@ -88,7 +88,7 @@ public class Corpus
                 String[] words = line.split(" ");
                 for (String word : words)
                 {
-                    if (word.trim().length() < 2) continue;
+                    if (word.trim().length() < 1) continue;
                     wordList.add(word);
                 }
             }
@@ -120,7 +120,7 @@ public class Corpus
             String[] words = line.split(" ");
             for (String word : words)
             {
-                if (word.trim().length() < 2) continue;
+                if (word.trim().length() < 1) continue;
                 Integer id = vocabulary.getId(word);
                 if (id != null)
                     wordList.add(id);

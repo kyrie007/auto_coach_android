@@ -12,6 +12,7 @@ public class ldaTrain {
         Corpus corpus = Corpus.load(filapath+"data/LDA");
 // 2. 创建 LDA 采样器
         LdaGibbsSampler ldaGibbsSampler = new LdaGibbsSampler(corpus.getDocument(), corpus.getVocabularySize());
+        ldaGibbsSampler.configure(10000, 2000, 100, 10);
 // 3. 训练，目标10个主题
         ldaGibbsSampler.gibbs(4);
 // 4. phi 矩阵是唯一有用的东西，用 LdaUtil 来展示最终的结果
@@ -20,7 +21,7 @@ public class ldaTrain {
         LdaUtil.explain(topicMap);
 
         Corpus corpus2 = Corpus.load(filapath+"data/max");
-        double[] result = ldaGibbsSampler.inference(phi, corpus2.getDocument()[0]);
+        double[] result = LdaGibbsSampler.inference(phi, corpus2.getDocument()[0]);
         for(double r: result){
             System.out.print(r);
             System.out.print(" ");
