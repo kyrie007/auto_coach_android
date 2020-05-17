@@ -22,6 +22,10 @@ public class Event implements Serializable {
         this.rawData.offer(data);
     }
 
+    public double[][] get_Value(){
+        double[][] value = (double[][]) this.rawData.toArray();
+        return value;
+    }
 
 
     public void setType(int type){
