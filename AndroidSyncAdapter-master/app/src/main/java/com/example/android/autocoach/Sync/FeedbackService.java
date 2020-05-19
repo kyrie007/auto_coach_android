@@ -4,23 +4,21 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 
 import com.example.android.autocoach.Bean.Event;
-import com.example.android.autocoach.LDA.Corpus;
-import com.example.android.autocoach.LDA.LdaGibbsSampler;
+import com.example.android.autocoach.LDA.Inferencer;
+import com.example.android.autocoach.LDA.LDACmdOption;
+import com.example.android.autocoach.LDA.Model;
 import com.example.android.autocoach.MainActivity;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -36,6 +34,7 @@ public class FeedbackService extends Service {
     private Lock eventQueueLock =  new ReentrantLock();
     private double[][] phi = new double[4][];  //LDA model
     private StringBuffer LDAPattern = new StringBuffer();
+    private Inferencer inferencer = new Inferencer();
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -74,24 +73,14 @@ public class FeedbackService extends Service {
         super.onCreate();
 
         //load LDA model
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(new File("LDAModel.txt")));
-            String line;  //一行数据
-            int row=0;
-            while((line = in.readLine()) != null){
-                String[] temp = line.split("\t");
-                if(row==0){
-                    phi = new double[4][temp.length];
-                }
-                for(int j=0;j<temp.length;j++){
-                    phi[row][j] = Double.parseDouble(temp[j]);
-                }
-                row++;
-            }
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        LDACmdOption ldaOption = new LDACmdOption();
+        ldaOption.inf = true;
+        String filapath = System.getProperty("user.dir")+"/app/src/main/java/com/example/android/autocoach/models/";
+        ldaOption.dir = filapath;
+        ldaOption.modelName = "model-final";
+        ldaOption.niters = 200;
+
+        inferencer.init(ldaOption);
 
         //load SVM model
 
@@ -133,35 +122,30 @@ public class FeedbackService extends Service {
 
     public void startLDA(){
         new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
-                String filapath = System.getProperty("user.dir")+"/app/src/main/java/com/example/android/autocoach/LDA/";
+//                String filapath = System.getProperty("user.dir")+"/app/src/main/java/com/example/android/autocoach/LDA/";
                 while(true){
                     long startTime = System.currentTimeMillis();
-
-                    if (!LDAPattern.toString().equals("")){
-                        Corpus corpus = null;
-                        try {
-                            FileWriter out = new FileWriter(new File(filapath+"data/max/LDATest.txt"));
-                            out.write(LDAPattern.toString());
-                            out.close();
-
-
-                            corpus = Corpus.load(filapath+"data/max");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        double[] result = LdaGibbsSampler.inference(phi, corpus.getDocument()[0]);
+                    String pattern = LDAPattern.toString();
+                    //clear the pattern buffer
+                    LDAPattern.setLength(0);
+                    //calculate the pattern score
+                    String [] test = {LDAPattern.toString()};
+                    if (!LDAPattern.toString().equals("")) {
+                        Model newModel = inferencer.inference(test);
+                        ArrayList<Double> result =newModel.modelTwords();
+                        double score = scorePattern(result);
                     }else{
 
                     }
 
 
-
-
                     long endTime = System.currentTimeMillis();
+                    long dur = endTime - startTime;
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(20000-dur);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -169,6 +153,27 @@ public class FeedbackService extends Service {
 
             }
         }).start();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public double scorePattern(ArrayList<Double> ldaResult){
+        double sum = ldaResult.stream().mapToDouble(Double::doubleValue).sum();
+        double score = 0;
+        int index = 0;
+        for(double lda: ldaResult){
+            lda = lda/sum;
+            if(index==0){
+                score+=lda*75;
+            }else if(index==1){
+                score+=lda*100;
+            }else if(index==2){
+                score+=lda*50;
+            }else{
+                score+=lda*25;
+            }
+            index++;
+        }
+        return score;
     }
 
     public void startFeedback(){
