@@ -114,6 +114,7 @@ public class FeedbackService extends Service {
                             eventFromDetect = eventQueue.poll();
                             eventQueueLock.unlock();
 
+
                             //to-do, process data: filter,
                         }
 //                        svm_model model = svm.svm_load_model("model");

@@ -18,31 +18,5 @@ public class train {
 
     }
 
-    public  calculate_feature(self,vect):
-    maxAX = max(vect[:, 3])
-    maxAY = max(vect[:, 2])
-    minAX = min(vect[:, 3])
-    minAY = min(vect[:, 2])
-    maxAccX = max(abs(vect[:, 3]))
-    maxAccY = max(abs(vect[:, 2]))
 
-    rangeAX = maxAX - minAX
-            rangeAY = maxAY - minAY
-
-    stdAX = np.std(vect[:, 3])
-    stdAY = np.std(vect[:, 2])
-    meanAX = np.mean(vect[:, 3])
-    meanAY = np.mean(vect[:, 2])
-    meanOX = np.mean(vect[:, 5])
-    maxOX = max(abs(vect[:, 5]))
-    maxOY = max(abs(vect[:, 6]))
-    maxOri = max(maxOX, maxOY)
-    t = (vect[-1, 1] - vect[0, 1]) / 1000
-    meanSP = np.mean(vect[:, 1])
-    differenceSP = vect[-1, 1] - vect[0, 1]
-    StartEndAccx = vect[0, 3] + vect[-1, 3]
-    StartEndAccy = vect[0, 2] + vect[-1, 2]
-    axis = vect[0, -1]
-            return [rangeAX, rangeAY, stdAX, stdAY, meanAX, meanAY, meanOX, maxOri, maxAX, minAX, maxAccY, differenceSP,
-    meanSP, StartEndAccx, StartEndAccy, t, axis]  # 99% 86%
 }
