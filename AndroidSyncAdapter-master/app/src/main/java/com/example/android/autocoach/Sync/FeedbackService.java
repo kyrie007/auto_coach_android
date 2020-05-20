@@ -19,6 +19,7 @@ import com.example.android.autocoach.LDA.LDACmdOption;
 import com.example.android.autocoach.LDA.Model;
 import com.example.android.autocoach.MainActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -93,6 +94,7 @@ public class FeedbackService extends Service {
 
     public void startSVM(){
         new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
                 Event eventFromDetect = null;
@@ -105,13 +107,28 @@ public class FeedbackService extends Service {
 
 
                             //to-do, process data: filter,
+                            svm_model model = svm.svm_load_model("model");
+
+                            int m = 17;
+                            svm_node[] x = new svm_node[m];
+
+                            ArrayList a = Event.getArray();
+
+                            for(int j=0;j<m;j++)
+                            {
+                                x[j] = new svm_node();
+                                x[j].index = j + 1; // atoi(st.nextToken());
+                                x[j].value = (double) a.get(j); // atof(st.nextToken());
+                            }
+
+                            double level = svm.svm_predict(model,x); //predict_label
+
                         }
 //                        svm_model model = svm.svm_load_model("model");
 
 
-
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException | IOException e) {
                         e.printStackTrace();
                     }
                 }
