@@ -114,7 +114,7 @@ public class FeedbackService extends Service {
 
                             ArrayList<Double> a = eventFromDetect.getArray();
 
-                            a = eventFromDetect.normalize(a);
+                            a = eventFromDetect.normalize(a); //normalize the data to 0~1
 
                             for(int j=0;j<m;j++)
                             {
@@ -124,6 +124,10 @@ public class FeedbackService extends Service {
                             }
 
                             double level = svm.svm_predict(model,x); //predict_label
+
+                            eventFromDetect.setClassification(level);
+                            //add the letter to the pattern
+                            LDAPattern.append(eventFromDetect.getLetter());
 
                         }
 //                        svm_model model = svm.svm_load_model("model");

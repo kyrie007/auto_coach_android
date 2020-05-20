@@ -12,10 +12,13 @@ import java.util.List;
 import java.util.Queue;
 import java.util.stream.IntStream;
 
+import biz.source_code.dsp.filter.FilterPassType;
+import biz.source_code.dsp.filter.IirFilterCoefficients;
+import biz.source_code.dsp.filter.IirFilterDesignExstrom;
+
 public class Event implements Serializable {
     private static final long serialVersionUID = 123456L;
     private Queue<double[]> rawData;
-    private double[][] array = (double[][]) rawData.toArray();
     private long start;
     private long end;
     private int type;
@@ -26,6 +29,11 @@ public class Event implements Serializable {
     private Double[] list4 = null;
     private Double[] list5 = null;
     private Double[] list6 = null;
+    private IirFilterCoefficients iirFilterCoefficients = IirFilterDesignExstrom.design(FilterPassType.lowpass, 5,
+            10.0/340, 10.0 / 170);
+    private int classification;
+    private String letter;
+    private String[] patternAlphbet = {"a","b","c","h","i","j","o","p","q","v","w","x"};
     //private Queue<double[]> rawData;
 
 
@@ -34,29 +42,36 @@ public class Event implements Serializable {
         this.type = type;
         this.end = 0;
         this.rawData = new LinkedList<>();
+        this.classification = -1;
+        this.letter = "";
     }
 
     //double[] v = [x[0] for x in rawData];
 
     //double[][] array = (double[][]) rawData.toArray();
 
-    public Double[] getByColumn(Queue<double[]> rawData, int column){
-        int rowlength = rawData.size();
-        //double[][] array = (double[][]) rawData.toArray();
+    private void getByColumn(double[][] rawData){
+        int rowlength = rawData.length;
+        list0 = new Double[rowlength];
+        list1 = new Double[rowlength];
+        list2 = new Double[rowlength];
+        list3 = new Double[rowlength];
+        list4 = new Double[rowlength];
+        list5 = new Double[rowlength];
+        list6 = new Double[rowlength];
 
-        //Object[] array = Collection.toArray();
-        //int columnlength = rawData[0].size();
+        for(int i=0;i<rowlength;i++){
+            list0[i] = rawData[i][0];
+            list1[i] = rawData[i][1];
+            list2[i] = rawData[i][2];
+            list3[i] = rawData[i][3];
+            list4[i] = rawData[i][4];
+            list5[i] = rawData[i][5];
+            list6[i] = rawData[i][6];
 
-        List<Double> templist = new ArrayList<>();
-        for(int i=0;i<rowlength;i++)
-            templist.add(array[i][column]);
-        Object[] temp = templist.toArray();
-        return (Double[]) temp;
+        }
         //return templist;
     }
-
-    //GetArrayByColumn ipp = new GetArrayByColumn();
-    //List list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改；
 
 
     /**
@@ -113,37 +128,35 @@ public class Event implements Serializable {
     //写方法 返回列数据
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ArrayList<Double> getArray() {
-
+        double[][] array = (double[][]) rawData.toArray();
 //        List list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改
 //        List list1 = getByColumn(rawData, 1);//得到列数据，其中第二个参数可以通过终端输入修改
-        list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改
-        list1 = getByColumn(rawData, 1);//得到列数据，其中第二个参数可以通过终端输入修改
-        list2 = getByColumn(rawData, 2);//得到列数据，其中第二个参数可以通过终端输入修改
-        list3 = getByColumn(rawData, 3);//得到列数据，其中第二个参数可以通过终端输入修改
-        list4 = getByColumn(rawData, 4);//得到列数据，其中第二个参数可以通过终端输入修改
-        list5 = getByColumn(rawData, 5);//得到列数据，其中第二个参数可以通过终端输入修改
-        list6 = getByColumn(rawData, 6);//得到列数据，其中第二个参数可以通过终端输入修改
+        getByColumn(array);//得到列数据，其中第二个参数可以通过终端输入修改
+
+        list2 = IIRFilter(list2, iirFilterCoefficients.a, iirFilterCoefficients.b);
+        list3 = IIRFilter(list3, iirFilterCoefficients.a, iirFilterCoefficients.b);
+
 
 
 //        def calculate_feature(self,vect):
 //        maxAX = max(vect[:, 3]) 最大值
-        int index1 = IntStream.range(0, list3.length).reduce((i, j) -> list3[i] > list3[j] ? i : j).getAsInt();
+        int index1 = IntStream.range(0, list2.length).reduce((i, j) -> list2[i] > list2[j] ? i : j).getAsInt();
         double maxAX = list3[index1];//Math.max(list3);
 //        maxAY = max(vect[:, 2])
-        int index2 = IntStream.range(0, list2.length).reduce((i, j) -> list2[i] > list2[j] ? i : j).getAsInt();
+        int index2 = IntStream.range(0, list3.length).reduce((i, j) -> list3[i] > list3[j] ? i : j).getAsInt();
         double maxAY = list2[index2]; //max((list2));
 //        minAX = min(vect[:, 3]) 最小值
-        int index3 = IntStream.range(0, list3.length).reduce((i, j) -> list3[i] > list3[j] ? j : i).getAsInt();
+        int index3 = IntStream.range(0, list2.length).reduce((i, j) -> list2[i] > list2[j] ? j : i).getAsInt();
         double minAX = list3[index3];//Math.min(list3);
 //        minAY = min(vect[:, 2])
-        int index4 = IntStream.range(0, list2.length).reduce((i, j) -> list2[i] > list2[j] ? j : i).getAsInt();
+        int index4 = IntStream.range(0, list3.length).reduce((i, j) -> list3[i] > list3[j] ? j : i).getAsInt();
         double minAY = list2[index4]; //max((list2));
 
 
 //        rangeAX = maxAX - minAX
         double rangeAX = maxAX - minAX;
 //        rangeAY = maxAY - minAY
-        double rangeAY = maxAY - maxAY;
+        double rangeAY = maxAY - minAY;
 //
 //        stdAX = np.std(vect[:, 3]) 标准差
         double stdAX = getStandardDiviation(list2);
@@ -161,13 +174,13 @@ public class Event implements Serializable {
 
 
 //        t = (vect[-1, 1] - vect[0, 1]) / 1000
-        double t = (array[array.length - 1][1] - array[0][1])/1000;
+        double t = (array[array.length - 1][0] - array[0][0])/1000;
 //        differenceSP = vect[-1, 1] - vect[0, 1]
         double differenceSP = array[array.length - 1][1] - array[0][1];
 //        StartEndAccx = vect[0, 3] + vect[-1, 3]
-        double StartEndAccx = array[0][3] - array[array.length - 1][3];
+        double StartEndAccx = array[0][2] - array[array.length - 1][2];
 //        StartEndAccy = vect[0, 2] + vect[-1, 2]
-        double StartEndAccy = array[0][2] - array[array.length - 1][2];
+        double StartEndAccy = array[0][3] - array[array.length - 1][3];
 //        axis = vect[0, -1]
         double axis = 0;
         if(this.type==0||this.type==1){
@@ -181,21 +194,21 @@ public class Event implements Serializable {
         int index5 = IntStream.range(0, list51.length).reduce((i, j) -> list51[i] > list51[j] ? i : j).getAsInt();
         double maxOX = list51[index5];
 //        maxOY = max(abs(vect[:, 6]))
-        Double[] list61 = getAbs(list6);
-        int index6 = IntStream.range(0, list61.length).reduce((i, j) -> list61[i] > list61[j] ? i : j).getAsInt();
-        double maxOY = list61[index6];
+//        Double[] list61 = getAbs(list6);
+//        int index6 = IntStream.range(0, list61.length).reduce((i, j) -> list61[i] > list61[j] ? i : j).getAsInt();
+//        double maxOY = list61[index6];
 //        maxOri = max(maxOX, maxOY)
-        double maxOri = Math.max(maxOX,maxOY);
+        double maxOri = maxOX; //Math.max(maxOX,maxOY);
 
 
 //        maxAccX = max(abs(vect[:, 3])) 绝对值
-        Double[] list31 = getAbs(list3);
-        int index7 = IntStream.range(0, list31.length).reduce((i, j) -> list31[i] > list31[j] ? i : j).getAsInt();
-        double maxAccX = list51[index5];
+//        Double[] list31 = getAbs(list3);
+//        int index7 = IntStream.range(0, list31.length).reduce((i, j) -> list31[i] > list31[j] ? i : j).getAsInt();
+//        double maxAccX = list51[index5];
 //        maxAccY = max(abs(vect[:, 2]))
-        Double[] list21 = getAbs(list2);
-        int index8 = IntStream.range(0, list21.length).reduce((i, j) -> list21[i] > list21[j] ? i : j).getAsInt();
-        double maxAccY = list51[index5];
+        Double[] list31 = getAbs(list3);
+        int index8 = IntStream.range(0, list31.length).reduce((i, j) -> list31[i] > list31[j] ? i : j).getAsInt();
+        double maxAccY = list31[index8];
 
         List<Double> a = Arrays.asList(rangeAX, rangeAY, stdAX, stdAY, meanAX, meanAY, meanOX, maxOri, maxAX, minAX, maxAccY, differenceSP,
         meanSP, StartEndAccx, StartEndAccy, t, axis);  //# 99% 86%rawData
@@ -220,8 +233,7 @@ public class Event implements Serializable {
     }
 
     public double[][] get_Value(){
-        double[][] value = (double[][]) this.rawData.toArray();
-        return value;
+        return (double[][]) this.rawData.toArray();
     }
 
 
@@ -241,12 +253,28 @@ public class Event implements Serializable {
         return this.end;
     }
 
-    public synchronized double[] IIRFilter(double[] signal, double[] a, double[] b) {
+    public double getDuration(){
+        return ((double)this.end-(double)this.start)/1000;
+    }
+
+    public void setClassification(double level){
+        this.classification = (int) level;
+    }
+
+    public int getClassification(){
+        return this.classification;
+    }
+
+    public String getLetter(){
+        return this.patternAlphbet[this.classification];
+    }
+
+    private synchronized Double[] IIRFilter(Double[] signal, double[] a, double[] b) {
 
         double[] in = new double[b.length];
         double[] out = new double[a.length-1];
 
-        double[] outData = new double[signal.length];
+        Double[] outData = new Double[signal.length];
 
         for (int i = 0; i < signal.length; i++) {
 
@@ -255,7 +283,7 @@ public class Event implements Serializable {
 
             //calculate y based on a and b coefficients
             //and in and out.
-            float y = 0;
+            Double y = (double) 0;
             for(int j = 0 ; j < b.length ; j++){
                 y += b[j] * in[j];
 
