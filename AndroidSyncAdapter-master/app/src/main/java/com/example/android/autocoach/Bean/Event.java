@@ -14,8 +14,8 @@ import java.util.stream.IntStream;
 
 public class Event implements Serializable {
     private static final long serialVersionUID = 123456L;
-    private static Queue<double[]> rawData;
-    private static double[][] array = (double[][]) rawData.toArray();
+    private Queue<double[]> rawData;
+    private double[][] array = (double[][]) rawData.toArray();
     private long start;
     private long end;
     private int type;
@@ -33,7 +33,7 @@ public class Event implements Serializable {
 
     //double[][] array = (double[][]) rawData.toArray();
 
-    public static Double[] getByColumn(Queue<double[]> rawData, int column){
+    public Double[] getByColumn(Queue<double[]> rawData, int column){
         int rowlength = rawData.size();
         //double[][] array = (double[][]) rawData.toArray();
 
@@ -57,7 +57,7 @@ public class Event implements Serializable {
      * @param x
      * @return
      */
-    public static double getStandardDiviation(Double[] x) {
+    private double getStandardDiviation(Double[] x) {
         int m = x.length;
         double sum = 0;
         for (int i = 0; i < m; i++) {// 求和
@@ -76,7 +76,7 @@ public class Event implements Serializable {
      * @param x
      * @return
      */
-    public static double getAverage(Double[] x) {
+    private double getAverage(Double[] x) {
         double sum = 0.0;
         double mean = 0.0;
 
@@ -92,7 +92,7 @@ public class Event implements Serializable {
      * @param x
      * @return
      */
-    public static Double[] getAbs(Double[] x) {
+    private Double[] getAbs(Double[] x) {
         Double[] y = new Double[x.length];
         for (int i = 0; i < x.length; i++) {
             if(x[i] < 0) {
@@ -105,7 +105,7 @@ public class Event implements Serializable {
 
     //写方法 返回列数据
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static ArrayList getArray() {
+    public ArrayList getArray() {
 //        List list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改
 //        List list1 = getByColumn(rawData, 1);//得到列数据，其中第二个参数可以通过终端输入修改
         Double[] list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改
