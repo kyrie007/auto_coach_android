@@ -112,17 +112,17 @@ public class Event implements Serializable {
 
     //写方法 返回列数据
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public ArrayList getArray() {
+    public ArrayList<Double> getArray() {
 
 //        List list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改
 //        List list1 = getByColumn(rawData, 1);//得到列数据，其中第二个参数可以通过终端输入修改
-        Double[] list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改
-        Double[] list1 = getByColumn(rawData, 1);//得到列数据，其中第二个参数可以通过终端输入修改
-        Double[] list2 = getByColumn(rawData, 2);//得到列数据，其中第二个参数可以通过终端输入修改
-        Double[] list3 = getByColumn(rawData, 3);//得到列数据，其中第二个参数可以通过终端输入修改
-        Double[] list4 = getByColumn(rawData, 4);//得到列数据，其中第二个参数可以通过终端输入修改
-        Double[] list5 = getByColumn(rawData, 5);//得到列数据，其中第二个参数可以通过终端输入修改
-        Double[] list6 = getByColumn(rawData, 6);//得到列数据，其中第二个参数可以通过终端输入修改
+        list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改
+        list1 = getByColumn(rawData, 1);//得到列数据，其中第二个参数可以通过终端输入修改
+        list2 = getByColumn(rawData, 2);//得到列数据，其中第二个参数可以通过终端输入修改
+        list3 = getByColumn(rawData, 3);//得到列数据，其中第二个参数可以通过终端输入修改
+        list4 = getByColumn(rawData, 4);//得到列数据，其中第二个参数可以通过终端输入修改
+        list5 = getByColumn(rawData, 5);//得到列数据，其中第二个参数可以通过终端输入修改
+        list6 = getByColumn(rawData, 6);//得到列数据，其中第二个参数可以通过终端输入修改
 
 
 //        def calculate_feature(self,vect):
@@ -199,7 +199,18 @@ public class Event implements Serializable {
 
         List<Double> a = Arrays.asList(rangeAX, rangeAY, stdAX, stdAY, meanAX, meanAY, meanOX, maxOri, maxAX, minAX, maxAccY, differenceSP,
         meanSP, StartEndAccx, StartEndAccy, t, axis);  //# 99% 86%rawData
-        return (ArrayList) a;
+        return (ArrayList<Double>) a;
+    }
+
+    public ArrayList<Double> normalize(ArrayList<Double> features){
+        ArrayList<Double> newFeature = new ArrayList<>();
+        double[] max = {6.3804, 5.55909, 2.1217, 1.8783, 4.2113, 2.6795, 20.0780, 78.3708, 6.3957, 0.5415, 5.2711, 45.0, 85.9737, 3.4985, 2.4869, 35.337, 1.0};
+        double[] min = {0.7251, 0.2366, 0.2163, 0.0542, -2.30392, -2.8765, -23.2157, 9.1473, -0.3582, -4.3490, 0.2959, -44.0, 0.0, -4.9647, -4.9924, 1.86, 0.0};
+        int index = 0;
+        for(double feature: features){
+            newFeature.add((feature-min[index])/(max[index]-min[index]));
+        }
+        return newFeature;
     }
 
 
@@ -228,6 +239,41 @@ public class Event implements Serializable {
 
     public long getEnd(){
         return this.end;
+    }
+
+    public synchronized double[] IIRFilter(double[] signal, double[] a, double[] b) {
+
+        double[] in = new double[b.length];
+        double[] out = new double[a.length-1];
+
+        double[] outData = new double[signal.length];
+
+        for (int i = 0; i < signal.length; i++) {
+
+            System.arraycopy(in, 0, in, 1, in.length - 1);
+            in[0] = (double) signal[i];
+
+            //calculate y based on a and b coefficients
+            //and in and out.
+            float y = 0;
+            for(int j = 0 ; j < b.length ; j++){
+                y += b[j] * in[j];
+
+            }
+
+            for(int j = 0;j < a.length-1;j++){
+                y -= a[j+1] * out[j];
+            }
+
+            //shift the out array
+            System.arraycopy(out, 0, out, 1, out.length - 1);
+            out[0] = y;
+
+            outData[i] = y;
+
+
+        }
+        return outData;
     }
 
 }

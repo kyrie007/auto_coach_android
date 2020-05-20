@@ -112,13 +112,15 @@ public class FeedbackService extends Service {
                             int m = 17;
                             svm_node[] x = new svm_node[m];
 
-                            ArrayList a = eventFromDetect.getArray();
+                            ArrayList<Double> a = eventFromDetect.getArray();
+
+                            a = eventFromDetect.normalize(a);
 
                             for(int j=0;j<m;j++)
                             {
                                 x[j] = new svm_node();
                                 x[j].index = j + 1; // atoi(st.nextToken());
-                                x[j].value = (double) a.get(j); // atof(st.nextToken());
+                                x[j].value = a.get(j); // atof(st.nextToken());
                             }
 
                             double level = svm.svm_predict(model,x); //predict_label

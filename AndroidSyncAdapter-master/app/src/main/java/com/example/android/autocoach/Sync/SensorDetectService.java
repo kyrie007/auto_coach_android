@@ -284,7 +284,10 @@ public class SensorDetectService extends Service implements SensorEventListener 
                 }
 
                 if(eventY!=null){
-
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("event", eventY);
+                    broadcast_intent.putExtras(bundle);
+                    sendBroadcast(broadcast_intent);
                 }
             }
 

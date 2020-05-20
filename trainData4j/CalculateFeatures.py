@@ -25,10 +25,9 @@ def calcData(data):
     varOY = np.std(data[:, 6])
     meanAX = np.mean(data[:, 4])
     meanAY = np.mean(data[:, 3])
-    meanOX = np.mean(data[:, 7])
-    meanOY = np.mean(data[:, 6])
-    maxOX = max(abs(data[:, 7]))
-    maxOY = max(abs(data[:, 6]))
+    meanOX = np.mean(data[:, 6])
+    maxOX = max(abs(data[:, 6]))
+    maxOY = max(abs(data[:, 7]))
     maxOri = max(maxOX,maxOY)
     t = (data[-1, 1] - data[0, 1])/1000
     meanSP = np.mean(data[:, 2])
@@ -112,8 +111,8 @@ def init(datamatrix):
     #        -0.748,
     #        -0.589, -90.0, 2.67796, 0.40508, 1.848]
     for i in range(len(vect[0])-1):
-        # print(max[i])
-        # print(min[i])
+        print(max[i])
+        print(min[i])
         for j in range(len(vect)):
             # if(i==12):
             #     vect[j][i] = ((vect[j][i]-min[i])/(max[i]-min[i])*2)-1
