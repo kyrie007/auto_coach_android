@@ -33,9 +33,9 @@ public class FeedbackService extends Service {
     final Messenger detectMessager = new Messenger(new MessagerHandler());
     private Queue<Event> eventQueue = new LinkedList<>();
     private Lock eventQueueLock =  new ReentrantLock();
-    private double[][] phi = new double[4][];  //LDA model
     private StringBuffer LDAPattern = new StringBuffer();
-    private Inferencer inferencer = new Inferencer();
+    private Inferencer inferencer = new Inferencer(); //LDA model
+    private svm_model model = null;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -84,7 +84,11 @@ public class FeedbackService extends Service {
         inferencer.init(ldaOption);
 
         //load SVM model
-
+        try {
+            model = svm.svm_load_model("model");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //start threads
         startSVM();
@@ -99,7 +103,6 @@ public class FeedbackService extends Service {
             public void run() {
                 Event eventFromDetect = null;
                 while(true){
-                    try {
                         if(!eventQueue.isEmpty()){
                             eventQueueLock.lock();
                             eventFromDetect = eventQueue.poll();
@@ -107,7 +110,6 @@ public class FeedbackService extends Service {
 
 
                             //to-do, process data: filter,
-                            svm_model model = svm.svm_load_model("model");
 
                             int m = 17;
                             svm_node[] x = new svm_node[m];
@@ -130,13 +132,6 @@ public class FeedbackService extends Service {
                             LDAPattern.append(eventFromDetect.getLetter());
 
                         }
-//                        svm_model model = svm.svm_load_model("model");
-
-
-                        Thread.sleep(0);
-                    } catch (InterruptedException | IOException e) {
-                        e.printStackTrace();
-                    }
                 }
 
             }
