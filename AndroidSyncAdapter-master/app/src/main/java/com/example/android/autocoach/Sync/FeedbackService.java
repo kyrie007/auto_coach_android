@@ -124,6 +124,7 @@ public class FeedbackService extends Service {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
+                double score = 0;
 //                String filapath = System.getProperty("user.dir")+"/app/src/main/java/com/example/android/autocoach/LDA/";
                 while(true){
                     long startTime = System.currentTimeMillis();
@@ -131,15 +132,14 @@ public class FeedbackService extends Service {
                     //clear the pattern buffer
                     LDAPattern.setLength(0);
                     //calculate the pattern score
-                    String [] test = {LDAPattern.toString()};
+                    String [] test = {pattern};
                     if (!LDAPattern.toString().equals("")) {
                         Model newModel = inferencer.inference(test);
                         ArrayList<Double> result =newModel.modelTwords();
-                        double score = scorePattern(result);
+                        score = scorePattern(result);
                     }else{
-
+                        score = 100;
                     }
-
 
                     long endTime = System.currentTimeMillis();
                     long dur = endTime - startTime;
