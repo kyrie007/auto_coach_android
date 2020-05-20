@@ -6,7 +6,7 @@ import android.support.annotation.RequiresApi;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Test {
+class Test {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void main(String args[]){
         LDACmdOption ldaOption = new LDACmdOption();
