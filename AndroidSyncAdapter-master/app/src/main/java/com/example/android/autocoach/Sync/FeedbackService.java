@@ -112,7 +112,7 @@ public class FeedbackService extends Service {
                             int m = 17;
                             svm_node[] x = new svm_node[m];
 
-                            ArrayList a = Event.getArray();
+                            ArrayList a = eventFromDetect.getArray();
 
                             for(int j=0;j<m;j++)
                             {
@@ -127,7 +127,7 @@ public class FeedbackService extends Service {
 //                        svm_model model = svm.svm_load_model("model");
 
 
-                        Thread.sleep(1000);
+                        Thread.sleep(0);
                     } catch (InterruptedException | IOException e) {
                         e.printStackTrace();
                     }

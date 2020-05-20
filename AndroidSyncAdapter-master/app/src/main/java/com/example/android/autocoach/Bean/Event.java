@@ -19,6 +19,13 @@ public class Event implements Serializable {
     private long start;
     private long end;
     private int type;
+    private Double[] list0 = null;
+    private Double[] list1 = null;
+    private Double[] list2 = null;
+    private Double[] list3 = null;
+    private Double[] list4 = null;
+    private Double[] list5 = null;
+    private Double[] list6 = null;
     //private Queue<double[]> rawData;
 
 
@@ -40,7 +47,7 @@ public class Event implements Serializable {
         //Object[] array = Collection.toArray();
         //int columnlength = rawData[0].size();
 
-        List<Double> templist = new ArrayList();
+        List<Double> templist = new ArrayList<>();
         for(int i=0;i<rowlength;i++)
             templist.add(array[i][column]);
         Object[] temp = templist.toArray();
@@ -106,6 +113,7 @@ public class Event implements Serializable {
     //写方法 返回列数据
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ArrayList getArray() {
+
 //        List list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改
 //        List list1 = getByColumn(rawData, 1);//得到列数据，其中第二个参数可以通过终端输入修改
         Double[] list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改
@@ -138,14 +146,14 @@ public class Event implements Serializable {
         double rangeAY = maxAY - maxAY;
 //
 //        stdAX = np.std(vect[:, 3]) 标准差
-        double stdAX = getStandardDiviation(list3);
+        double stdAX = getStandardDiviation(list2);
 //        stdAY = np.std(vect[:, 2])
-        double stdAY = getStandardDiviation(list2);
+        double stdAY = getStandardDiviation(list3);
 
 //        meanAX = np.mean(vect[:, 3])平均值
-        double meanAX = getAverage(list3);
+        double meanAX = getAverage(list2);
 //        meanAY = np.mean(vect[:, 2])
-        double meanAY = getAverage(list2);
+        double meanAY = getAverage(list3);
 //        meanOX = np.mean(vect[:, 5])
         double meanOX = getAverage(list5);
 //        meanSP = np.mean(vect[:, 1])
@@ -161,7 +169,12 @@ public class Event implements Serializable {
 //        StartEndAccy = vect[0, 2] + vect[-1, 2]
         double StartEndAccy = array[0][2] - array[array.length - 1][2];
 //        axis = vect[0, -1]
-        double axis = array[0][array[0].length - 1];
+        double axis = 0;
+        if(this.type==0||this.type==1){
+            axis = 0;
+        }else{
+            axis = 1;
+        }
 
 //        maxOX = max(abs(vect[:, 5]))
         Double[] list51 = getAbs(list5);
