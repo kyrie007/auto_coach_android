@@ -20,14 +20,11 @@ class Test {
         inferencer.init(ldaOption);
 
 //        String [] test = {"politics bill clinton", "law court", "football match"};
-        String [] test = {"a"};
+        String [] test = {"bii"};
         Model newModel = inferencer.inference(test);
         System.out.println(inferencer.globalDict.contains("a"));
         newModel.saveModelTwords(filapath+"inference");
         ArrayList<Double> result =newModel.modelTwords();
-        for(double relation: result){
-            System.out.println(relation);
-        }
 
         double sum = result.stream().mapToDouble(Double::doubleValue).sum();
         double score = 0;
@@ -46,6 +43,7 @@ class Test {
             index++;
             System.out.println(lda);
         }
+        System.out.print("score:");
         System.out.println(score);
 
     }

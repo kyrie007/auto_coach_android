@@ -257,8 +257,8 @@ public class Event implements Serializable {
         return ((double)this.end-(double)this.start)/1000;
     }
 
-    public void setClassification(double level){
-        this.classification = (int) level;
+    public void setClassification(int level){
+        this.classification = level;
     }
 
     public int getClassification(){

@@ -11,6 +11,7 @@ import java.util.Queue;
 import java.util.stream.IntStream;
 
 public class test {
+    private final Object lock=null;
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void main(String[] args){
 //        Queue<double[]> dataQueue = EvictingQueue.create(4);
@@ -29,15 +30,17 @@ public class test {
 //        System.out.println(index);
         test t = new test();
         t.startLDA();
-        t.startLDA();
+        t.startFeedback();
     }
 
-    public void startLDA(){
+    private void startLDA(){
         new Thread(() -> {
             double score = 0;
 //                String filapath = System.getProperty("user.dir")+"/app/src/main/java/com/example/android/autocoach/LDA/";
             while(true){
+                synchronized (lock){
 
+                }
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {

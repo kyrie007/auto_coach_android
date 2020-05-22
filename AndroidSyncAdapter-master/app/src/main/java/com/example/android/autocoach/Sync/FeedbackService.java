@@ -31,11 +31,13 @@ import libsvm.*;
 public class FeedbackService extends Service {
     private int eventType = 0;
     final Messenger detectMessager = new Messenger(new MessagerHandler());
-    private Queue<Event> eventQueue = new LinkedList<>();
+    private Queue<Event> eventQueue = new LinkedList<>(); //queue contains event from detection
     private Lock eventQueueLock =  new ReentrantLock();
-    private StringBuffer LDAPattern = new StringBuffer();
+    private double[] durationMap = new double[12];  //use to calculate score for each bar
+    private Lock durationLock = new ReentrantLock();
+    private StringBuffer LDAPattern = new StringBuffer(); //buffer from lda to svm
     private Inferencer inferencer = new Inferencer(); //LDA model
-    private svm_model model = null;
+    private svm_model model = null; //svm lock
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -108,7 +110,6 @@ public class FeedbackService extends Service {
                             eventFromDetect = eventQueue.poll();
                             eventQueueLock.unlock();
 
-
                             //to-do, process data: filter,
 
                             int m = 17;
@@ -127,9 +128,18 @@ public class FeedbackService extends Service {
 
                             double level = svm.svm_predict(model,x); //predict_label
 
-                            eventFromDetect.setClassification(level);
+                            eventFromDetect.setClassification((int) level);
+
+                            double duration = eventFromDetect.getDuration();
+
+                            //log the duration into map
+                            durationLock.lock();
+                            durationMap[(int) level]= Math.max(durationMap[(int) level], duration);
+                            durationLock.unlock();
+
                             //add the letter to the pattern
                             LDAPattern.append(eventFromDetect.getLetter());
+
 
                         }
                 }
@@ -198,9 +208,48 @@ public class FeedbackService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                double[] durationCopy = new double[12];
                 while(true){
+                    long startTime = System.currentTimeMillis();
+                    durationLock.lock();
+                    durationCopy = durationMap.clone();
+                    durationMap = new double[12];
+                    durationLock.unlock();
+
+                    //bar score part
+                    double accScore = 0;
+                    double brakeScore = 0;
+                    double turnScore = 0;
+                    double swerveScore = 0;
+                    for(int i = 2;i>=0;i--){
+                        if(durationCopy[i]>0){
+                            accScore = getBarScore(i, durationCopy[i]);
+                        }
+                    }
+                    for(int i = 5;i>=3;i--){
+                        if(durationCopy[i]>0){
+                            brakeScore = getBarScore(i, durationCopy[i]);
+                        }
+                    }
+                    for(int i = 8;i>=6;i--){
+                        if(durationCopy[i]>0){
+                            turnScore = getBarScore(i, durationCopy[i]);
+                        }
+                    }
+                    for(int i = 11;i>=9;i--){
+                        if(durationCopy[i]>0) {
+                            turnScore = getBarScore(i, durationCopy[i]);
+                        }
+                    }
+
+                    // feedback part
+
+
+
+                    long endTime = System.currentTimeMillis();
+                    long duration = endTime-startTime;
                     try {
-                        Thread.sleep(1500);
+                        Thread.sleep(10000-duration);
                         String feedback = "";
                         if (eventType == 0){
                             feedback = "slow down";
@@ -220,5 +269,17 @@ public class FeedbackService extends Service {
 
             }
         }).start();
+    }
+
+    public double getBarScore(int riskLevel, double duration){
+        double score = 0;
+        if(riskLevel==2){
+            score = (100-74)*(1-Math.min(duration, 10)/ 10) + 74;
+        }else if(riskLevel==1){
+            score = (74-49)*(1-Math.min(duration, 10)/ 10) + 49;
+        }else{
+            score = 49*(1-Math.min(duration, 10)/ 10);
+        }
+        return score;
     }
 }
