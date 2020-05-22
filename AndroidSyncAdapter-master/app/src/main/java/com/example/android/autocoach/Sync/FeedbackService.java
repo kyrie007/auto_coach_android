@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.IntStream;
 
 import libsvm.*;
 
@@ -163,9 +164,15 @@ public class FeedbackService extends Service {
                     //calculate the pattern score
                     String [] test = {pattern};
                     if (!LDAPattern.toString().equals("")) {
-                        Model newModel = inferencer.inference(test);
-                        ArrayList<Double> result =newModel.modelTwords();
-                        score = scorePattern(result);
+                        if(inferencer.globalDict.contains(pattern)){
+                            Model newModel = inferencer.inference(test);
+                            ArrayList<Double> result =newModel.modelTwords();
+                            score = scorePattern(result);
+                        }else{
+
+                            for()
+                        }
+
                     }else{
                         score = 100;
                     }
@@ -206,6 +213,7 @@ public class FeedbackService extends Service {
 
     public void startFeedback(){
         new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
                 double[] durationCopy = new double[12];
@@ -217,10 +225,10 @@ public class FeedbackService extends Service {
                     durationLock.unlock();
 
                     //bar score part
-                    double accScore = 0;
-                    double brakeScore = 0;
-                    double turnScore = 0;
-                    double swerveScore = 0;
+                    double accScore = 100;
+                    double brakeScore = 100;
+                    double turnScore = 100;
+                    double swerveScore = 100;
                     for(int i = 2;i>=0;i--){
                         if(durationCopy[i]>0){
                             accScore = getBarScore(i, durationCopy[i]);
@@ -238,12 +246,13 @@ public class FeedbackService extends Service {
                     }
                     for(int i = 11;i>=9;i--){
                         if(durationCopy[i]>0) {
-                            turnScore = getBarScore(i, durationCopy[i]);
+                            swerveScore = getBarScore(i, durationCopy[i]);
                         }
                     }
 
                     // feedback part
-
+                    double[] scoreList = {accScore, brakeScore, turnScore, swerveScore};
+                    int feedbackIndex = IntStream.range(0, scoreList.length).reduce((i, j) -> scoreList[i] > scoreList[j] ? j : i).getAsInt();
 
 
                     long endTime = System.currentTimeMillis();
