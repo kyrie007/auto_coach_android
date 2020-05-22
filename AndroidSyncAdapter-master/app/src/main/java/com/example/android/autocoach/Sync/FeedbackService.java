@@ -164,16 +164,21 @@ public class FeedbackService extends Service {
                     //calculate the pattern score
                     String [] test = {pattern};
                     if (!LDAPattern.toString().equals("")) {
-                        if(inferencer.globalDict.contains(pattern)){
+                        if(inferencer.globalDict.contains(pattern)){ //if pattern in dictionary
                             Model newModel = inferencer.inference(test);
                             ArrayList<Double> result =newModel.modelTwords();
                             score = scorePattern(result);
-                        }else{
-
-                            for()
+                        }else{  //if pattern not in dictionary
+                            score = 0;
+                            for(int i = 0;i<pattern.length();i++){
+                                Model newModel = inferencer.inference(new String[]{pattern.substring(i,i+1)});
+                                ArrayList<Double> result = newModel.modelTwords();
+                                score+=scorePattern(result);
+                            }
+                            score = score/pattern.length();
                         }
 
-                    }else{
+                    }else{ //if no event happen
                         score = 100;
                     }
 
