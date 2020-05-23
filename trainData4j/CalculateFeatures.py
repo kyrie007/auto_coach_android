@@ -32,7 +32,7 @@ def calcData(data):
     t = (data[-1, 1] - data[0, 1])/1000
     meanSP = np.mean(data[:, 2])
     differenceSP = data[-1, 2]-data[0, 2]
-    accelerate = differenceSP / t
+    # accelerate = differenceSP / t
     varSP = np.std(data[:,2])
     StartEndAccx = data[0,4]+data[-1,4]
     StartEndAccy = data[0,3]+data[-1,3]
@@ -42,8 +42,8 @@ def calcData(data):
     else:
         axis = 1
 
+    return [rangeAX, rangeAY, varAX, varAY, meanAX, meanAY, meanOX, maxOri, maxAX, minAX, maxAccY,meanSP, StartEndAccx,StartEndAccy, t, axis, data[0, -1]] #99% 86%
     # return [rangeAX, rangeAY, varAX, varAY, meanAX, meanAY, meanOX, maxOri, maxAX, minAX, maxAccY,differenceSP,meanSP, StartEndAccx,StartEndAccy, t, axis, data[0, -1]] #99% 86%
-    return [rangeAX, rangeAY, varAX, varAY, meanAX, meanAY, meanOX, maxOri, maxAX, minAX, maxAccY,differenceSP,meanSP, StartEndAccx,StartEndAccy, t, axis, data[0, -1]] #99% 86%
 
     # return [rangeAX, rangeAY, varAX, varAY, varOX, varOY, meanAX, meanAY, meanOX, meanOY, maxOri, maxAX, maxAY, minAX, minAY, differenceSP, meanSP, varSP, StartEndAccx, StartEndAccy, t, data[0, -1]] #21  98% 83%
     # return [rangeAX, rangeAY, varAX, varAY, varOX, varOY, meanAX, meanAY, meanOX, meanOY, maxOri, maxAX, maxAY, minAX, minAY, differenceSP, meanSP, varSP, t, axis, data[0, -1]] #20 98% 83%
@@ -55,7 +55,7 @@ def read_excel(file):
     table = data.sheets()[0]
 
     start = 0  # 开始的行
-    end = 16960 # 结束的行
+    end = 7678  # 结束的行
 
     list_values = []
     for x in range(start, end):
@@ -137,12 +137,12 @@ def write_txt4j(data, file_name):
 
 
 def main():
-    datamatrix = read_excel('label data.xlsx')
+    datamatrix = read_excel('test data.xlsx')
     vect = np.array(init(datamatrix))
     print(vect)
     # write_excel(vect, 'vect.xls')
 
-    write_txt4j(vect, 'trainData4j.txt')
+    write_txt4j(vect, 'testData4j.txt')
 
 
 

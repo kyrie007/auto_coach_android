@@ -64,6 +64,7 @@ class svm_predict {
 				output.writeBytes("\n");
 			}
 		}
+		int index = 1;
 		while(true)
 		{
 			String line = input.readLine();
@@ -96,8 +97,12 @@ class svm_predict {
 				output.writeBytes(predict_label+"\n");
 			}
 
-			if(predict_label == target_label)
+			if(predict_label == target_label){
 				++correct;
+			}else{
+				System.out.println(index);
+			}
+			index++;
 			error += (predict_label-target_label)*(predict_label-target_label);
 			sump += predict_label;
 			sumt += target_label;
