@@ -237,21 +237,25 @@ public class FeedbackService extends Service {
                     for(int i = 2;i>=0;i--){
                         if(durationCopy[i]>0){
                             accScore = getBarScore(i, durationCopy[i]);
+                            break;
                         }
                     }
                     for(int i = 5;i>=3;i--){
                         if(durationCopy[i]>0){
                             brakeScore = getBarScore(i, durationCopy[i]);
+                            break;
                         }
                     }
                     for(int i = 8;i>=6;i--){
                         if(durationCopy[i]>0){
                             turnScore = getBarScore(i, durationCopy[i]);
+                            break;
                         }
                     }
                     for(int i = 11;i>=9;i--){
                         if(durationCopy[i]>0) {
                             swerveScore = getBarScore(i, durationCopy[i]);
+                            break;
                         }
                     }
 
