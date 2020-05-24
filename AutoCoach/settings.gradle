@@ -1,0 +1,2 @@
+rootProject.name='AutoCoach'
+include ':app'

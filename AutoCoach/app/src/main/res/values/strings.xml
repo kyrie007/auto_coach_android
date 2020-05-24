@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AutoCoach</string>
+    <string name="content_authority">com.example.autocoach</string>
+    <string name="sync_account_type">com.example.autocoach</string>
+</resources>
