@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:keepScreenOn="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.android.autocoach.MainActivity">
+
+
+    <TextView
+        android:id="@+id/ms_x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"/>
+
+    <TextView
+        android:id="@+id/ms_y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Y" />
+
+    <TextView
+        android:id="@+id/ms_z"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Z" />
+
+    <TextView
+        android:id="@+id/ms_gx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="gyroX" />
+
+    <TextView
+        android:id="@+id/ms_gy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="gyroY" />
+
+    <TextView
+        android:id="@+id/ms_gz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="gyroZ" />
+
+    <Button
+        android:id="@+id/start_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="start" />
+
+    <TextView
+        android:id="@+id/feedbackText"
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:text="feedback:" />
+
+</LinearLayout>

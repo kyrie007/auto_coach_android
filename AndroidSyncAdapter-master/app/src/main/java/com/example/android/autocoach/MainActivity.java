@@ -1,6 +1,7 @@
 package com.example.android.autocoach;
 
 
+import java.io.File;
 import java.util.List;
 
 import android.Manifest;
@@ -15,14 +16,18 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
@@ -63,7 +68,60 @@ public class MainActivity extends AppCompatActivity {
 
     private MyReceiver detect_recevier;
 
+    private TextView currentscore;
+    private TextView currentscore_n;
+    private TextView totalcoins;
+    private TextView totalcoins_n;
+    private TextView tripscore;
+    private TextView tripscore_n;
+    private ImageView acc_bar_1;
+    private ImageView acc_bar_2;
+    private ImageView acc_bar_3;
+    private ImageView acc_bar_4;
+    private ImageView acc_bar_5;
+    private ImageView acc_bar_6;
+    private ImageView acc_bar_7;
+    private ImageView acc_bar_8;
+    private ImageView acc_bar_9;
+    private ImageView acc_bar_10;
+    private ImageView brake_bar_1;
+    private ImageView brake_bar_2;
+    private ImageView brake_bar_3;
+    private ImageView brake_bar_4;
+    private ImageView brake_bar_5;
+    private ImageView brake_bar_6;
+    private ImageView brake_bar_7;
+    private ImageView brake_bar_8;
+    private ImageView brake_bar_9;
+    private ImageView brake_bar_10;
+    private ImageView turn_bar_1;
+    private ImageView turn_bar_2;
+    private ImageView turn_bar_3;
+    private ImageView turn_bar_4;
+    private ImageView turn_bar_5;
+    private ImageView turn_bar_6;
+    private ImageView turn_bar_7;
+    private ImageView turn_bar_8;
+    private ImageView turn_bar_9;
+    private ImageView turn_bar_10;
+    private ImageView swerve_bar_1;
+    private ImageView swerve_bar_2;
+    private ImageView swerve_bar_3;
+    private ImageView swerve_bar_4;
+    private ImageView swerve_bar_5;
+    private ImageView swerve_bar_6;
+    private ImageView swerve_bar_7;
+    private ImageView swerve_bar_8;
+    private ImageView swerve_bar_9;
+    private ImageView swerve_bar_10;
 
+    private ImageView brake_icon;
+    private ImageView turn_icon;
+    private ImageView swerve_icon;
+    private ImageView acc_icon;
+    private ImageView car;
+    private ImageView coinsbox;
+    private ImageView feedback_icon;
 
     public MainActivity(){
         mainActivity = this;
@@ -73,12 +131,88 @@ public class MainActivity extends AppCompatActivity {
         return mainActivity;
     }
 
+
+    public String mkdirs(String path) {
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            //SD卡可挂载
+            //获取扩展存储设备的文件目录
+            File rootFile = Environment.getExternalStorageDirectory();
+            String tmpFilePath = rootFile.getPath() + "/"+path;
+            File tmpFile = new File(tmpFilePath);
+            if (!tmpFile.exists()) {
+                System.out.println("created");
+                tmpFile.mkdir();
+            } else {
+                System.out.print("tmpFile exists");
+            }
+            return tmpFilePath;
+        }
+        return null;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        //Intent intent = new Intent(this, SensorDetectService.class);
-        //startService(intent);
+
+        currentscore_n=(TextView)findViewById(R.id.score_n);
+        totalcoins_n=(TextView)findViewById(R.id.totalcoins_n);
+        tripscore_n=(TextView)findViewById(R.id.tripscore_n);
+        currentscore=(TextView)findViewById(R.id.currentscore);
+        totalcoins=(TextView)findViewById(R.id.totalcoins);
+        tripscore=(TextView)findViewById(R.id.tripscore);
+        car=(ImageView)findViewById(R.id.car);
+        coinsbox=(ImageView)findViewById(R.id.coinsbox);
+
+        feedback_icon=(ImageView)findViewById(R.id.feedback_icon);
+        acc_bar_1=(ImageView)findViewById(R.id.acc_bar_1);
+        acc_bar_2=(ImageView)findViewById(R.id.acc_bar_2);
+        acc_bar_3=(ImageView)findViewById(R.id.acc_bar_3);
+        acc_bar_4=(ImageView)findViewById(R.id.acc_bar_4);
+        acc_bar_5=(ImageView)findViewById(R.id.acc_bar_5);
+        acc_bar_6=(ImageView)findViewById(R.id.acc_bar_6);
+        acc_bar_7=(ImageView)findViewById(R.id.acc_bar_7);
+        acc_bar_8=(ImageView)findViewById(R.id.acc_bar_8);
+        acc_bar_9=(ImageView)findViewById(R.id.acc_bar_9);
+        acc_bar_10=(ImageView) findViewById(R.id.acc_bar_10);
+        brake_bar_1=(ImageView) findViewById(R.id.brake_bar_1);
+        brake_bar_2=(ImageView) findViewById(R.id.brake_bar_2);
+        brake_bar_3=(ImageView) findViewById(R.id.brake_bar_3);
+        brake_bar_4=(ImageView) findViewById(R.id.brake_bar_4);
+        brake_bar_5=(ImageView) findViewById(R.id.brake_bar_5);
+        brake_bar_6=(ImageView) findViewById(R.id.brake_bar_6);
+        brake_bar_7=(ImageView) findViewById(R.id.brake_bar_7);
+        brake_bar_8=(ImageView) findViewById(R.id.brake_bar_8);
+        brake_bar_9=(ImageView) findViewById(R.id.brake_bar_9);
+        brake_bar_10=(ImageView) findViewById(R.id.brake_bar_10);
+        turn_bar_1=(ImageView) findViewById(R.id.turn_bar_1);
+        turn_bar_2 =(ImageView) findViewById(R.id.turn_bar_2);
+        turn_bar_3 =(ImageView) findViewById(R.id.turn_bar_3);
+        turn_bar_4 =(ImageView) findViewById(R.id.turn_bar_4);
+        turn_bar_5 =(ImageView) findViewById(R.id.turn_bar_5);
+        turn_bar_6 =(ImageView) findViewById(R.id.turn_bar_6);
+        turn_bar_7 =(ImageView) findViewById(R.id.turn_bar_7);
+        turn_bar_8 =(ImageView) findViewById(R.id.turn_bar_8);
+        turn_bar_9 =(ImageView) findViewById(R.id.turn_bar_9);
+        turn_bar_10 =(ImageView) findViewById(R.id.turn_bar_10);
+        swerve_bar_1=(ImageView) findViewById(R.id.swerve_bar_1);
+        swerve_bar_2=(ImageView) findViewById(R.id.swerve_bar_2);
+        swerve_bar_3=(ImageView) findViewById(R.id.swerve_bar_3);
+        swerve_bar_4=(ImageView) findViewById(R.id.swerve_bar_4);
+        swerve_bar_5=(ImageView) findViewById(R.id.swerve_bar_5);
+        swerve_bar_6=(ImageView) findViewById(R.id.swerve_bar_6);
+        swerve_bar_7=(ImageView) findViewById(R.id.swerve_bar_7);
+        swerve_bar_8=(ImageView) findViewById(R.id.swerve_bar_8);
+        swerve_bar_9=(ImageView) findViewById(R.id.swerve_bar_9);
+        swerve_bar_10=(ImageView) findViewById(R.id.swerve_bar_10);
+        brake_icon=(ImageView) findViewById(R.id.brake_icon);
+        acc_icon=(ImageView) findViewById(R.id.acc_icon);
+        turn_icon=(ImageView) findViewById(R.id.turn_icon);
+        swerve_icon=(ImageView) findViewById(R.id.swerve_icon);
+
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -116,26 +250,6 @@ public class MainActivity extends AppCompatActivity {
                     locationListener);
         }
 
-        message_x = findViewById(R.id.ms_x);
-        message_y = findViewById(R.id.ms_y);
-        message_z = findViewById(R.id.ms_z);
-
-        message_gx = findViewById(R.id.ms_gx);
-        message_gy = findViewById(R.id.ms_gy);
-        message_gz = findViewById(R.id.ms_gz);
-
-        feedbackText = findViewById(R.id.feedbackText);
-
-
-        start_button = findViewById(R.id.start_button);
-        start_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                feedbackService.startSVM();
-                feedbackService.startLDA();
-                feedbackService.startFeedback();
-            }
-        });
 
         // bind service 2 : svm lda feedback
         Intent feedback_intent  = new Intent(this, FeedbackService.class);
@@ -195,26 +309,7 @@ public class MainActivity extends AppCompatActivity {
         return speed;
     }
 
-    public void setText(int index, float a) {
-        if(index==1){
-            message_x.setText("X：" + (float) (a / 100));
-        }else if (index==2){
-            message_y.setText("Y：" + (float) (a / 100));
-        }else if (index == 3) {
-            message_z.setText("Z：" + (float) (a / 100));
-        }else if (index == 4) {
-            message_gx.setText(" X Angular velocity\n" + (float) a);
-        }else if (index == 5) {
-            message_gy.setText(" Y Angular velocity\n" + (float) a);
-        }else if (index == 6) {
-            message_gz.setText(" Z Angular velocity\n" + (float) a);
-        }
 
-    }
-
-    public void setFeedbackText(String text){
-        this.feedbackText.setText(text);
-    }
 
     @Override
     protected void onResume() {
@@ -268,5 +363,7 @@ public class MainActivity extends AppCompatActivity {
             locationManager.removeUpdates(locationListener);
         }
     }
+
+
 
 }

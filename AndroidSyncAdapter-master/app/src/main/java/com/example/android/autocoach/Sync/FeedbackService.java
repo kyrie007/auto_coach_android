@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -27,7 +28,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
-import libsvm.*;
+import com.example.android.autocoach.libsvm.*;
 
 public class FeedbackService extends Service {
     private int eventType = 0;
@@ -79,7 +80,7 @@ public class FeedbackService extends Service {
         //load LDA model
         LDACmdOption ldaOption = new LDACmdOption();
         ldaOption.inf = true;
-        String filapath = System.getProperty("user.dir")+"/app/src/main/java/com/example/android/autocoach/models/";
+        String filapath = Environment.getExternalStorageDirectory().getPath()+"/AutoCoach/";
         ldaOption.dir = filapath;
         ldaOption.modelName = "model-final";
         ldaOption.niters = 200;
@@ -88,7 +89,7 @@ public class FeedbackService extends Service {
 
         //load SVM model
         try {
-            model = svm.svm_load_model("model");
+            model = svm.svm_load_model(Environment.getExternalStorageDirectory().getPath()+"/AutoCoach/"+"model");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -182,6 +183,8 @@ public class FeedbackService extends Service {
                         score = 100;
                     }
 
+
+
                     long endTime = System.currentTimeMillis();
                     long dur = endTime - startTime;
                     try {
@@ -268,18 +271,9 @@ public class FeedbackService extends Service {
                     long duration = endTime-startTime;
                     try {
                         Thread.sleep(10000-duration);
-                        String feedback = "";
-                        if (eventType == 0){
-                            feedback = "slow down";
-                        }else if(eventType == 1){
-                            feedback = "don't brake suddenly";
-                        }else if(eventType == 2){
-                            feedback = "turn slowly";
-                        }else{
-                            feedback = "swerve slowly";
-                        }
+
                         // change ui on screen
-                        MainActivity.getMainActivity().setFeedbackText(feedback);
+//                        MainActivity.getMainActivity().setFeedbackText(feedback);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

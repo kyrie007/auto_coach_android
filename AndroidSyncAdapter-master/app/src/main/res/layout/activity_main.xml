@@ -1,61 +1,697 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:keepScreenOn="true"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coins_icon"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.android.autocoach.MainActivity">
+    android:background="@android:color/black"
+    tools:context=".MainActivity">
 
-
-    <TextView
-        android:id="@+id/ms_x"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="X"/>
-
-    <TextView
-        android:id="@+id/ms_y"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Y" />
-
-    <TextView
-        android:id="@+id/ms_z"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Z" />
-
-    <TextView
-        android:id="@+id/ms_gx"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="gyroX" />
-
-    <TextView
-        android:id="@+id/ms_gy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="gyroY" />
-
-    <TextView
-        android:id="@+id/ms_gz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="gyroZ" />
-
-    <Button
-        android:id="@+id/start_button"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="start" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/feedbackText"
-        android:layout_width="match_parent"
-        android:layout_height="31dp"
-        android:text="feedback:" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="247dp">
 
-</LinearLayout>
+            <ImageView
+                android:id="@+id/turn_bar_3"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginEnd="36dp"
+                android:layout_marginRight="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/turn_bar_4"
+                app:layout_constraintEnd_toStartOf="@+id/swerve_bar_3"
+                app:layout_constraintStart_toEndOf="@+id/feedback_icon"
+                app:layout_constraintTop_toBottomOf="@+id/turn_bar_2"
+                app:srcCompat="@drawable/a3"
+                android:contentDescription="TODO" />
+
+            <ImageView
+                android:id="@+id/brake_bar_10"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                android:layout_marginBottom="26dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/acc_bar_10"
+                app:layout_constraintTop_toBottomOf="@+id/brake_bar_9"
+                app:srcCompat="@drawable/a10" />
+
+            <ImageView
+                android:id="@+id/brake_bar_6"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/brake_bar_7"
+                app:layout_constraintStart_toEndOf="@+id/acc_bar_6"
+                app:layout_constraintTop_toBottomOf="@+id/brake_bar_5"
+                app:srcCompat="@drawable/a7" />
+
+            <ImageView
+                android:id="@+id/swerve_bar_5"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/swerve_bar_6"
+                app:layout_constraintStart_toEndOf="@+id/turn_bar_5"
+                app:layout_constraintTop_toBottomOf="@+id/swerve_bar_4"
+                app:srcCompat="@drawable/a6" />
+
+            <ImageView
+                android:id="@+id/turn_bar_9"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="325dp"
+                android:layout_marginLeft="325dp"
+                app:layout_constraintBottom_toTopOf="@+id/turn_bar_10"
+                app:layout_constraintStart_toEndOf="@+id/brake_bar_9"
+                app:layout_constraintTop_toBottomOf="@+id/turn_bar_8"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/a10" />
+
+            <ImageView
+                android:id="@+id/brake_bar_7"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/brake_bar_8"
+                app:layout_constraintStart_toEndOf="@+id/acc_bar_7"
+                app:layout_constraintTop_toBottomOf="@+id/brake_bar_6"
+                app:srcCompat="@drawable/a8" />
+
+            <ImageView
+                android:id="@+id/swerve_bar_6"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/swerve_bar_7"
+                app:layout_constraintStart_toEndOf="@+id/turn_bar_6"
+                app:layout_constraintTop_toBottomOf="@+id/swerve_bar_5"
+                app:srcCompat="@drawable/a7" />
+
+            <ImageView
+                android:id="@+id/swerve_bar_1"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toEndOf="@+id/turn_bar_1"
+                app:layout_constraintTop_toBottomOf="@+id/swerve_icon"
+                app:srcCompat="@drawable/a1" />
+
+            <ImageView
+                android:id="@+id/acc_bar_7"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/acc_bar_8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acc_bar_6"
+                app:srcCompat="@drawable/a7" />
+
+            <ImageView
+                android:id="@+id/brake_bar_2"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/brake_bar_3"
+                app:layout_constraintStart_toEndOf="@+id/acc_bar_2"
+                app:layout_constraintTop_toBottomOf="@+id/brake_bar_1"
+                app:srcCompat="@drawable/a2" />
+
+            <ImageView
+                android:id="@+id/brake_bar_8"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/brake_bar_9"
+                app:layout_constraintStart_toEndOf="@+id/acc_bar_8"
+                app:layout_constraintTop_toBottomOf="@+id/brake_bar_7"
+                app:srcCompat="@drawable/a9" />
+
+            <ImageView
+                android:id="@+id/swerve_bar_7"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/swerve_bar_8"
+                app:layout_constraintStart_toEndOf="@+id/turn_bar_7"
+                app:layout_constraintTop_toBottomOf="@+id/swerve_bar_6"
+                app:srcCompat="@drawable/a8" />
+
+            <ImageView
+                android:id="@+id/feedback_icon"
+                android:layout_width="195dp"
+                android:layout_height="162dp"
+                android:layout_marginStart="70dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="38dp"
+                android:layout_marginBottom="56dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/brake_bar_6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/zan1" />
+
+            <ImageView
+                android:id="@+id/swerve_bar_8"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/swerve_bar_9"
+                app:layout_constraintStart_toEndOf="@+id/turn_bar_8"
+                app:layout_constraintTop_toBottomOf="@+id/swerve_bar_7"
+                app:srcCompat="@drawable/a9" />
+
+            <ImageView
+                android:id="@+id/turn_bar_4"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginEnd="36dp"
+                android:layout_marginRight="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/turn_bar_5"
+                app:layout_constraintEnd_toStartOf="@+id/swerve_bar_4"
+                app:layout_constraintStart_toEndOf="@+id/feedback_icon"
+                app:layout_constraintTop_toBottomOf="@+id/turn_bar_3"
+                app:srcCompat="@drawable/a4" />
+
+            <ImageView
+                android:id="@+id/turn_bar_1"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toEndOf="@+id/feedback_icon"
+                app:layout_constraintTop_toBottomOf="@+id/turn_icon"
+                app:srcCompat="@drawable/a1" />
+
+            <ImageView
+                android:id="@+id/brake_icon"
+                android:layout_width="39dp"
+                android:layout_height="47dp"
+
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="9dp"
+                app:layout_constraintBottom_toTopOf="@+id/brake_bar_1"
+                app:layout_constraintStart_toEndOf="@+id/acc_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/brake_icon" />
+
+            <ImageView
+                android:id="@+id/turn_bar_2"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginEnd="36dp"
+                android:layout_marginRight="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/turn_bar_3"
+                app:layout_constraintEnd_toStartOf="@+id/swerve_bar_2"
+                app:layout_constraintStart_toEndOf="@+id/feedback_icon"
+                app:layout_constraintTop_toBottomOf="@+id/turn_bar_1"
+                app:srcCompat="@drawable/a2" />
+
+            <ImageView
+                android:id="@+id/swerve_bar_9"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/swerve_bar_10"
+                app:layout_constraintStart_toEndOf="@+id/turn_bar_9"
+                app:layout_constraintTop_toBottomOf="@+id/swerve_bar_8"
+                app:srcCompat="@drawable/a10" />
+
+            <ImageView
+                android:id="@+id/brake_bar_9"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/brake_bar_10"
+                app:layout_constraintStart_toEndOf="@+id/acc_bar_9"
+                app:layout_constraintTop_toBottomOf="@+id/brake_bar_8"
+                app:srcCompat="@drawable/a10" />
+
+            <ImageView
+                android:id="@+id/turn_bar_10"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="325dp"
+                android:layout_marginLeft="325dp"
+                android:layout_marginBottom="26dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/brake_bar_10"
+                app:layout_constraintTop_toBottomOf="@+id/turn_bar_9"
+                app:srcCompat="@drawable/a10" />
+
+            <ImageView
+                android:id="@+id/turn_bar_8"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginLeft="60dp"
+                app:layout_constraintStart_toEndOf="@+id/feedback_icon"
+                app:layout_constraintTop_toBottomOf="@+id/turn_bar_7"
+                app:srcCompat="@drawable/a9" />
+
+            <ImageView
+                android:id="@+id/brake_bar_1"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                android:layout_marginTop="9dp"
+                app:layout_constraintStart_toEndOf="@+id/acc_bar_1"
+                app:layout_constraintTop_toBottomOf="@+id/brake_icon"
+                app:srcCompat="@drawable/a1" />
+
+            <ImageView
+                android:id="@+id/acc_bar_9"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/acc_bar_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acc_bar_8"
+                app:srcCompat="@drawable/a9" />
+
+            <ImageView
+                android:id="@+id/acc_bar_1"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acc_icon"
+                app:srcCompat="@drawable/a1" />
+
+            <ImageView
+                android:id="@+id/turn_bar_6"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginLeft="60dp"
+                app:layout_constraintBottom_toTopOf="@+id/turn_bar_7"
+                app:layout_constraintStart_toEndOf="@+id/feedback_icon"
+                app:layout_constraintTop_toBottomOf="@+id/turn_bar_5"
+                app:srcCompat="@drawable/a6" />
+
+            <ImageView
+                android:id="@+id/acc_bar_10"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                android:layout_marginBottom="26dp"
+                android:contentDescription="bars1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acc_bar_9"
+                app:srcCompat="@drawable/a10" />
+
+            <ImageView
+                android:id="@+id/acc_bar_6"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/acc_bar_7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acc_bar_5"
+                app:srcCompat="@drawable/a6" />
+
+            <ImageView
+                android:id="@+id/brake_bar_5"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/brake_bar_6"
+                app:layout_constraintStart_toEndOf="@+id/acc_bar_5"
+                app:layout_constraintTop_toBottomOf="@+id/brake_bar_4"
+                app:srcCompat="@drawable/a6" />
+
+            <ImageView
+                android:id="@+id/turn_bar_5"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginLeft="60dp"
+                app:layout_constraintBottom_toTopOf="@+id/turn_bar_6"
+                app:layout_constraintStart_toEndOf="@+id/feedback_icon"
+                app:layout_constraintTop_toBottomOf="@+id/turn_bar_4"
+                app:srcCompat="@drawable/a5" />
+
+            <ImageView
+                android:id="@+id/swerve_bar_3"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/swerve_bar_4"
+                app:layout_constraintStart_toEndOf="@+id/turn_bar_3"
+                app:layout_constraintTop_toBottomOf="@+id/swerve_bar_2"
+                app:srcCompat="@drawable/a3" />
+
+            <ImageView
+                android:id="@+id/turn_bar_7"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginLeft="60dp"
+                app:layout_constraintBottom_toTopOf="@+id/turn_bar_8"
+                app:layout_constraintStart_toEndOf="@+id/feedback_icon"
+                app:layout_constraintTop_toBottomOf="@+id/turn_bar_6"
+                app:srcCompat="@drawable/a8" />
+
+            <ImageView
+                android:id="@+id/acc_bar_4"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/acc_bar_5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acc_bar_3"
+                app:srcCompat="@drawable/a4" />
+
+            <ImageView
+                android:id="@+id/acc_bar_5"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                android:layout_marginEnd="36dp"
+                android:layout_marginRight="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/acc_bar_6"
+                app:layout_constraintEnd_toStartOf="@+id/brake_bar_5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acc_bar_4"
+                app:srcCompat="@drawable/a5" />
+
+            <ImageView
+                android:id="@+id/acc_bar_3"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/acc_bar_4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acc_bar_2"
+                app:srcCompat="@drawable/a3" />
+
+            <ImageView
+                android:id="@+id/swerve_bar_10"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                android:layout_marginBottom="26dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/turn_bar_10"
+                app:layout_constraintTop_toBottomOf="@+id/swerve_bar_9"
+                app:srcCompat="@drawable/a10" />
+
+            <ImageView
+                android:id="@+id/swerve_bar_4"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/swerve_bar_5"
+                app:layout_constraintStart_toEndOf="@+id/turn_bar_4"
+                app:layout_constraintTop_toBottomOf="@+id/swerve_bar_3"
+                app:srcCompat="@drawable/a4" />
+
+            <ImageView
+                android:id="@+id/turn_icon"
+                android:layout_width="38dp"
+                android:layout_height="42dp"
+
+                android:layout_marginStart="62dp"
+                android:layout_marginLeft="62dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="42dp"
+                android:layout_marginRight="42dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/turn_bar_1"
+                app:layout_constraintEnd_toStartOf="@+id/swerve_icon"
+                app:layout_constraintStart_toEndOf="@+id/feedback_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/asd" />
+
+            <ImageView
+                android:id="@+id/brake_bar_4"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/brake_bar_5"
+                app:layout_constraintStart_toEndOf="@+id/acc_bar_4"
+                app:layout_constraintTop_toBottomOf="@+id/brake_bar_3"
+                app:srcCompat="@drawable/a4" />
+
+            <ImageView
+                android:id="@+id/swerve_bar_2"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/swerve_bar_3"
+                app:layout_constraintStart_toEndOf="@+id/turn_bar_2"
+                app:layout_constraintTop_toBottomOf="@+id/swerve_bar_1"
+                app:srcCompat="@drawable/a2" />
+
+            <ImageView
+                android:id="@+id/acc_icon"
+                android:layout_width="51dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="9dp"
+                app:layout_constraintBottom_toTopOf="@+id/acc_bar_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/acc_icon" />
+
+            <ImageView
+                android:id="@+id/brake_bar_3"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
+                app:layout_constraintBottom_toTopOf="@+id/brake_bar_4"
+                app:layout_constraintStart_toEndOf="@+id/acc_bar_3"
+                app:layout_constraintTop_toBottomOf="@+id/brake_bar_2"
+                app:srcCompat="@drawable/a3" />
+
+            <ImageView
+                android:id="@+id/acc_bar_2"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/acc_bar_3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acc_bar_1"
+                app:srcCompat="@drawable/a2" />
+
+            <ImageView
+                android:id="@+id/swerve_icon"
+                android:layout_width="37dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="42dp"
+                android:layout_marginLeft="42dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/swerve_bar_1"
+                app:layout_constraintStart_toEndOf="@+id/turn_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/swerve_icon" />
+
+            <ImageView
+                android:id="@+id/acc_bar_8"
+                android:layout_width="44dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="90dp"
+                android:layout_marginLeft="90dp"
+                app:layout_constraintBottom_toTopOf="@+id/acc_bar_9"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acc_bar_7"
+                app:srcCompat="@drawable/a8" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/fream"
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@android:color/holo_blue_bright" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minWidth="100dp"
+            android:minHeight="100dp"
+            tools:layout_editor_absoluteY="262dp">
+
+            <ImageView
+                android:id="@+id/car"
+                android:layout_width="73dp"
+                android:layout_height="83dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tripscore"
+                app:layout_constraintStart_toEndOf="@+id/currentscore"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/car" />
+
+            <TextView
+                android:id="@+id/totalcoins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
+                android:text="Total Coins"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/currentscore"
+                app:layout_constraintStart_toEndOf="@+id/coinsbox"
+                app:layout_constraintTop_toBottomOf="@+id/totalcoins_n" />
+
+            <TextView
+                android:id="@+id/score_n"
+                android:layout_width="51dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginRight="80dp"
+                android:text="0"
+                android:textColor="@android:color/holo_blue_bright"
+                android:textSize="30dp"
+                app:layout_constraintEnd_toStartOf="@+id/car"
+                app:layout_constraintStart_toEndOf="@+id/totalcoins_n"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tripscore_n"
+                android:layout_width="52dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginRight="48dp"
+                android:text="50"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/car"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/currentscore"
+                android:layout_width="147dp"
+                android:layout_height="31dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Current_Score"
+                android:textColor="#00BCD4"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/car"
+                app:layout_constraintStart_toEndOf="@+id/totalcoins"
+                app:layout_constraintTop_toBottomOf="@+id/score_n"
+                app:layout_constraintVertical_bias="0.44" />
+
+            <TextView
+                android:id="@+id/totalcoins_n"
+                android:layout_width="46dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:text="24"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                app:layout_constraintStart_toEndOf="@+id/coinsbox"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/coinsbox"
+                android:layout_width="73dp"
+                android:layout_height="81dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/totalcoins"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/coinsbox" />
+
+            <TextView
+                android:id="@+id/tripscore"
+                android:layout_width="153dp"
+                android:layout_height="29dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginBottom="5dp"
+                android:text="Trip Score"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/car"
+                app:layout_constraintTop_toBottomOf="@+id/tripscore_n" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

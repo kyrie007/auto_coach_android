@@ -155,7 +155,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onSensorChanged(SensorEvent event) {
-
+        Log.d(TAG, "sensor changed");
         Sensor sensor = event.sensor;
 
 //        final double alpha = 0.8;
@@ -186,22 +186,11 @@ public class SensorDetectService extends Service implements SensorEventListener 
             value.put(SensorContract.SensorEntry.COLUMN_ACC_Z, accz);
 
 
-            MainActivity.getMainActivity().setText(1,(Math.round(accx * 100))/100);
-            MainActivity.getMainActivity().setText(2,(Math.round(accy * 100))/100);
-            MainActivity.getMainActivity().setText(3,(Math.round(accz * 100))/100);
+//            MainActivity.getMainActivity().setText(1,(Math.round(accx * 100))/100);
+//            MainActivity.getMainActivity().setText(2,(Math.round(accy * 100))/100);
+//            MainActivity.getMainActivity().setText(3,(Math.round(accz * 100))/100);
 
 
-//            //FILTER
-//            double accx2 = accx,accy2 = accy,accz2 = accz;
-//            IirFilterCoefficients iirFilterCoefficients;
-//            iirFilterCoefficients = IirFilterDesignExstrom.design(FilterPassType.lowpass, 10,
-//                    10.0 / 50, 13.0 / 50);
-//            accx2  = IIRFilter(accx2, iirFilterCoefficients.a, iirFilterCoefficients.b);
-//
-//
-//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_X, d);
-//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Y, e);
-//            value.put(SensorContract.SensorEntry.COLUMN_MAGNETO_Z, f);
             if(value.get(SensorContract.SensorEntry.COLUMN_ACC_X)==null){
                 System.out.println("acc would be null");
             }
@@ -215,27 +204,16 @@ public class SensorDetectService extends Service implements SensorEventListener 
             value.put(SensorContract.SensorEntry.COLUMN_GYRO_Y, (float) Math.toDegrees(event.values[1]));
             value.put(SensorContract.SensorEntry.COLUMN_GYRO_Z, (float) Math.toDegrees(event.values[2]));
 
-//            if (Math.toDegrees(event.values[0]) > 10) { // anticlockwise
-//                MainActivity.getMainActivity().getWindow().getDecorView().setBackgroundColor(Color.GREEN);
-//            } else if (Math.toDegrees(event.values[0]) < 10 ) { // clockwise
-//                MainActivity.getMainActivity().getWindow().getDecorView().setBackgroundColor(Color.RED);
+
+//            if (Math.toDegrees(event.values[2]) > 30) { // anticlockwise
+//                MainActivity.getMainActivity().getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+//            } else if (Math.toDegrees(event.values[2]) < 30 ) { // clockwise
+//                MainActivity.getMainActivity().getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
 //            }
 
-//            if (Math.toDegrees(event.values[1]) > 10) { // anticlockwise
-//                MainActivity.getMainActivity().getWindow().getDecorView().setBackgroundColor(Color.GREEN);
-//            } else if (Math.toDegrees(event.values[1]) < 10 ) { // clockwise
-//                MainActivity.getMainActivity().getWindow().getDecorView().setBackgroundColor(Color.RED);
-//            }
-
-            if (Math.toDegrees(event.values[2]) > 30) { // anticlockwise
-                MainActivity.getMainActivity().getWindow().getDecorView().setBackgroundColor(Color.BLUE);
-            } else if (Math.toDegrees(event.values[2]) < 30 ) { // clockwise
-                MainActivity.getMainActivity().getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
-            }
-
-            MainActivity.getMainActivity().setText(4,(float) Math.toDegrees(event.values[0]));
-            MainActivity.getMainActivity().setText(5,(float) Math.toDegrees(event.values[1]));
-            MainActivity.getMainActivity().setText(6,(float) Math.toDegrees(event.values[2]));
+//            MainActivity.getMainActivity().setText(4,(float) Math.toDegrees(event.values[0]));
+//            MainActivity.getMainActivity().setText(5,(float) Math.toDegrees(event.values[1]));
+//            MainActivity.getMainActivity().setText(6,(float) Math.toDegrees(event.values[2]));
             //Log.d(TAG, "Count is: " + count +  "\n");
             if(value.get(SensorContract.SensorEntry.COLUMN_GYRO_X)==null){
                 System.out.println("gyo would be null");

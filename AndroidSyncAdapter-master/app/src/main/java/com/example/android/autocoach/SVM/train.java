@@ -1,6 +1,6 @@
 package com.example.android.autocoach.SVM;
 
-import libsvm.*;
+import com.example.android.autocoach.libsvm.*;
 
 import java.io.IOException;
 

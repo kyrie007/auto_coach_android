@@ -52,6 +52,10 @@ public class Event implements Serializable {
 
     private void getByColumn(double[][] rawData){
         int rowlength = rawData.length;
+        //list0 -->time
+        //list1 -->speed
+        //list2 --> x
+
         list0 = new Double[rowlength];
         list1 = new Double[rowlength];
         list2 = new Double[rowlength];
