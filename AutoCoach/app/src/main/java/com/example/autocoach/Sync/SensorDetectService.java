@@ -253,6 +253,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
                 //to-do
                 //send out the event
                 if(eventX!=null){
+                    System.out.println("get event from x axis");
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("event", eventX);
                     broadcast_intent.putExtras(bundle);
@@ -260,6 +261,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
                 }
 
                 if(eventY!=null){
+                    System.out.println("get event from y axis");
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("event", eventY);
                     broadcast_intent.putExtras(bundle);
@@ -343,6 +345,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
         double currentStd = getStandardDiviation(dataForStd);
         stdXQueue.add(currentStd);
         double accxfiltered = datafiltered[105];
+        System.out.println(accxfiltered);
         boolean isAccLog = false;
         boolean isBrakeLog = false;
 

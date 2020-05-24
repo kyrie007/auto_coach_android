@@ -21,7 +21,12 @@ import com.example.autocoach.LDA.Model;
 import com.example.autocoach.MainActivity;
 import com.example.autocoach.libsvm.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -69,12 +74,57 @@ public class FeedbackService extends Service {
         }
     }
 
+    public void downLoad(final String path, final String FileName) {
+        try {
+            URL url = new URL(path);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setReadTimeout(5000);
+            con.setConnectTimeout(5000);
+            con.setRequestProperty("Charset", "UTF-8");
+            con.setRequestMethod("GET");
+            if (con.getResponseCode() == 200) {
+                InputStream is = con.getInputStream();//获取输入流
+                FileOutputStream fileOutputStream = null;//文件输出流
+                if (is != null) {
+                    String storepath = getApplicationContext().getExternalFilesDir(null).getPath()+"/";
+                    FileUtils fileUtils = new FileUtils(storepath);
+                    fileOutputStream = new FileOutputStream(fileUtils.createFile(FileName));//指定文件保存路径，代码看下一步
+                    byte[] buf = new byte[1024];
+                    int ch;
+                    while ((ch = is.read(buf)) != -1) {
+                        fileOutputStream.write(buf, 0, ch);//将获取到的流写入文件中
+                    }
+                }
+                if (fileOutputStream != null) {
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
     @Override
     public void onCreate(){
         super.onCreate();
-        System.out.println("");
+
+        if(!new File(getApplicationContext().getExternalFilesDir(null).getPath()+"/svm_model.txt").exists()){
+            MainActivity.getMainActivity().downloadToast();
+            System.out.println("start download");
+
+            //download model file
+            downLoad("http://175.24.40.162:8081/AutoCoach/wordmap.txt", "wordmap.txt");
+            downLoad("http://175.24.40.162:8081/AutoCoach/model-final.others", "model-final.others");
+            downLoad("http://175.24.40.162:8081/AutoCoach/model-final.tassign", "model-final.tassign");
+            downLoad("http://175.24.40.162:8081/AutoCoach/svm_model.txt", "svm_model.txt");
+            System.out.println("download finished");
+            MainActivity.getMainActivity().downloadFinishToast();
+        }
+
+
         //load LDA model
         LDACmdOption ldaOption = new LDACmdOption();
         ldaOption.inf = true;
@@ -87,7 +137,7 @@ public class FeedbackService extends Service {
 
         //load SVM model
         try {
-            model = svm.svm_load_model(filepath+"model");
+            model = svm.svm_load_model(filepath+"svm_model.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -298,4 +348,6 @@ public class FeedbackService extends Service {
         }
         return score;
     }
+
+
 }

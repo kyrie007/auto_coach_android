@@ -20,6 +20,8 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.os.StrictMode;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -28,9 +30,14 @@ import android.widget.Toast;
 
 import com.example.autocoach.Bean.Event;
 import com.example.autocoach.Sync.FeedbackService;
+import com.example.autocoach.Sync.FileUtils;
 import com.example.autocoach.Sync.SensorReaderUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -221,6 +228,13 @@ public class MainActivity extends AppCompatActivity {
             locationManager.requestLocationUpdates(provider, 5000, 1,
                     locationListener);
         }
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+
 
         // bind service 2 : svm lda feedback
         Intent feedback_intent  = new Intent(this, FeedbackService.class);
@@ -243,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
          */
         SensorReaderUtils.initialize(this);
     }
+
 
     //locationListener
     LocationListener locationListener = new LocationListener() {
@@ -304,10 +319,20 @@ public class MainActivity extends AppCompatActivity {
     private void initPermission() {
         //检查权限
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //请求权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, 1);
         }
+
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+//            //请求权限
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 1);
+//        }
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+//                &&ActivityCompat.checkSelfPermission(this, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS) != PackageManager.PERMISSION_GRANTED) {
+//            //请求权限
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, 1);
+//        }
     }
 
     @Override
@@ -720,6 +745,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void downloadToast(){
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "Downloading model files", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
 
+    public void downloadFinishToast(){
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "finished", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
 
 }

@@ -11,7 +11,7 @@ class Test {
     public static void main(String args[]){
         LDACmdOption ldaOption = new LDACmdOption();
         ldaOption.inf = true;
-        String filapath = System.getProperty("user.dir")+"/app/src/main/java/com/example/android/autocoach/models/";
+        String filapath = System.getProperty("user.dir")+"/app/src/main/java/com/example/autocoach/models/";
         ldaOption.dir = filapath;
         ldaOption.modelName = "model-final";
         ldaOption.niters = 200;
