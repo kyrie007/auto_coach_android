@@ -67,7 +67,6 @@ public class FeedbackService extends Service {
                 eventQueueLock.lock();
                 eventQueue.offer(driving_event);
                 eventQueueLock.unlock();
-                int eventType = driving_event.getType();
                 System.out.print("event="+driving_event.getType());
             }
             super.handleMessage(msg);
@@ -162,10 +161,15 @@ public class FeedbackService extends Service {
 
                         //to-do, process data: filter,
 
-                        int m = 17;
+                        int m = 16;
                         svm_node[] x = new svm_node[m];
 
                         ArrayList<Double> a = eventFromDetect.getArray();
+
+                        for(int j=0;j<m;j++){
+                            System.out.print(j+":"+ a.get(j)+"  ");
+                        }
+                        System.out.println("");
 
                         a = eventFromDetect.normalize(a); //normalize the data to 0~1
 
@@ -174,6 +178,7 @@ public class FeedbackService extends Service {
                             x[j] = new svm_node();
                             x[j].index = j + 1; // atoi(st.nextToken());
                             x[j].value = a.get(j); // atof(st.nextToken());
+//                            System.out.print(x[j].index+x[j].value);
                         }
 
                         double level = svm.svm_predict(model,x); //predict_label
@@ -182,6 +187,7 @@ public class FeedbackService extends Service {
 
                         double duration = eventFromDetect.getDuration();
 
+                        System.out.println("Event:"+level+" --  duration:"+duration);
                         //log the duration into map
                         durationLock.lock();
                         durationMap[(int) level]= Math.max(durationMap[(int) level], duration);
@@ -206,14 +212,13 @@ public class FeedbackService extends Service {
                 double score = 0;
 //                String filapath = System.getProperty("user.dir")+"/app/src/main/java/com/example/android/autocoach/LDA/";
                 while(true){
-                    System.out.println(score);
                     long startTime = System.currentTimeMillis();
                     String pattern = LDAPattern.toString();
                     //clear the pattern buffer
                     LDAPattern.setLength(0);
                     //calculate the pattern score
                     String[] test = {pattern};
-                    if (!LDAPattern.toString().equals("")) {
+                    if (!pattern.equals("")) {
                         if(inferencer.globalDict.contains(pattern)){ //if pattern in dictionary
                             Model newModel = inferencer.inference(test);
                             ArrayList<Double> result =newModel.modelTwords();
@@ -226,12 +231,15 @@ public class FeedbackService extends Service {
                                 score+=scorePattern(result);
                             }
                             score = score/pattern.length();
+                            double punish = ((double)(1+pattern.length()-1)*(pattern.length()-1))/2;
+                            score = score * ((100-punish)/100);  //[2 letters:98%] [3 letters:95%] [4 letters: 91%] ...
                         }
 
                     }else{ //if no event happen
                         score = 100;
                     }
-
+                    System.out.println("pattern is:["+pattern+"]");
+                    System.out.println("***score:  "+score+"  ***");
                     MainActivity.getMainActivity().change_currentscore((int) score);
 
                     long endTime = System.currentTimeMillis();
@@ -281,6 +289,12 @@ public class FeedbackService extends Service {
                     durationMap = new double[12];
                     durationLock.unlock();
 
+//                    int index = 0;
+//                    for(double duration: durationCopy){
+//                        System.out.print(index+":"+duration+" ");
+//                        index++;
+//                    }
+
                     //bar score part
                     double accScore = 100;
                     double brakeScore = 100;
@@ -311,6 +325,9 @@ public class FeedbackService extends Service {
                         }
                     }
 
+                    System.out.println("accScore"+accScore);
+                    System.out.println("brakeScore"+brakeScore);
+
                     MainActivity.getMainActivity().display_bar("acc", (int) accScore);
                     MainActivity.getMainActivity().display_bar("brake", (int) brakeScore);
                     MainActivity.getMainActivity().display_bar("turn", (int) turnScore);
@@ -319,6 +336,14 @@ public class FeedbackService extends Service {
                     // feedback part
                     double[] scoreList = {accScore, brakeScore, turnScore, swerveScore};
                     int feedbackIndex = IntStream.range(0, scoreList.length).reduce((i, j) -> scoreList[i] > scoreList[j] ? j : i).getAsInt();
+
+
+                    if(scoreList[feedbackIndex]<70){
+                        MainActivity.getMainActivity().setFeedback_icon(feedbackIndex);
+                    }else{
+                        System.out.println("doing well");
+                        MainActivity.getMainActivity().setFeedback_icon(-1);
+                    }
 
 
                     long endTime = System.currentTimeMillis();
@@ -339,7 +364,7 @@ public class FeedbackService extends Service {
 
     public double getBarScore(int riskLevel, double duration){
         double score = 0;
-        if(riskLevel==2){
+        if(riskLevel==0){
             score = (100-74)*(1- Math.min(duration, 10)/ 10) + 74;
         }else if(riskLevel==1){
             score = (74-49)*(1- Math.min(duration, 10)/ 10) + 49;

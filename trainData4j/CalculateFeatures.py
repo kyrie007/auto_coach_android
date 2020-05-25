@@ -55,7 +55,7 @@ def read_excel(file):
     table = data.sheets()[0]
 
     start = 0  # 开始的行
-    end = 7678  # 结束的行
+    end = 31612  # 结束的行
 
     list_values = []
     for x in range(start, end):
@@ -102,8 +102,8 @@ def init(datamatrix):
     # linear normalization
     max = np.max(vect, axis=0)
     min = np.min(vect, axis=0)
-    # print(max)
-    # print(min)
+    print(max)
+    print(min)
     # max = [0.7614, 0.6011, 0.2729, 0.2104, 11.510, 4.6303, 0.2529, 0.2861, 13.922, 1.6740, 31.65, 0.51791, 0.54475,
     #        0.1544,
     #        0.0674, 75.0, 94.7125, 29.1634,17.16]
@@ -137,12 +137,12 @@ def write_txt4j(data, file_name):
 
 
 def main():
-    datamatrix = read_excel('test data.xlsx')
+    datamatrix = read_excel('label data.xlsx')
     vect = np.array(init(datamatrix))
     print(vect)
     # write_excel(vect, 'vect.xls')
 
-    write_txt4j(vect, 'testData4j.txt')
+    write_txt4j(vect, 'trainData4j.txt')
 
 
 

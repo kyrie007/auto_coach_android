@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         swerve_icon=(ImageView) findViewById(R.id.swerve_icon);
 
 
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         // 获取所有可用的位置提供器
@@ -394,144 +395,169 @@ public class MainActivity extends AppCompatActivity {
     public void setFeedback_icon(int feedbackIndex){
         switch (feedbackIndex){
             case -1:
-                feedback_icon.setImageDrawable(getResources().getDrawable(R.drawable.zan1));
+                this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        feedback_icon.setImageResource(R.drawable.zan1);
+                    }
+                });
                 break;
             case 0:
-                feedback_icon.setImageDrawable(getResources().getDrawable(R.drawable.acc_icon));
+                this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        feedback_icon.setImageResource(R.drawable.acc_icon);
+                    }
+                });
                 break;
             case 1:
-                feedback_icon.setImageDrawable(getResources().getDrawable(R.drawable.brake_icon));
+                this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        feedback_icon.setImageResource(R.drawable.brake_icon);
+                    }
+                });
                 break;
             case 2:
-                feedback_icon.setImageDrawable(getResources().getDrawable(R.drawable.asd));
+                this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        feedback_icon.setImageResource(R.drawable.asd);
+                    }
+                });
                 break;
             case 3:
-                feedback_icon.setImageDrawable(getResources().getDrawable(R.drawable.swerve_icon));
+                this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        feedback_icon.setImageResource(R.drawable.swerve_icon);
+                    }
+                });
                 break;
         }
     }
 
     public void initial_acc(){
-        acc_bar_1.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        acc_bar_2.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        acc_bar_3.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        acc_bar_4.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        acc_bar_5.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        acc_bar_6.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        acc_bar_7.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        acc_bar_8.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        acc_bar_9.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        acc_bar_10.setImageDrawable(getResources().getDrawable(R.drawable.a0));
+        acc_bar_1.setImageResource(R.drawable.a0);
+        acc_bar_2.setImageResource(R.drawable.a0);
+        acc_bar_3.setImageResource(R.drawable.a0);
+        acc_bar_4.setImageResource(R.drawable.a0);
+        acc_bar_5.setImageResource(R.drawable.a0);
+        acc_bar_6.setImageResource(R.drawable.a0);
+        acc_bar_7.setImageResource(R.drawable.a0);
+        acc_bar_8.setImageResource(R.drawable.a0);
+        acc_bar_9.setImageResource(R.drawable.a0);
+        acc_bar_10.setImageResource(R.drawable.a0);
         acc_icon.setVisibility(View.VISIBLE);
     }
     public void initial_brake(){
-        brake_bar_1.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        brake_bar_2.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        brake_bar_3.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        brake_bar_4.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        brake_bar_5.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        brake_bar_6.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        brake_bar_7.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        brake_bar_8.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        brake_bar_9.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        brake_bar_10.setImageDrawable(getResources().getDrawable(R.drawable.a0));
+        brake_bar_1.setImageResource(R.drawable.a0);
+        brake_bar_2.setImageResource(R.drawable.a0);
+        brake_bar_3.setImageResource(R.drawable.a0);
+        brake_bar_4.setImageResource(R.drawable.a0);
+        brake_bar_5.setImageResource(R.drawable.a0);
+        brake_bar_6.setImageResource(R.drawable.a0);
+        brake_bar_7.setImageResource(R.drawable.a0);
+        brake_bar_8.setImageResource(R.drawable.a0);
+        brake_bar_9.setImageResource(R.drawable.a0);
+        brake_bar_10.setImageResource(R.drawable.a0);
         brake_icon.setVisibility(View.VISIBLE);
     }
     public void initial_turn(){
-        turn_bar_1.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        turn_bar_2.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        turn_bar_3.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        turn_bar_4.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        turn_bar_5.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        turn_bar_6.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        turn_bar_7.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        turn_bar_8.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        turn_bar_9.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        turn_bar_10.setImageDrawable(getResources().getDrawable(R.drawable.a0));
+        turn_bar_1.setImageResource(R.drawable.a0);
+        turn_bar_2.setImageResource(R.drawable.a0);
+        turn_bar_3.setImageResource(R.drawable.a0);
+        turn_bar_4.setImageResource(R.drawable.a0);
+        turn_bar_5.setImageResource(R.drawable.a0);
+        turn_bar_6.setImageResource(R.drawable.a0);
+        turn_bar_7.setImageResource(R.drawable.a0);
+        turn_bar_8.setImageResource(R.drawable.a0);
+        turn_bar_9.setImageResource(R.drawable.a0);
+        turn_bar_10.setImageResource(R.drawable.a0);
         turn_icon.setVisibility(View.VISIBLE);
     }
 
     public void initial_swerve(){
-        swerve_bar_1.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        swerve_bar_2.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        swerve_bar_3.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        swerve_bar_4.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        swerve_bar_5.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        swerve_bar_6.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        swerve_bar_7.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        swerve_bar_8.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        swerve_bar_9.setImageDrawable(getResources().getDrawable(R.drawable.a0));
-        swerve_bar_10.setImageDrawable(getResources().getDrawable(R.drawable.a0));
+        swerve_bar_1.setImageResource(R.drawable.a0);
+        swerve_bar_2.setImageResource(R.drawable.a0);
+        swerve_bar_3.setImageResource(R.drawable.a0);
+        swerve_bar_4.setImageResource(R.drawable.a0);
+        swerve_bar_5.setImageResource(R.drawable.a0);
+        swerve_bar_6.setImageResource(R.drawable.a0);
+        swerve_bar_7.setImageResource(R.drawable.a0);
+        swerve_bar_8.setImageResource(R.drawable.a0);
+        swerve_bar_9.setImageResource(R.drawable.a0);
+        swerve_bar_10.setImageResource(R.drawable.a0);
         swerve_icon.setVisibility(View.VISIBLE);
     }
 
     public void change_acc_bar(int score) {
         initial_acc();
         if (score <= 100&&score>=90) {
-            acc_bar_10.setVisibility(View.VISIBLE);
+            acc_bar_10.setImageResource(R.drawable.a10);
         } else if (score <= 90&&score>=80) {
-            acc_bar_10.setVisibility(View.VISIBLE);
-            acc_bar_9.setVisibility(View.VISIBLE);
+            acc_bar_10.setImageResource(R.drawable.a10);
+            acc_bar_9.setImageResource(R.drawable.a9);
         } else if (score <= 80&&score>=70) {
-            acc_bar_10.setVisibility(View.VISIBLE);
-            acc_bar_9.setVisibility(View.VISIBLE);
-            acc_bar_8.setVisibility(View.VISIBLE);
+            acc_bar_10.setImageResource(R.drawable.a10);
+            acc_bar_9.setImageResource(R.drawable.a9);
+            acc_bar_8.setImageResource(R.drawable.a8);
         } else if (score <= 70&&score>=60) {
-            acc_bar_10.setVisibility(View.VISIBLE);
-            acc_bar_9.setVisibility(View.VISIBLE);
-            acc_bar_8.setVisibility(View.VISIBLE);
-            acc_bar_7.setVisibility(View.VISIBLE);
+            acc_bar_10.setImageResource(R.drawable.a10);
+            acc_bar_9.setImageResource(R.drawable.a9);
+            acc_bar_8.setImageResource(R.drawable.a8);
+            acc_bar_7.setImageResource(R.drawable.a7);
         } else if (score <= 60&&score>=50) {
-            acc_bar_10.setVisibility(View.VISIBLE);
-            acc_bar_9.setVisibility(View.VISIBLE);
-            acc_bar_8.setVisibility(View.VISIBLE);
-            acc_bar_7.setVisibility(View.VISIBLE);
-            acc_bar_6.setVisibility(View.VISIBLE);
+            acc_bar_10.setImageResource(R.drawable.a10);
+            acc_bar_9.setImageResource(R.drawable.a9);
+            acc_bar_8.setImageResource(R.drawable.a8);
+            acc_bar_7.setImageResource(R.drawable.a7);
+            acc_bar_6.setImageResource(R.drawable.a6);
         } else if (score <= 50&&score>=40) {
-            acc_bar_10.setVisibility(View.VISIBLE);
-            acc_bar_9.setVisibility(View.VISIBLE);
-            acc_bar_8.setVisibility(View.VISIBLE);
-            acc_bar_7.setVisibility(View.VISIBLE);
-            acc_bar_6.setVisibility(View.VISIBLE);
-            acc_bar_5.setVisibility(View.VISIBLE);
+            acc_bar_10.setImageResource(R.drawable.a10);
+            acc_bar_9.setImageResource(R.drawable.a9);
+            acc_bar_8.setImageResource(R.drawable.a8);
+            acc_bar_7.setImageResource(R.drawable.a7);
+            acc_bar_6.setImageResource(R.drawable.a6);
+            acc_bar_5.setImageResource(R.drawable.a5);
         } else if (score <= 40&&score>=30) {
-            acc_bar_10.setVisibility(View.VISIBLE);
-            acc_bar_9.setVisibility(View.VISIBLE);
-            acc_bar_8.setVisibility(View.VISIBLE);
-            acc_bar_7.setVisibility(View.VISIBLE);
-            acc_bar_6.setVisibility(View.VISIBLE);
-            acc_bar_5.setVisibility(View.VISIBLE);
-            acc_bar_4.setVisibility(View.VISIBLE);
+            acc_bar_10.setImageResource(R.drawable.a10);
+            acc_bar_9.setImageResource(R.drawable.a9);
+            acc_bar_8.setImageResource(R.drawable.a8);
+            acc_bar_7.setImageResource(R.drawable.a7);
+            acc_bar_6.setImageResource(R.drawable.a6);
+            acc_bar_5.setImageResource(R.drawable.a5);
+            acc_bar_4.setImageResource(R.drawable.a4);
         } else if (score <= 30&&score>=20) {
-            acc_bar_10.setVisibility(View.VISIBLE);
-            acc_bar_9.setVisibility(View.VISIBLE);
-            acc_bar_8.setVisibility(View.VISIBLE);
-            acc_bar_7.setVisibility(View.VISIBLE);
-            acc_bar_6.setVisibility(View.VISIBLE);
-            acc_bar_5.setVisibility(View.VISIBLE);
-            acc_bar_4.setVisibility(View.VISIBLE);
-            acc_bar_3.setVisibility(View.VISIBLE);
+            acc_bar_10.setImageResource(R.drawable.a10);
+            acc_bar_9.setImageResource(R.drawable.a9);
+            acc_bar_8.setImageResource(R.drawable.a8);
+            acc_bar_7.setImageResource(R.drawable.a7);
+            acc_bar_6.setImageResource(R.drawable.a6);
+            acc_bar_5.setImageResource(R.drawable.a5);
+            acc_bar_4.setImageResource(R.drawable.a4);
+            acc_bar_3.setImageResource(R.drawable.a3);
         } else if (score <= 20&&score>=10) {
-            acc_bar_10.setVisibility(View.VISIBLE);
-            acc_bar_9.setVisibility(View.VISIBLE);
-            acc_bar_8.setVisibility(View.VISIBLE);
-            acc_bar_7.setVisibility(View.VISIBLE);
-            acc_bar_6.setVisibility(View.VISIBLE);
-            acc_bar_5.setVisibility(View.VISIBLE);
-            acc_bar_4.setVisibility(View.VISIBLE);
-            acc_bar_3.setVisibility(View.VISIBLE);
-            acc_bar_2.setVisibility(View.VISIBLE);
+            acc_bar_10.setImageResource(R.drawable.a10);
+            acc_bar_9.setImageResource(R.drawable.a9);
+            acc_bar_8.setImageResource(R.drawable.a8);
+            acc_bar_7.setImageResource(R.drawable.a7);
+            acc_bar_6.setImageResource(R.drawable.a6);
+            acc_bar_5.setImageResource(R.drawable.a5);
+            acc_bar_4.setImageResource(R.drawable.a4);
+            acc_bar_3.setImageResource(R.drawable.a3);
+            acc_bar_2.setImageResource(R.drawable.a2);
         } else if (score <= 10) {
-            acc_bar_10.setVisibility(View.VISIBLE);
-            acc_bar_9.setVisibility(View.VISIBLE);
-            acc_bar_8.setVisibility(View.VISIBLE);
-            acc_bar_7.setVisibility(View.VISIBLE);
-            acc_bar_6.setVisibility(View.VISIBLE);
-            acc_bar_5.setVisibility(View.VISIBLE);
-            acc_bar_4.setVisibility(View.VISIBLE);
-            acc_bar_3.setVisibility(View.VISIBLE);
-            acc_bar_2.setVisibility(View.VISIBLE);
-            acc_bar_1.setVisibility(View.VISIBLE);
+            acc_bar_10.setImageResource(R.drawable.a10);
+            acc_bar_9.setImageResource(R.drawable.a9);
+            acc_bar_8.setImageResource(R.drawable.a8);
+            acc_bar_7.setImageResource(R.drawable.a7);
+            acc_bar_6.setImageResource(R.drawable.a6);
+            acc_bar_5.setImageResource(R.drawable.a5);
+            acc_bar_4.setImageResource(R.drawable.a4);
+            acc_bar_3.setImageResource(R.drawable.a3);
+            acc_bar_2.setImageResource(R.drawable.a2);
+            acc_bar_1.setImageResource(R.drawable.a1);
 
         }
     }
@@ -539,209 +565,212 @@ public class MainActivity extends AppCompatActivity {
     public void change_brake_bar(int score){
         initial_brake();
         if (score <= 100&&score>=90) {
-            brake_bar_10.setVisibility(View.VISIBLE);
+            brake_bar_10.setImageResource(R.drawable.a10);
         } else if (score <= 90&&score>=80) {
-            brake_bar_10.setVisibility(View.VISIBLE);
-            brake_bar_9.setVisibility(View.VISIBLE);
+            brake_bar_10.setImageResource(R.drawable.a10);
+            brake_bar_9.setImageResource(R.drawable.a9);
         } else if (score <= 80&&score>=70) {
-            brake_bar_10.setVisibility(View.VISIBLE);
-            brake_bar_9.setVisibility(View.VISIBLE);
-            brake_bar_8.setVisibility(View.VISIBLE);
+            brake_bar_10.setImageResource(R.drawable.a10);
+            brake_bar_9.setImageResource(R.drawable.a9);
+            brake_bar_8.setImageResource(R.drawable.a8);
         } else if (score <= 70&&score>=60) {
-            brake_bar_10.setVisibility(View.VISIBLE);
-            brake_bar_9.setVisibility(View.VISIBLE);
-            brake_bar_8.setVisibility(View.VISIBLE);
-            brake_bar_7.setVisibility(View.VISIBLE);
+            brake_bar_10.setImageResource(R.drawable.a10);
+            brake_bar_9.setImageResource(R.drawable.a9);
+            brake_bar_8.setImageResource(R.drawable.a8);
+            brake_bar_7.setImageResource(R.drawable.a7);
         } else if (score <= 60&&score>=50) {
-            brake_bar_10.setVisibility(View.VISIBLE);
-            brake_bar_9.setVisibility(View.VISIBLE);
-            brake_bar_8.setVisibility(View.VISIBLE);
-            brake_bar_7.setVisibility(View.VISIBLE);
-            brake_bar_6.setVisibility(View.VISIBLE);
+            brake_bar_10.setImageResource(R.drawable.a10);
+            brake_bar_9.setImageResource(R.drawable.a9);
+            brake_bar_8.setImageResource(R.drawable.a8);
+            brake_bar_7.setImageResource(R.drawable.a7);
+            brake_bar_6.setImageResource(R.drawable.a6);
         } else if (score <= 50&&score>=40) {
-            brake_bar_10.setVisibility(View.VISIBLE);
-            brake_bar_9.setVisibility(View.VISIBLE);
-            brake_bar_8.setVisibility(View.VISIBLE);
-            brake_bar_7.setVisibility(View.VISIBLE);
-            brake_bar_6.setVisibility(View.VISIBLE);
-            brake_bar_5.setVisibility(View.VISIBLE);
+            brake_bar_10.setImageResource(R.drawable.a10);
+            brake_bar_9.setImageResource(R.drawable.a9);
+            brake_bar_8.setImageResource(R.drawable.a8);
+            brake_bar_7.setImageResource(R.drawable.a7);
+            brake_bar_6.setImageResource(R.drawable.a6);
+            brake_bar_5.setImageResource(R.drawable.a5);
         } else if (score <= 40&&score>=30) {
-            brake_bar_10.setVisibility(View.VISIBLE);
-            brake_bar_9.setVisibility(View.VISIBLE);
-            brake_bar_8.setVisibility(View.VISIBLE);
-            brake_bar_7.setVisibility(View.VISIBLE);
-            brake_bar_6.setVisibility(View.VISIBLE);
-            brake_bar_5.setVisibility(View.VISIBLE);
-            brake_bar_4.setVisibility(View.VISIBLE);
+            brake_bar_10.setImageResource(R.drawable.a10);
+            brake_bar_9.setImageResource(R.drawable.a9);
+            brake_bar_8.setImageResource(R.drawable.a8);
+            brake_bar_7.setImageResource(R.drawable.a7);
+            brake_bar_6.setImageResource(R.drawable.a6);
+            brake_bar_5.setImageResource(R.drawable.a5);
+            brake_bar_4.setImageResource(R.drawable.a4);
         } else if (score <= 30&&score>=20) {
-            brake_bar_10.setVisibility(View.VISIBLE);
-            brake_bar_9.setVisibility(View.VISIBLE);
-            brake_bar_8.setVisibility(View.VISIBLE);
-            brake_bar_7.setVisibility(View.VISIBLE);
-            brake_bar_6.setVisibility(View.VISIBLE);
-            brake_bar_5.setVisibility(View.VISIBLE);
-            brake_bar_4.setVisibility(View.VISIBLE);
-            brake_bar_3.setVisibility(View.VISIBLE);
+            brake_bar_10.setImageResource(R.drawable.a10);
+            brake_bar_9.setImageResource(R.drawable.a9);
+            brake_bar_8.setImageResource(R.drawable.a8);
+            brake_bar_7.setImageResource(R.drawable.a7);
+            brake_bar_6.setImageResource(R.drawable.a6);
+            brake_bar_5.setImageResource(R.drawable.a5);
+            brake_bar_4.setImageResource(R.drawable.a4);
+            brake_bar_3.setImageResource(R.drawable.a3);
         } else if (score <= 20&&score>=10) {
-            brake_bar_10.setVisibility(View.VISIBLE);
-            brake_bar_9.setVisibility(View.VISIBLE);
-            brake_bar_8.setVisibility(View.VISIBLE);
-            brake_bar_7.setVisibility(View.VISIBLE);
-            brake_bar_6.setVisibility(View.VISIBLE);
-            brake_bar_5.setVisibility(View.VISIBLE);
-            brake_bar_4.setVisibility(View.VISIBLE);
-            brake_bar_3.setVisibility(View.VISIBLE);
-            brake_bar_2.setVisibility(View.VISIBLE);
+            brake_bar_10.setImageResource(R.drawable.a10);
+            brake_bar_9.setImageResource(R.drawable.a9);
+            brake_bar_8.setImageResource(R.drawable.a8);
+            brake_bar_7.setImageResource(R.drawable.a7);
+            brake_bar_6.setImageResource(R.drawable.a6);
+            brake_bar_5.setImageResource(R.drawable.a5);
+            brake_bar_4.setImageResource(R.drawable.a4);
+            brake_bar_3.setImageResource(R.drawable.a3);
+            brake_bar_2.setImageResource(R.drawable.a2);
         } else if (score <= 10) {
-            brake_bar_10.setVisibility(View.VISIBLE);
-            brake_bar_9.setVisibility(View.VISIBLE);
-            brake_bar_8.setVisibility(View.VISIBLE);
-            brake_bar_7.setVisibility(View.VISIBLE);
-            brake_bar_6.setVisibility(View.VISIBLE);
-            brake_bar_5.setVisibility(View.VISIBLE);
-            brake_bar_4.setVisibility(View.VISIBLE);
-            brake_bar_3.setVisibility(View.VISIBLE);
-            brake_bar_2.setVisibility(View.VISIBLE);
-            brake_bar_1.setVisibility(View.VISIBLE);
+            brake_bar_10.setImageResource(R.drawable.a10);
+            brake_bar_9.setImageResource(R.drawable.a9);
+            brake_bar_8.setImageResource(R.drawable.a8);
+            brake_bar_7.setImageResource(R.drawable.a7);
+            brake_bar_6.setImageResource(R.drawable.a6);
+            brake_bar_5.setImageResource(R.drawable.a5);
+            brake_bar_4.setImageResource(R.drawable.a4);
+            brake_bar_3.setImageResource(R.drawable.a3);
+            brake_bar_2.setImageResource(R.drawable.a2);
+            brake_bar_1.setImageResource(R.drawable.a1);
+
         }
     }
 
     public void change_turn_bar(int score) {
         initial_turn();
         if (score <= 100&&score>=90) {
-            turn_bar_10.setVisibility(View.VISIBLE);
+            turn_bar_10.setImageResource(R.drawable.a10);
         } else if (score <= 90&&score>=80) {
-            turn_bar_10.setVisibility(View.VISIBLE);
-            turn_bar_9.setVisibility(View.VISIBLE);
+            turn_bar_10.setImageResource(R.drawable.a10);
+            turn_bar_9.setImageResource(R.drawable.a9);
         } else if (score <= 80&&score>=70) {
-            turn_bar_10.setVisibility(View.VISIBLE);
-            turn_bar_9.setVisibility(View.VISIBLE);
-            turn_bar_8.setVisibility(View.VISIBLE);
+            turn_bar_10.setImageResource(R.drawable.a10);
+            turn_bar_9.setImageResource(R.drawable.a9);
+            turn_bar_8.setImageResource(R.drawable.a8);
         } else if (score <= 70&&score>=60) {
-            turn_bar_10.setVisibility(View.VISIBLE);
-            turn_bar_9.setVisibility(View.VISIBLE);
-            turn_bar_8.setVisibility(View.VISIBLE);
-            turn_bar_7.setVisibility(View.VISIBLE);
+            turn_bar_10.setImageResource(R.drawable.a10);
+            turn_bar_9.setImageResource(R.drawable.a9);
+            turn_bar_8.setImageResource(R.drawable.a8);
+            turn_bar_7.setImageResource(R.drawable.a7);
         } else if (score <= 60&&score>=50) {
-            turn_bar_10.setVisibility(View.VISIBLE);
-            turn_bar_9.setVisibility(View.VISIBLE);
-            turn_bar_8.setVisibility(View.VISIBLE);
-            turn_bar_7.setVisibility(View.VISIBLE);
-            turn_bar_6.setVisibility(View.VISIBLE);
+            turn_bar_10.setImageResource(R.drawable.a10);
+            turn_bar_9.setImageResource(R.drawable.a9);
+            turn_bar_8.setImageResource(R.drawable.a8);
+            turn_bar_7.setImageResource(R.drawable.a7);
+            turn_bar_6.setImageResource(R.drawable.a6);
         } else if (score <= 50&&score>=40) {
-            turn_bar_10.setVisibility(View.VISIBLE);
-            turn_bar_9.setVisibility(View.VISIBLE);
-            turn_bar_8.setVisibility(View.VISIBLE);
-            turn_bar_7.setVisibility(View.VISIBLE);
-            turn_bar_6.setVisibility(View.VISIBLE);
-            turn_bar_5.setVisibility(View.VISIBLE);
+            turn_bar_10.setImageResource(R.drawable.a10);
+            turn_bar_9.setImageResource(R.drawable.a9);
+            turn_bar_8.setImageResource(R.drawable.a8);
+            turn_bar_7.setImageResource(R.drawable.a7);
+            turn_bar_6.setImageResource(R.drawable.a6);
+            turn_bar_5.setImageResource(R.drawable.a5);
         } else if (score <= 40&&score>=30) {
-            turn_bar_10.setVisibility(View.VISIBLE);
-            turn_bar_9.setVisibility(View.VISIBLE);
-            turn_bar_8.setVisibility(View.VISIBLE);
-            turn_bar_7.setVisibility(View.VISIBLE);
-            turn_bar_6.setVisibility(View.VISIBLE);
-            turn_bar_5.setVisibility(View.VISIBLE);
-            turn_bar_4.setVisibility(View.VISIBLE);
+            turn_bar_10.setImageResource(R.drawable.a10);
+            turn_bar_9.setImageResource(R.drawable.a9);
+            turn_bar_8.setImageResource(R.drawable.a8);
+            turn_bar_7.setImageResource(R.drawable.a7);
+            turn_bar_6.setImageResource(R.drawable.a6);
+            turn_bar_5.setImageResource(R.drawable.a5);
+            turn_bar_4.setImageResource(R.drawable.a4);
         } else if (score <= 30&&score>=20) {
-            turn_bar_10.setVisibility(View.VISIBLE);
-            turn_bar_9.setVisibility(View.VISIBLE);
-            turn_bar_8.setVisibility(View.VISIBLE);
-            turn_bar_7.setVisibility(View.VISIBLE);
-            turn_bar_6.setVisibility(View.VISIBLE);
-            turn_bar_5.setVisibility(View.VISIBLE);
-            turn_bar_4.setVisibility(View.VISIBLE);
-            turn_bar_3.setVisibility(View.VISIBLE);
+            turn_bar_10.setImageResource(R.drawable.a10);
+            turn_bar_9.setImageResource(R.drawable.a9);
+            turn_bar_8.setImageResource(R.drawable.a8);
+            turn_bar_7.setImageResource(R.drawable.a7);
+            turn_bar_6.setImageResource(R.drawable.a6);
+            turn_bar_5.setImageResource(R.drawable.a5);
+            turn_bar_4.setImageResource(R.drawable.a4);
+            turn_bar_3.setImageResource(R.drawable.a3);
         } else if (score <= 20&&score>=10) {
-            turn_bar_10.setVisibility(View.VISIBLE);
-            turn_bar_9.setVisibility(View.VISIBLE);
-            turn_bar_8.setVisibility(View.VISIBLE);
-            turn_bar_7.setVisibility(View.VISIBLE);
-            turn_bar_6.setVisibility(View.VISIBLE);
-            turn_bar_5.setVisibility(View.VISIBLE);
-            turn_bar_4.setVisibility(View.VISIBLE);
-            turn_bar_3.setVisibility(View.VISIBLE);
-            turn_bar_2.setVisibility(View.VISIBLE);
+            turn_bar_10.setImageResource(R.drawable.a10);
+            turn_bar_9.setImageResource(R.drawable.a9);
+            turn_bar_8.setImageResource(R.drawable.a8);
+            turn_bar_7.setImageResource(R.drawable.a7);
+            turn_bar_6.setImageResource(R.drawable.a6);
+            turn_bar_5.setImageResource(R.drawable.a5);
+            turn_bar_4.setImageResource(R.drawable.a4);
+            turn_bar_3.setImageResource(R.drawable.a3);
+            turn_bar_2.setImageResource(R.drawable.a2);
         } else if (score <= 10) {
-            turn_bar_10.setVisibility(View.VISIBLE);
-            turn_bar_9.setVisibility(View.VISIBLE);
-            turn_bar_8.setVisibility(View.VISIBLE);
-            turn_bar_7.setVisibility(View.VISIBLE);
-            turn_bar_6.setVisibility(View.VISIBLE);
-            turn_bar_5.setVisibility(View.VISIBLE);
-            turn_bar_4.setVisibility(View.VISIBLE);
-            turn_bar_3.setVisibility(View.VISIBLE);
-            turn_bar_2.setVisibility(View.VISIBLE);
-            turn_bar_1.setVisibility(View.VISIBLE);
+            turn_bar_10.setImageResource(R.drawable.a10);
+            turn_bar_9.setImageResource(R.drawable.a9);
+            turn_bar_8.setImageResource(R.drawable.a8);
+            turn_bar_7.setImageResource(R.drawable.a7);
+            turn_bar_6.setImageResource(R.drawable.a6);
+            turn_bar_5.setImageResource(R.drawable.a5);
+            turn_bar_4.setImageResource(R.drawable.a4);
+            turn_bar_3.setImageResource(R.drawable.a3);
+            turn_bar_2.setImageResource(R.drawable.a2);
+            turn_bar_1.setImageResource(R.drawable.a1);
+
         }
     }
     public void change_swerve_bar(int score) {
         initial_swerve();
         if (score <= 100&&score>=90) {
-            swerve_bar_10.setVisibility(View.VISIBLE);
+            swerve_bar_10.setImageResource(R.drawable.a10);
         } else if (score <= 90&&score>=80) {
-            swerve_bar_10.setVisibility(View.VISIBLE);
-            swerve_bar_9.setVisibility(View.VISIBLE);
+            swerve_bar_10.setImageResource(R.drawable.a10);
+            swerve_bar_9.setImageResource(R.drawable.a9);
         } else if (score <= 80&&score>=70) {
-            swerve_bar_10.setVisibility(View.VISIBLE);
-            swerve_bar_9.setVisibility(View.VISIBLE);
-            swerve_bar_8.setVisibility(View.VISIBLE);
+            swerve_bar_10.setImageResource(R.drawable.a10);
+            swerve_bar_9.setImageResource(R.drawable.a9);
+            swerve_bar_8.setImageResource(R.drawable.a8);
         } else if (score <= 70&&score>=60) {
-            swerve_bar_10.setVisibility(View.VISIBLE);
-            swerve_bar_9.setVisibility(View.VISIBLE);
-            swerve_bar_8.setVisibility(View.VISIBLE);
-            swerve_bar_7.setVisibility(View.VISIBLE);
+            swerve_bar_10.setImageResource(R.drawable.a10);
+            swerve_bar_9.setImageResource(R.drawable.a9);
+            swerve_bar_8.setImageResource(R.drawable.a8);
+            swerve_bar_7.setImageResource(R.drawable.a7);
         } else if (score <= 60&&score>=50) {
-            swerve_bar_10.setVisibility(View.VISIBLE);
-            swerve_bar_9.setVisibility(View.VISIBLE);
-            swerve_bar_8.setVisibility(View.VISIBLE);
-            swerve_bar_7.setVisibility(View.VISIBLE);
-            swerve_bar_6.setVisibility(View.VISIBLE);
+            swerve_bar_10.setImageResource(R.drawable.a10);
+            swerve_bar_9.setImageResource(R.drawable.a9);
+            swerve_bar_8.setImageResource(R.drawable.a8);
+            swerve_bar_7.setImageResource(R.drawable.a7);
+            swerve_bar_6.setImageResource(R.drawable.a6);
         } else if (score <= 50&&score>=40) {
-            swerve_bar_10.setVisibility(View.VISIBLE);
-            swerve_bar_9.setVisibility(View.VISIBLE);
-            swerve_bar_8.setVisibility(View.VISIBLE);
-            swerve_bar_7.setVisibility(View.VISIBLE);
-            swerve_bar_6.setVisibility(View.VISIBLE);
-            swerve_bar_5.setVisibility(View.VISIBLE);
+            swerve_bar_10.setImageResource(R.drawable.a10);
+            swerve_bar_9.setImageResource(R.drawable.a9);
+            swerve_bar_8.setImageResource(R.drawable.a8);
+            swerve_bar_7.setImageResource(R.drawable.a7);
+            swerve_bar_6.setImageResource(R.drawable.a6);
+            swerve_bar_5.setImageResource(R.drawable.a5);
         } else if (score <= 40&&score>=30) {
-            swerve_bar_10.setVisibility(View.VISIBLE);
-            swerve_bar_9.setVisibility(View.VISIBLE);
-            swerve_bar_8.setVisibility(View.VISIBLE);
-            swerve_bar_7.setVisibility(View.VISIBLE);
-            swerve_bar_6.setVisibility(View.VISIBLE);
-            swerve_bar_5.setVisibility(View.VISIBLE);
-            swerve_bar_4.setVisibility(View.VISIBLE);
+            swerve_bar_10.setImageResource(R.drawable.a10);
+            swerve_bar_9.setImageResource(R.drawable.a9);
+            swerve_bar_8.setImageResource(R.drawable.a8);
+            swerve_bar_7.setImageResource(R.drawable.a7);
+            swerve_bar_6.setImageResource(R.drawable.a6);
+            swerve_bar_5.setImageResource(R.drawable.a5);
+            swerve_bar_4.setImageResource(R.drawable.a4);
         } else if (score <= 30&&score>=20) {
-            swerve_bar_10.setVisibility(View.VISIBLE);
-            swerve_bar_9.setVisibility(View.VISIBLE);
-            swerve_bar_8.setVisibility(View.VISIBLE);
-            swerve_bar_7.setVisibility(View.VISIBLE);
-            swerve_bar_6.setVisibility(View.VISIBLE);
-            swerve_bar_5.setVisibility(View.VISIBLE);
-            swerve_bar_4.setVisibility(View.VISIBLE);
-            swerve_bar_3.setVisibility(View.VISIBLE);
+            swerve_bar_10.setImageResource(R.drawable.a10);
+            swerve_bar_9.setImageResource(R.drawable.a9);
+            swerve_bar_8.setImageResource(R.drawable.a8);
+            swerve_bar_7.setImageResource(R.drawable.a7);
+            swerve_bar_6.setImageResource(R.drawable.a6);
+            swerve_bar_5.setImageResource(R.drawable.a5);
+            swerve_bar_4.setImageResource(R.drawable.a4);
+            swerve_bar_3.setImageResource(R.drawable.a3);
         } else if (score <= 20&&score>=10) {
-            swerve_bar_10.setVisibility(View.VISIBLE);
-            swerve_bar_9.setVisibility(View.VISIBLE);
-            swerve_bar_8.setVisibility(View.VISIBLE);
-            swerve_bar_7.setVisibility(View.VISIBLE);
-            swerve_bar_6.setVisibility(View.VISIBLE);
-            swerve_bar_5.setVisibility(View.VISIBLE);
-            swerve_bar_4.setVisibility(View.VISIBLE);
-            swerve_bar_3.setVisibility(View.VISIBLE);
-            swerve_bar_2.setVisibility(View.VISIBLE);
+            swerve_bar_10.setImageResource(R.drawable.a10);
+            swerve_bar_9.setImageResource(R.drawable.a9);
+            swerve_bar_8.setImageResource(R.drawable.a8);
+            swerve_bar_7.setImageResource(R.drawable.a7);
+            swerve_bar_6.setImageResource(R.drawable.a6);
+            swerve_bar_5.setImageResource(R.drawable.a5);
+            swerve_bar_4.setImageResource(R.drawable.a4);
+            swerve_bar_3.setImageResource(R.drawable.a3);
+            swerve_bar_2.setImageResource(R.drawable.a2);
         } else if (score <= 10) {
-            swerve_bar_10.setVisibility(View.VISIBLE);
-            swerve_bar_9.setVisibility(View.VISIBLE);
-            swerve_bar_8.setVisibility(View.VISIBLE);
-            swerve_bar_7.setVisibility(View.VISIBLE);
-            swerve_bar_6.setVisibility(View.VISIBLE);
-            swerve_bar_5.setVisibility(View.VISIBLE);
-            swerve_bar_4.setVisibility(View.VISIBLE);
-            swerve_bar_3.setVisibility(View.VISIBLE);
-            swerve_bar_2.setVisibility(View.VISIBLE);
-            swerve_bar_1.setVisibility(View.VISIBLE);
+            swerve_bar_10.setImageResource(R.drawable.a10);
+            swerve_bar_9.setImageResource(R.drawable.a9);
+            swerve_bar_8.setImageResource(R.drawable.a8);
+            swerve_bar_7.setImageResource(R.drawable.a7);
+            swerve_bar_6.setImageResource(R.drawable.a6);
+            swerve_bar_5.setImageResource(R.drawable.a5);
+            swerve_bar_4.setImageResource(R.drawable.a4);
+            swerve_bar_3.setImageResource(R.drawable.a3);
+            swerve_bar_2.setImageResource(R.drawable.a2);
+            swerve_bar_1.setImageResource(R.drawable.a1);
+
         }
     }
 
@@ -758,5 +787,7 @@ public class MainActivity extends AppCompatActivity {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
+
+
 
 }

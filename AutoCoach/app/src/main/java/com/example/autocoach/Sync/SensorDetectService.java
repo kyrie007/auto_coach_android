@@ -353,12 +353,12 @@ public class SensorDetectService extends Service implements SensorEventListener 
 
         if (accxfiltered > 1.5 && currentStd>0.15 && accEventDataNum==0){
             accEventDataNum++;
-            Double[] stdArr = (Double[])stdXQueue.toArray();
-            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> stdArr[i] > stdArr[j] ? j : i).getAsInt();
-            double[][] recordData = (double[][]) dataQueue;
-            accEvent = new Event((long) recordData[66+index][0],0);
+            Object[] stdArr = stdXQueue.toArray();
+            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> (double)stdArr[i] > (double)stdArr[j] ? j : i).getAsInt();
+            double[] recordData = (double[]) dataQueue[66+index];
+            accEvent = new Event((long) recordData[0],0);
             for(int i = index+66;i<=105;i++){
-                accEvent.add_Value(recordData[i]);
+                accEvent.add_Value((double[]) dataQueue[i]);
             }
         }else if(accxfiltered>0.5 && accEventDataNum>0){
             accEventDataNum++;
@@ -382,12 +382,12 @@ public class SensorDetectService extends Service implements SensorEventListener 
 
         if (accxfiltered <-1.5 && currentStd>0.15 && brakeEventDataNum==0){
             brakeEventDataNum++;
-            Double[] stdArr = (Double[])stdXQueue.toArray();
-            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> stdArr[i] > stdArr[j] ? j : i).getAsInt();
-            double[][] recordData = (double[][]) dataQueue;
-            brakeEvent = new Event((long) recordData[66+index][0],1);
+            Object[] stdArr = stdXQueue.toArray();
+            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> (double)stdArr[i] > (double)stdArr[j] ? j : i).getAsInt();
+            double[] recordData = (double[]) dataQueue[66+index];
+            brakeEvent = new Event((long) recordData[0],1);
             for(int i = index+66;i<=105;i++){
-                brakeEvent.add_Value(recordData[i]);
+                brakeEvent.add_Value((double[]) dataQueue[i]);
             }
         }else if(accxfiltered<-0.5 && brakeEventDataNum>0){
             brakeEventDataNum++;
@@ -440,18 +440,19 @@ public class SensorDetectService extends Service implements SensorEventListener 
         double currentStd = getStandardDiviation(dataForStd);
         stdYQueue.add(currentStd);
         double accyfiltered = datafiltered[105];
+//        System.out.println(accyfiltered);
         boolean isleftLog = false;
         boolean isrightLog = false;
 
 
         if (accyfiltered > 1.5 && currentStd>0.15 && lturnEventDataNum==0){
             lturnEventDataNum++;
-            Double[] stdArr = (Double[])stdXQueue.toArray();
-            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> stdArr[i] > stdArr[j] ? j : i).getAsInt();
-            double[][] recordData = (double[][]) dataQueue;
-            lturnEvent = new Event((long) recordData[66+index][0],2);
+            Object[] stdArr = stdXQueue.toArray();
+            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> (double)stdArr[i] > (double)stdArr[j] ? j : i).getAsInt();
+            double[] recordData = (double[]) dataQueue[66+index];
+            lturnEvent = new Event((long) recordData[0],2);
             for(int i = index+66;i<=105;i++){
-                lturnEvent.add_Value(recordData[i]);
+                lturnEvent.add_Value((double[]) dataQueue[i]);
             }
 
         }else if(accyfiltered>0.5 && lturnEventDataNum>0){
@@ -477,12 +478,12 @@ public class SensorDetectService extends Service implements SensorEventListener 
 
         if (accyfiltered < -1.5 && currentStd>0.15 && rturnEventDataNum==0){
             rturnEventDataNum++;
-            Double[] stdArr = (Double[])stdXQueue.toArray();
-            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> stdArr[i] > stdArr[j] ? j : i).getAsInt();
-            double[][] recordData = (double[][]) dataQueue;
-            rturnEvent = new Event((long) recordData[66+index][0],2);
+            Object[] stdArr = stdXQueue.toArray();
+            int index = IntStream.range(0, stdArr.length).reduce((i, j) -> (double)stdArr[i] > (double)stdArr[j] ? j : i).getAsInt();
+            double[] recordData = (double[]) dataQueue[66+index];
+            rturnEvent = new Event((long) recordData[0],2);
             for(int i = index+66;i<=105;i++){
-                rturnEvent.add_Value(recordData[i]);
+                rturnEvent.add_Value((double[]) dataQueue[i]);
             }
 
         }else if(accyfiltered<-0.5 && rturnEventDataNum>0){

@@ -30,7 +30,7 @@ public class Event implements Serializable {
     private Double[] list4 = null;
     private Double[] list5 = null;
     private Double[] list6 = null;
-    private IirFilterCoefficients iirFilterCoefficients = IirFilterDesignExstrom.design(FilterPassType.lowpass, 5,
+    private transient IirFilterCoefficients iirFilterCoefficients = IirFilterDesignExstrom.design(FilterPassType.lowpass, 5,
             10.0/340, 10.0 / 170);
     private int classification;
     private String letter;
@@ -133,29 +133,36 @@ public class Event implements Serializable {
     //写方法 返回列数据
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ArrayList<Double> getArray() {
-        double[][] array = (double[][]) rawData.toArray();
+        double[][] array = rawData.toArray(new double[0][0]);
 //        List list0 = getByColumn(rawData, 0);//得到列数据，其中第二个参数可以通过终端输入修改
 //        List list1 = getByColumn(rawData, 1);//得到列数据，其中第二个参数可以通过终端输入修改
         getByColumn(array);//得到列数据，其中第二个参数可以通过终端输入修改
 
+        iirFilterCoefficients = IirFilterDesignExstrom.design(FilterPassType.lowpass, 5,
+                10.0/340, 10.0 / 170);
+
         list2 = IIRFilter(list2, iirFilterCoefficients.a, iirFilterCoefficients.b);
         list3 = IIRFilter(list3, iirFilterCoefficients.a, iirFilterCoefficients.b);
 
-
+//        System.out.println("acc avlue:");
+//        for(double acc:list2){
+//            System.out.print(acc);
+//            System.out.print("  ");
+//        }
 
 //        def calculate_feature(self,vect):
 //        maxAX = max(vect[:, 3]) 最大值
         int index1 = IntStream.range(0, list2.length).reduce((i, j) -> list2[i] > list2[j] ? i : j).getAsInt();
-        double maxAX = list3[index1];//Math.max(list3);
+        double maxAX = list2[index1];//Math.max(list3);
 //        maxAY = max(vect[:, 2])
         int index2 = IntStream.range(0, list3.length).reduce((i, j) -> list3[i] > list3[j] ? i : j).getAsInt();
-        double maxAY = list2[index2]; //max((list2));
+        double maxAY = list3[index2]; //max((list2));
 //        minAX = min(vect[:, 3]) 最小值
         int index3 = IntStream.range(0, list2.length).reduce((i, j) -> list2[i] > list2[j] ? j : i).getAsInt();
-        double minAX = list3[index3];//Math.min(list3);
+        double minAX = list2[index3];//Math.min(list3);
 //        minAY = min(vect[:, 2])
         int index4 = IntStream.range(0, list3.length).reduce((i, j) -> list3[i] > list3[j] ? j : i).getAsInt();
-        double minAY = list2[index4]; //max((list2));
+        double minAY = list3[index4]; //max((list2));
 
 
 //        rangeAX = maxAX - minAX
@@ -215,18 +222,19 @@ public class Event implements Serializable {
         int index8 = IntStream.range(0, list31.length).reduce((i, j) -> list31[i] > list31[j] ? i : j).getAsInt();
         double maxAccY = list31[index8];
 
-        List<Double> a = Arrays.asList(rangeAX, rangeAY, stdAX, stdAY, meanAX, meanAY, meanOX, maxOri, maxAX, minAX, maxAccY, differenceSP,
-        meanSP, StartEndAccx, StartEndAccy, t, axis);  //# 99% 86%rawData
-        return (ArrayList<Double>) a;
+        ArrayList<Double> a = new ArrayList<Double>(Arrays.asList(rangeAX, rangeAY, stdAX, stdAY, meanAX, meanAY, meanOX, maxOri, maxAX, minAX, maxAccY,
+        meanSP, StartEndAccx, StartEndAccy, t, axis));  //# 99% 86%rawData
+        return a;
     }
 
     public ArrayList<Double> normalize(ArrayList<Double> features){
         ArrayList<Double> newFeature = new ArrayList<>();
-        double[] max = {6.3804, 5.55909, 2.1217, 1.8783, 4.2113, 2.6795, 20.0780, 78.3708, 6.3957, 0.5415, 5.2711, 45.0, 85.9737, 3.4985, 2.4869, 35.337, 1.0};
-        double[] min = {0.7251, 0.2366, 0.2163, 0.0542, -2.30392, -2.8765, -23.2157, 9.1473, -0.3582, -4.3490, 0.2959, -44.0, 0.0, -4.9647, -4.9924, 1.86, 0.0};
+        double[] max = {6.3804, 5.55909, 2.1217, 1.9062, 2.77235, 2.6795, 21.5806, 78.3708, 4.79105, 1.22073, 5.2711, 85.9737, 5.3705, 2.4869, 35.337, 1.0};
+        double[] min = {0.7251, 0.0867, 0.0491, 0.0277, -4.21123, -2.8765, -23.2157, 3.0795, -0.6511, -6.3957, 0.0968,  0,  -6.9642, -4.9924, 0.835, 0.0};
         int index = 0;
         for(double feature: features){
             newFeature.add((feature-min[index])/(max[index]-min[index]));
+            index++;
         }
         return newFeature;
     }
