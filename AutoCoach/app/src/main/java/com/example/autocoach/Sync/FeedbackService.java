@@ -341,7 +341,7 @@ public class FeedbackService extends Service {
                     if(scoreList[feedbackIndex]<70){
                         MainActivity.getMainActivity().setFeedback_icon(feedbackIndex);
                     }else{
-                        System.out.println("doing well");
+
                         MainActivity.getMainActivity().setFeedback_icon(-1);
                     }
 

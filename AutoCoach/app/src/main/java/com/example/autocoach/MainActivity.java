@@ -788,6 +788,13 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
+    public void calibratedToast(){
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "calibrated", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
 
 
 }

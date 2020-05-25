@@ -79,9 +79,12 @@ public class SensorDetectService extends Service implements SensorEventListener 
     private int rturnFault = 5;
 
     private boolean isCalibrate = true;
+    private boolean isCalibrateEnd = true;
     private int calibrateNum = 20;
     private double meanX = 0;
     private double meanZ = 0;
+    private double sinCalibrate = 0;
+    private double cosCalibrate = 1;
 
 
     /**
@@ -181,24 +184,41 @@ public class SensorDetectService extends Service implements SensorEventListener 
 
             double accx = event.values[0]; //- gravity[0];
             double accy = event.values[1]; //- gravity[1];
-            double accz = event.values[2]; //- gravity[2];
+            double accz = -event.values[2]; //- gravity[2];
+
+            //calibration-- calculate vect
+            if(calibrateNum>0 && isCalibrate){
+                calibrateNum--;
+                meanX+=accz;
+                meanZ+=accx;
+            }else if(calibrateNum==0 && isCalibrate){
+                meanX = meanX/20;
+                meanZ = meanZ/20;
+                isCalibrate=false;
+                System.out.println("x and z");
+                System.out.println(meanX);
+                System.out.println(meanZ);
+                calibrateNum--;
+            }
+            if(isCalibrateEnd&& Math.abs(meanX)>0.05 && calibrateNum==-1 ){
+                double temp = Math.sqrt(Math.pow(meanX,2)+Math.pow(meanZ,2));
+                sinCalibrate = -meanX/temp;
+                cosCalibrate = meanZ/temp;
+                isCalibrateEnd=false;
+                System.out.println("cos and sin");
+                System.out.println(cosCalibrate);
+                System.out.println(sinCalibrate);
+                MainActivity.getMainActivity().calibratedToast();
+            }
+
+            // do the calibration
+            accz = accz*cosCalibrate + accx*sinCalibrate;
+
+
 
             value.put(SensorContract.SensorEntry.COLUMN_ACC_X, accx);
             value.put(SensorContract.SensorEntry.COLUMN_ACC_Y, accy);
             value.put(SensorContract.SensorEntry.COLUMN_ACC_Z, accz);
-
-//            if(calibrateNum>0 && isCalibrate){
-//                calibrateNum--;
-//                meanX+=-accz;
-//                meanZ+=accx;
-//            }else if(calibrateNum==0 && isCalibrate){
-//                meanX = meanX/20;
-//                meanZ = meanZ/20;
-//                isCalibrate=false;
-//            }
-//            if(Math.abs(meanX)>0.05){
-//
-//            }
 
 
 //            MainActivity.getMainActivity().setText(1,(Math.round(accx * 100))/100);
@@ -249,7 +269,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
 
 
             //catch event
-            double acc_x = -(double)value.get(SensorContract.SensorEntry.COLUMN_ACC_Z);
+            double acc_x = (double)value.get(SensorContract.SensorEntry.COLUMN_ACC_Z);
             double acc_y = (double)value.get(SensorContract.SensorEntry.COLUMN_ACC_Y);
             double acc_z = (double)value.get(SensorContract.SensorEntry.COLUMN_ACC_X);
             double timestamp = (long)value.get(SensorContract.SensorEntry.COLUMN_DATE);
@@ -363,7 +383,8 @@ public class SensorDetectService extends Service implements SensorEventListener 
         double currentStd = getStandardDiviation(dataForStd);
         stdXQueue.add(currentStd);
         double accxfiltered = datafiltered[105];
-        System.out.println(accxfiltered);
+        Log.i("acc filtered: ",""+accxfiltered);
+//        System.out.println(accxfiltered);
         boolean isAccLog = false;
         boolean isBrakeLog = false;
 
