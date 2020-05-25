@@ -383,7 +383,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
         double currentStd = getStandardDiviation(dataForStd);
         stdXQueue.add(currentStd);
         double accxfiltered = datafiltered[105];
-        Log.i("acc filtered: ",""+accxfiltered);
+        //Log.i("acc filtered: ",""+accxfiltered);
 //        System.out.println(accxfiltered);
         boolean isAccLog = false;
         boolean isBrakeLog = false;

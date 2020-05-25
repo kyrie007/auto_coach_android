@@ -204,6 +204,10 @@ public class FeedbackService extends Service {
         }).start();
     }
 
+    int coin = 0;
+    int counter = 0;
+    boolean flag = false;
+
     public void startLDA(){
         new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -242,16 +246,35 @@ public class FeedbackService extends Service {
                     System.out.println("***score:  "+score+"  ***");
                     MainActivity.getMainActivity().change_currentscore((int) score);
 
+
+                    if(score < 60) {
+                        counter = 0;
+                        flag = true;
+                    }else if(flag == true){
+                        counter++;
+                        if(counter == 3) {
+                            coin++;
+                            MainActivity.getMainActivity().change_totalcoins(coin);
+                            counter = 0;
+                            flag = false;
+                        }
+                    }
+
+                    System.out.println("score = " + score);
+                    System.out.println("counter = " + counter);
+
                     long endTime = System.currentTimeMillis();
                     long dur = endTime - startTime;
                     try {
-                        Thread.sleep(20000-dur);
+                        Thread.sleep(40000-dur);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
 
+
             }
+
         }).start();
     }
 
@@ -308,19 +331,19 @@ public class FeedbackService extends Service {
                     }
                     for(int i = 5;i>=3;i--){
                         if(durationCopy[i]>0){
-                            brakeScore = getBarScore(i, durationCopy[i]);
+                            brakeScore = getBarScore(i-3, durationCopy[i]);
                             break;
                         }
                     }
                     for(int i = 8;i>=6;i--){
                         if(durationCopy[i]>0){
-                            turnScore = getBarScore(i, durationCopy[i]);
+                            turnScore = getBarScore(i-6, durationCopy[i]);
                             break;
                         }
                     }
                     for(int i = 11;i>=9;i--){
                         if(durationCopy[i]>0) {
-                            swerveScore = getBarScore(i, durationCopy[i]);
+                            swerveScore = getBarScore(i-9, durationCopy[i]);
                             break;
                         }
                     }
