@@ -78,6 +78,11 @@ public class SensorDetectService extends Service implements SensorEventListener 
     private int lturnFault = 5;
     private int rturnFault = 5;
 
+    private boolean isCalibrate = true;
+    private int calibrateNum = 20;
+    private double meanX = 0;
+    private double meanZ = 0;
+
 
     /**
      * a tag for logging
@@ -181,6 +186,19 @@ public class SensorDetectService extends Service implements SensorEventListener 
             value.put(SensorContract.SensorEntry.COLUMN_ACC_X, accx);
             value.put(SensorContract.SensorEntry.COLUMN_ACC_Y, accy);
             value.put(SensorContract.SensorEntry.COLUMN_ACC_Z, accz);
+
+//            if(calibrateNum>0 && isCalibrate){
+//                calibrateNum--;
+//                meanX+=-accz;
+//                meanZ+=accx;
+//            }else if(calibrateNum==0 && isCalibrate){
+//                meanX = meanX/20;
+//                meanZ = meanZ/20;
+//                isCalibrate=false;
+//            }
+//            if(Math.abs(meanX)>0.05){
+//
+//            }
 
 
 //            MainActivity.getMainActivity().setText(1,(Math.round(accx * 100))/100);
@@ -351,7 +369,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
 
 
 
-        if (accxfiltered > 1.5 && currentStd>0.15 && accEventDataNum==0){
+        if (accxfiltered > 1.2 && currentStd>0.15 && accEventDataNum==0){
             accEventDataNum++;
             Object[] stdArr = stdXQueue.toArray();
             int index = IntStream.range(0, stdArr.length).reduce((i, j) -> (double)stdArr[i] > (double)stdArr[j] ? j : i).getAsInt();
