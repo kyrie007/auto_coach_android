@@ -80,7 +80,7 @@ public class SensorDetectService extends Service implements SensorEventListener 
 
     private boolean isCalibrate = true;
     private boolean isCalibrateEnd = true;
-    private int calibrateNum = 20;
+    private int calibrateNum = 40;
     private double meanX = 0;
     private double meanZ = 0;
     private double sinCalibrate = 0;
@@ -192,8 +192,8 @@ public class SensorDetectService extends Service implements SensorEventListener 
                 meanX+=accz;
                 meanZ+=accx;
             }else if(calibrateNum==0 && isCalibrate){
-                meanX = meanX/20;
-                meanZ = meanZ/20;
+                meanX = meanX/40;
+                meanZ = meanZ/40;
                 isCalibrate=false;
                 System.out.println("x and z");
                 System.out.println(meanX);
