@@ -43,6 +43,8 @@ public class FeedbackService extends Service {
     private StringBuffer LDAPattern = new StringBuffer(); //buffer from lda to svm
     private Inferencer inferencer = new Inferencer(); //LDA model
     private svm_model model = null; //svm lock
+    private int patternNum = 0;
+    private double tripScore = 0;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -242,6 +244,14 @@ public class FeedbackService extends Service {
                     }else{ //if no event happen
                         score = 100;
                     }
+
+                    patternNum++;
+                    tripScore+=score;
+
+                    MainActivity.getMainActivity().change_tripscore((int) (tripScore/patternNum));
+
+
+
                     System.out.println("pattern is:["+pattern+"]");
                     System.out.println("***score:  "+score+"  ***");
                     MainActivity.getMainActivity().change_currentscore((int) score);
@@ -259,8 +269,8 @@ public class FeedbackService extends Service {
                             flag = false;
                         }
                     }
-
-                    System.out.println("score = " + score);
+//
+//                    System.out.println("score = " + score);
                     System.out.println("counter = " + counter);
 
                     long endTime = System.currentTimeMillis();

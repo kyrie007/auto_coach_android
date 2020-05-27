@@ -795,6 +795,13 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
+    public void preparedToast(){
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "start", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
 
 
 }
