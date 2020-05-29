@@ -265,6 +265,7 @@ public class FeedbackService extends Service {
                         if(counter == 3) {
                             coin++;
                             MainActivity.getMainActivity().change_totalcoins(coin);
+                            MainActivity.getMainActivity().getCoin();
                             counter = 0;
                             flag = false;
                         }
@@ -281,8 +282,6 @@ public class FeedbackService extends Service {
                         e.printStackTrace();
                     }
                 }
-
-
             }
 
         }).start();

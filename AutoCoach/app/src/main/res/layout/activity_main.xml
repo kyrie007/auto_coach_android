@@ -537,6 +537,45 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/acc_bar_7"
                 app:srcCompat="@drawable/a8" />
+
+            <ImageView
+                android:id="@+id/add_coins"
+                android:layout_width="67dp"
+                android:layout_height="47dp"
+                android:layout_marginEnd="94dp"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/turn_bar_9"
+                app:layout_constraintStart_toEndOf="@+id/add_coins_n"
+                app:layout_constraintTop_toBottomOf="@+id/feedback_icon"
+                app:srcCompat="@drawable/coin_add" />
+
+            <TextView
+                android:id="@+id/add_coins_n"
+                android:layout_width="20dp"
+                android:layout_height="61dp"
+                android:layout_marginStart="119dp"
+                android:layout_marginTop="10dp"
+                android:text="3"
+                android:textColor="#EDC95D"
+                android:textSize="28dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/brake_bar_10"
+                app:layout_constraintTop_toBottomOf="@+id/feedback_icon" />
+
+            <ImageView
+                android:id="@+id/plus_icon"
+                android:layout_width="19dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/add_coins_n"
+                app:layout_constraintStart_toEndOf="@+id/brake_bar_10"
+                app:layout_constraintTop_toBottomOf="@+id/feedback_icon"
+                app:srcCompat="@drawable/plus_icon" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
@@ -556,11 +595,9 @@
                 android:id="@+id/car"
                 android:layout_width="73dp"
                 android:layout_height="83dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginLeft="50dp"
+                android:layout_marginStart="45dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tripscore"
@@ -573,76 +610,71 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
                 android:layout_marginEnd="50dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Total Coins"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/currentscore"
                 app:layout_constraintStart_toEndOf="@+id/coinsbox"
-                app:layout_constraintTop_toBottomOf="@+id/totalcoins_n" />
+                app:layout_constraintTop_toBottomOf="@+id/totalcoins_n"
+                app:layout_constraintVertical_bias="0.447" />
 
             <TextView
                 android:id="@+id/score_n"
-                android:layout_width="72dp"
-                android:layout_height="46dp"
-                android:layout_marginStart="100dp"
-                android:layout_marginTop="4dp"
+                android:layout_width="101dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="90dp"
                 android:layout_marginEnd="80dp"
-                android:text="0"
                 android:gravity="center"
+                android:text="0"
                 android:textColor="@android:color/holo_blue_bright"
-                android:textSize="30dp"
+                android:textSize="50sp"
                 app:layout_constraintEnd_toStartOf="@+id/car"
                 app:layout_constraintStart_toEndOf="@+id/totalcoins_n"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tripscore_n"
-                android:layout_width="67dp"
-                android:layout_height="38dp"
+                android:layout_width="96dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="48dp"
                 android:gravity="center"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="30dp"
+                android:textSize="40sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/car"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/currentscore"
-                android:layout_width="147dp"
-                android:layout_height="31dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_width="222dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="281dp"
+                android:gravity="center"
                 android:text="Current_Score"
                 android:textColor="#00BCD4"
-                android:textSize="22sp"
-                android:gravity="center"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/car"
-                app:layout_constraintStart_toEndOf="@+id/totalcoins"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/score_n"
-                app:layout_constraintVertical_bias="0.44" />
+                app:layout_constraintVertical_bias="0.292" />
 
             <TextView
                 android:id="@+id/totalcoins_n"
-                android:layout_width="63dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="98dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="30sp"
+                android:textSize="40sp"
                 app:layout_constraintStart_toEndOf="@+id/coinsbox"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -664,14 +696,13 @@
 
             <TextView
                 android:id="@+id/tripscore"
-                android:layout_width="153dp"
-                android:layout_height="29dp"
+                android:layout_width="148dp"
+                android:layout_height="52dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginLeft="22dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="8dp"
                 android:text="Trip Score"
                 android:textColor="#FFFFFF"
-                android:textSize="18dp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/car"

@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView totalcoins_n;
     private TextView tripscore;
     private TextView tripscore_n;
+    private TextView add_coins_n;
     private ImageView acc_bar_1;
     private ImageView acc_bar_2;
     private ImageView acc_bar_3;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView swerve_bar_8;
     private ImageView swerve_bar_9;
     private ImageView swerve_bar_10;
+    private ImageView plus_icon;
 
     private ImageView brake_icon;
     private ImageView turn_icon;
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView car;
     private ImageView coinsbox;
     private ImageView feedback_icon;
+    private ImageView add_coins;
 
     public MainActivity(){
         mainActivity = this;
@@ -144,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         currentscore=(TextView)findViewById(R.id.currentscore);
         totalcoins=(TextView)findViewById(R.id.totalcoins);
         tripscore=(TextView)findViewById(R.id.tripscore);
+        add_coins_n=(TextView)findViewById(R.id.add_coins_n);
         car=(ImageView)findViewById(R.id.car);
         coinsbox=(ImageView)findViewById(R.id.coinsbox);
 
@@ -192,6 +196,11 @@ public class MainActivity extends AppCompatActivity {
         acc_icon=(ImageView) findViewById(R.id.acc_icon);
         turn_icon=(ImageView) findViewById(R.id.turn_icon);
         swerve_icon=(ImageView) findViewById(R.id.swerve_icon);
+        add_coins=(ImageView) findViewById(R.id.add_coins);
+        plus_icon=(ImageView) findViewById(R.id.plus_icon);
+        add_coins.setVisibility(View.INVISIBLE);
+        add_coins_n.setVisibility(View.INVISIBLE);
+        plus_icon.setVisibility(View.INVISIBLE);
 
 
 
@@ -392,6 +401,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     public void setFeedback_icon(int feedbackIndex){
         switch (feedbackIndex){
             case -1:
@@ -406,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
                 this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        feedback_icon.setImageResource(R.drawable.acc_icon);
+                        feedback_icon.setImageResource(R.drawable.acc_red);
                     }
                 });
                 break;
@@ -414,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
                 this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        feedback_icon.setImageResource(R.drawable.brake_icon);
+                        feedback_icon.setImageResource(R.drawable.brake_red);
                     }
                 });
                 break;
@@ -422,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
                 this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        feedback_icon.setImageResource(R.drawable.asd);
+                        feedback_icon.setImageResource(R.drawable.turn_red);
                     }
                 });
                 break;
@@ -430,7 +440,7 @@ public class MainActivity extends AppCompatActivity {
                 this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        feedback_icon.setImageResource(R.drawable.swerve_icon);
+                        feedback_icon.setImageResource(R.drawable.swerve_red);
                     }
                 });
                 break;
@@ -801,6 +811,41 @@ public class MainActivity extends AppCompatActivity {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
+
+    public void add_coins(int score) {
+        add_coins.setImageResource(R.drawable.coin_add);
+        plus_icon.setImageResource(R.drawable.plus_icon);
+        String  coin = String.valueOf(score);
+        add_coins_n.setText(coin);
+    }
+
+    public void getCoin(){
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+//                add_coins.setImageResource(R.drawable.coin_add);
+//                plus_icon.setImageResource(R.drawable.plus_icon);
+                String  coin = "1";
+                add_coins_n.setText(coin);
+                add_coins.setVisibility(View.VISIBLE);
+                plus_icon.setVisibility(View.VISIBLE);
+                add_coins_n.setVisibility(View.VISIBLE);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(10000);
+                        add_coins.setVisibility(View.INVISIBLE);
+                        plus_icon.setVisibility(View.INVISIBLE);
+                        add_coins_n.setVisibility(View.INVISIBLE);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+
+            }
+        });
+    }
+
+
 
 
 
